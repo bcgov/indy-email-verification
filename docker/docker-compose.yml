@@ -15,6 +15,7 @@ services:
     environment:
       # SITE_URL: http://localhost:8000
       SITE_URL: https://aaa368e8.ngrok.io
+      DEBUG: True
     build:
       context: ..
       dockerfile: docker/email-verification-service/Dockerfile
