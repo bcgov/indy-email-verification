@@ -20,6 +20,10 @@
 
     <link rel="stylesheet" href="{% static 'css/bcgov_theme.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+
+    <script>
+      __streetcred_url = "{{streetcred_url}}";
+    </script>
   </head>
   <body>
     <!--[if lt IE 7]>
@@ -59,39 +63,17 @@
       <div class="container">
         <div class="row">
           <div class="col-md-9 col-sm-8">
-            <h1>Email Verification Service</h1>
+            <h1>Get Verified</h1>
             <p class="lead">
-              Use the form below to request a verified email credential.
+              Scan the QR code or click connect from your phone to form a
+              connection with our verification service.
             </p>
-          </div>
-        </div>
 
-        <div class="row">
-          <div class="col-md-9 col-sm-8">
-            <form action="/submit/" method="post">
-              {% csrf_token %}
-              <fieldset>
-                <div class="form-group">
-                  {{ form }}
-                  <small id="emailHelp" class="form-text text-muted"
-                    >We'll never share your email with anyone else.</small
-                  >
-                </div>
-                <input type="submit" class="btn btn-primary" />
-              </fieldset>
-            </form>
-          </div>
-        </div>
-        <hr />
-        <div class="row what-is-this">
-          <div class="col-md-9 col-sm-8">
-            <h2>What is this?</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor
-              accusamus sit illum et eum fugit! Tempore mollitia debitis autem
-              similique exercitationem. Sed, aspernatur alias commodi architecto
-              sit voluptatum quaerat odit!
-            </p>
+            <img width="200" src="data:image/png;base64, {{ qr_png }}" />
+            <br />
+            <a class="btn btn-primary btn-large" href="{{ streetcred_url }}"
+              >Connect</a
+            >
           </div>
         </div>
       </div>
@@ -146,5 +128,6 @@
       </nav>
     </footer>
     <script src="{% static 'js/bcgov_theme.min.js' %}" async defer></script>
+    <script src="{% static 'js/verify.js' %}" async defer></script>
   </body>
 </html>

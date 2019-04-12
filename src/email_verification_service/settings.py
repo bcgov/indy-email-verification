@@ -28,7 +28,7 @@ SECRET_KEY = "*uj-^cy8ln$@4ni7t)*(0+3c=+yosvj^tv85%*zy0j#g3-i%h*"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -118,3 +118,10 @@ USE_TZ = True
 STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "assets"),)
 
 STATIC_URL = "/assets/"
+
+EMAIL_HOST = "smtp.fastmail.com"
+EMAIL_HOST_USER = "nick@lucent.is"
+EMAIL_HOST_PASSWORD = "hj5c8vsz8usqv2r3"
+EMAIL_PORT = 465
+# EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
