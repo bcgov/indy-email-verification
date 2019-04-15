@@ -1,7 +1,9 @@
+certifi==2019.3.9
 chardet==3.0.4
 Django==2.2
 idna==2.8
 Pillow==6.0.0
+psycopg2==2.8.2
 pytz==2019.1
 qrcode==6.1
 requests==2.21.0

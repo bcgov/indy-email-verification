@@ -2,6 +2,7 @@ import base64
 import io
 import os
 import re
+import json
 
 import qrcode
 import requests
@@ -16,7 +17,7 @@ from django.http import (
 from django.template import loader
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
-
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import EmailForm
 from .models import Verification
@@ -53,9 +54,7 @@ def submit(request):
             redirect_url = f"{os.environ.get('SITE_URL')}/verify/{connection_id}"
 
             template = loader.get_template("email.html")
-            email_html = template.render(
-                {"redirect_url": redirect_url}, request
-            )
+            email_html = template.render({"redirect_url": redirect_url}, request)
 
             send_mail(
                 "BC Email Verification Invite",
@@ -101,3 +100,13 @@ def verify_redirect(request, connection_id):
         )
     )
 
+@csrf_exempt
+def webhooks(request, topic):
+
+    if topic != "connections":
+        return HttpResponse()
+
+    message = json.loads(request.body)
+    raise Exception(request.body)
+
+    return HttpResponse()

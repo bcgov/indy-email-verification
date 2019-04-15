@@ -7,4 +7,5 @@ urlpatterns = [
     path("submit/", views.submit, name="submit"),
     path("thanks/", views.thanks, name="thanks"),
     path("verify/<str:connection_id>/", views.verify_redirect, name="verify_redirect"),
+    path("webhooks/topic/<str:topic>/", views.webhooks, name="webhooks"),
 ]
