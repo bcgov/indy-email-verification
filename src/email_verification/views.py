@@ -18,6 +18,7 @@ from django.template import loader
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.core.cache import cache
 
 from .forms import EmailForm
 from .models import Verification
@@ -26,7 +27,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-AGENT_URL = "http://icatagent:5000"
+AGENT_URL = os.environ.get("AGENT_URL")
 
 
 def index(request):
@@ -100,13 +101,52 @@ def verify_redirect(request, connection_id):
         )
     )
 
+
 @csrf_exempt
 def webhooks(request, topic):
 
-    if topic != "connections":
+    message = json.loads(request.body)
+    logger.info(f"webhook recieved - topic: {topic} body: {request.body}")
+
+    # Handle new invites, send cred offer
+    if topic == "connections" and message["state"] == "response":
+        credential_definition_id = cache.get("credential_definition_id")
+        assert credential_definition_id is not None
+
+        logger.info(
+            f"Sending credential offer for connection {message['connection_id']} "
+            + f"and credential definition {credential_definition_id}"
+        )
+
+        request_body = {
+            "connection_id": message["connection_id"],
+            "credential_definition_id": credential_definition_id,
+        }
+        response = requests.post(
+            f"{AGENT_URL}/credential_exchange/send-offer", json=request_body
+        )
+
         return HttpResponse()
 
-    message = json.loads(request.body)
-    raise Exception(request.body)
+    # Handle new invites, send cred offer
+    if topic == "credentials" and message["state"] == "request_received":
+        credential_exchange_id = message["credential_exchange_id"]
+        connection_id = message["connection_id"]
+
+        logger.info(
+            "Sending credential issue for credential exchange "
+            + f"{credential_exchange_id} and connection {connection_id}"
+        )
+
+        verification = get_object_or_404(Verification, connection_id=connection_id)
+        request_body = {"credential_values": {"email": verification.email}}
+
+        response = requests.post(
+            f"{AGENT_URL}/credential_exchange/{credential_exchange_id}/issue",
+            json=request_body,
+        )
+
+        return HttpResponse()
 
     return HttpResponse()
+
