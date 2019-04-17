@@ -150,3 +150,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Certs and keys
+*.crt
+*.key
