@@ -153,3 +153,7 @@ Temporary Items
 # Certs and keys
 *.crt
 *.key
+
+# tmp script files
+*_DeploymentConfig.json
+*_BuildConfig.json
