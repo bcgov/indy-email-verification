@@ -7,6 +7,6 @@ USER root
 #   under random UID.
 RUN usermod -a -G 0 indy
 
-RUN pip3 install -e "git+https://github.com/nrempel/indy-catalyst.git@webhooks#egg=subdir&subdirectory=agent"
-
 USER indy
+
+RUN pip3 install -e "git+https://github.com/nrempel/indy-catalyst.git@webhooks#egg=subdir&subdirectory=agent"
