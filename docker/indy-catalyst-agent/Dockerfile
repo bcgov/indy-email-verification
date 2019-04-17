@@ -7,6 +7,15 @@ USER root
 #   under random UID.
 RUN usermod -a -G 0 indy
 
-USER 1001
+RUN mkdir -p \
+        $HOME/.indy_client/pool \
+        $HOME/.indy_client/ledger-cache
+
+# The root group needs access the directories under $HOME/.indy_client for the
+# container to function in OpenShift.
+RUN chown -R indy:root $HOME/.indy_client
+RUN chmod -R ug+rw $HOME/log $HOME/ledger $HOME/.indy-cli $HOME/.indy_client
+
+USER indy
 
 RUN pip3 install -e "git+https://github.com/nrempel/indy-catalyst.git@webhooks#egg=subdir&subdirectory=agent"
