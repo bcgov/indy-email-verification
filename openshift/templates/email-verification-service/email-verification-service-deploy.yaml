@@ -2,118 +2,118 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: "${NAME}"
+  name: ${NAME}
 objects:
 
 - kind: Service
   apiVersion: v1
   metadata:
-    name: "${NAME}"
+    name: ${NAME}
     labels:
-      app: "${NAME}"
-      app-group: "${APP_GROUP}"
+      app: ${NAME}
+      app-group: ${APP_GROUP}
   spec:
     ports:
-    - name: "${NAME}"
-      port: "${{PORT}}"
+    - name: ${NAME}
+      port: ${{PORT}}
       protocol: TCP
-      targetPort: "${{PORT}}"
+      targetPort: ${{PORT}}
     selector:
-      name: "${NAME}"
+      name: ${NAME}
 
 - kind: Route
-  apiVersion: v1 
+  apiVersion: v1
   metadata:
-    name: "${NAME}"
+    name: ${NAME}
     labels:
-      app: "${NAME}"
-      app-group: "${APP_GROUP}"
+      app: ${NAME}
+      app-group: ${APP_GROUP}
   spec:
-    host: "${APPLICATION_DOMAIN}"
+    host: ${APPLICATION_DOMAIN}
     port:
-      targetPort: "${NAME}"
+      targetPort: ${NAME}
     tls:
       insecureEdgeTerminationPolicy: Redirect
       termination: edge
     to:
       kind: Service
-      name: "${NAME}"
+      name: ${NAME}
       weight: 100
 
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: "${NAME}"
+    name: ${NAME}
     labels:
-      app: "${NAME}"
-      app-group: "${APP_GROUP}"
+      app: ${NAME}
+      app-group: ${APP_GROUP}
   spec:
     replicas: 1
     selector:
-      name: "${NAME}"
+      name: ${NAME}
     strategy:
       type: Rolling
     template:
       metadata:
-        name: "${NAME}"
+        name: ${NAME}
         labels:
-          name: "${NAME}"
-          app: "${NAME}"
-          app-group: "${APP_GROUP}"
+          name: ${NAME}
+          app: ${NAME}
+          app-group: ${APP_GROUP}
       spec:
         containers:
-        - name: "${NAME}"
+        - name: ${NAME}
           command:
           - bash
           - -c
           - ./manage.py makemigrations && ./manage.py migrate && ./manage.py runserver 0.0.0.0:$\{PORT\}
           env:
           - name: PORT
-            value: "${PORT}"
+            value: ${PORT}
           - name: SITE_URL
-            value: "${SITE_URL}"
+            value: ${SITE_URL}
           - name: AGENT_URL
-            value: "${AGENT_URL}"
+            value: ${AGENT_URL}
           - name: DEBUG
-            value: "${DEBUG}"
+            value: ${DEBUG}
           - name: DB_NAME
-            value: "${DATABASE_NAME}"
+            value: ${DATABASE_NAME}
           - name: DB_USER
             valueFrom:
               secretKeyRef:
                 key: database-user
-                name: "${DATABASE_SERVICE_NAME}"
+                name: ${DATABASE_SERVICE_NAME}
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: database-password
-                name: "${DATABASE_SERVICE_NAME}"
+                name: ${DATABASE_SERVICE_NAME}
           - name: DB_PORT
-            value: "${DATABASE_PORT}"
+            value: ${DATABASE_PORT}
           - name: DB_HOST
-            value: "${DATABASE_SERVICE_NAME}"
+            value: ${DATABASE_SERVICE_NAME}
           - name: EMAIL_HOST
-            value: "${EMAIL_HOST}"
+            value: ${EMAIL_HOST}
           - name: EMAIL_PORT
-            value: "${EMAIL_PORT}"
+            value: ${EMAIL_PORT}
           - name: EMAIL_USE_SSL
-            value: "${EMAIL_USE_SSL}"
+            value: ${EMAIL_USE_SSL}
           image: " "
           ports:
-          - containerPort: "${{PORT}}"
+          - containerPort: ${{PORT}}
             protocol: TCP
           readinessProbe:
             timeoutSeconds: 3
             initialDelaySeconds: 3
             httpGet:
               path: "/"
-              port: "${{PORT}}"
+              port: ${{PORT}}
           livenessProbe:
             timeoutSeconds: 3
             initialDelaySeconds: 30
             httpGet:
               path: "/"
-              port: "${{PORT}}"
+              port: ${{PORT}}
           imagePullPolicy: IfNotPresent
           resources:
             limits:
@@ -135,23 +135,23 @@ objects:
       imageChangeParams:
         automatic: true
         containerNames:
-        - "${NAME}"
+        - ${NAME}
         from:
           kind: ImageStreamTag
-          name: "${NAME}:${TAG_NAME}"
-          namespace: "${IMAGE_NAMESPACE}"
+          name: ${NAME}:${TAG_NAME}
+          namespace: ${IMAGE_NAMESPACE}
 
 parameters:
 - name: NAME
   displayName: Name
   description: The name assigned to all the objects defined in this template.
   required: true
-  value: email-verification-service-test
+  value: email-verification-service
 - name: APP_GROUP
   displayName: App Group
   description: The name assigned to all of the deployments in this project.
   required: true
-  value: email-verification-service-test
+  value: email-verification-service
 - name: APPLICATION_DOMAIN
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
