@@ -221,7 +221,7 @@ parameters:
   displayName: Webhook URL
   description: The webhook endpoint
   required: true
-  value: http://email-verification-service:8000/webhooks
+  value: http://email-verification-service:8080/webhooks
 - name: DISPLAY_LABEL
   displayName: Display Label
   description: Display label

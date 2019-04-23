@@ -170,7 +170,7 @@ parameters:
   displayName: Port
   description: The port on which the service will listen.
   required: true
-  value: "8000"
+  value: "8080"
 - name: SITE_URL
   displayName: Site URL
   description: The URL for the site
