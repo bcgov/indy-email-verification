@@ -35,7 +35,7 @@ objects:
   spec:
     host: ${APPLICATION_DOMAIN}
     port:
-      targetPort: ${NAME}
+      targetPort: ${NAME}-agent
     tls:
       insecureEdgeTerminationPolicy: Redirect
       termination: edge
@@ -177,12 +177,12 @@ parameters:
   displayName: Name
   description: The name assigned to all the objects defined in this template.
   required: true
-  value: indy-catalyst-agent-test
+  value: indy-catalyst-agent
 - name: APP_GROUP
   displayName: App Group
   description: The name assigned to all of the deployments in this project.
   required: true
-  value: email-verification-service-test
+  value: email-verification-service
 - name: APPLICATION_DOMAIN
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
