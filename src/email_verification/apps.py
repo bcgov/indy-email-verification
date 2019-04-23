@@ -50,4 +50,4 @@ class EmailVerificationConfig(AppConfig):
 
             logger.info(f"cred def id: {credential_definition_id}")
 
-            cache.set("credential_definition_id", credential_definition_id)
+            cache.set("credential_definition_id", credential_definition_id, None)
