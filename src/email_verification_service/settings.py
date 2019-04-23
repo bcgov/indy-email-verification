@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import posixpath
 
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "email_verification_service.urls"
@@ -168,9 +170,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "assets"),)
-
 STATIC_URL = "/assets/"
+STATICFILES_DIRS = (os.path.join(PROJECT_ROOT, "assets"),)
+STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['assets']))
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 # EMAIL_HOST_USER = ""

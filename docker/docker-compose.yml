@@ -11,12 +11,12 @@ services:
         {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","client_ip":"52.224.127.162","client_port":9706,"node_ip":"52.224.127.162","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}
         {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","client_ip":"52.224.127.162","client_port":9708,"node_ip":"52.224.127.162","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}
       SITE_URL: https://d37e4dca.ngrok.io
-      WEBHOOK_URL: http://email-verifier-service:8000/webhooks
+      WEBHOOK_URL: http://django:8080/webhooks
       AGENT_LABEL: BC Email Verifier
       DATABASE_URL: postgres
     build:
       context: ..
-      dockerfile: docker/indy-catalyst-agent/Dockerfile
+      dockerfile: ./docker/indy-catalyst-agent/Dockerfile
     ports:
       - "5000:5000"
       - "10000:10000"
@@ -26,12 +26,17 @@ services:
 
   email-verifier-service:
     restart: always
+    image: email-verification-service
+    # build:
+    #   context: ..
+    #   dockerfile: ./docker/email-verification-service/Dockerfile
+    # working_dir: /app
     depends_on:
       - email-verifier-postgres
       - email-verifier-agent
     environment:
-      PORT: 8000
-      SITE_URL: http://localhost:8000
+      PORT: 8080
+      SITE_URL: http://localhost:8080
       AGENT_URL: "http://email-verifier-agent:5000"
       DEBUG: "true"
       DB_NAME: postgres
@@ -42,13 +47,17 @@ services:
       EMAIL_HOST: maildev
       EMAIL_PORT: 25
       EMAIL_USE_SSL: "false"
-    build:
-      context: ..
-      dockerfile: docker/email-verification-service/Dockerfile
-    working_dir: /app
+      STI_SCRIPTS_PATH: "/usr/libexec/s2i"
+      APP_HOME: "email_verification_service"
+      WEB_CONCURRENCY: 1
     ports:
-      - 8000:8000
-    command: bash -c "sleep 5 && ./manage.py makemigrations &&./manage.py migrate && ./manage.py runserver 0.0.0.0:$${PORT}"
+      - 8080:8080
+    # command: bash -c "sleep 5 && ./manage.py makemigrations &&./manage.py migrate && ./manage.py runserver 0.0.0.0:$${PORT}"
+    command: >
+        bash -c "
+        echo waiting for icatagent ...;
+        sleep 5;
+        $${STI_SCRIPTS_PATH}/run;"
     volumes:
       - ../src:/app
 
