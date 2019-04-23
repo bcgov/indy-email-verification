@@ -197,12 +197,12 @@ parameters:
   description: The TAG name for this environment, e.g., dev, test, prod.
   required: true
   value: dev
-- name: INDY_INDY_ADMIN_PORT
+- name: INDY_ADMIN_PORT
   displayName: Admin Port
   description: The admin port on which the service will listen.
   required: true
   value: "5000"
-- name: INDY_INDY_AGENT_PORT
+- name: INDY_AGENT_PORT
   displayName: Agent Port
   description: The agent port on which the service will listen.
   required: true
