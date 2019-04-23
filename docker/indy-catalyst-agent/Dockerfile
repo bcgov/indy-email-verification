@@ -18,4 +18,4 @@ RUN chmod -R ug+rw $HOME/log $HOME/ledger $HOME/.indy-cli $HOME/.indy_client
 
 USER indy
 
-RUN pip3 install -e "git+https://github.com/nrempel/indy-catalyst.git@webhooks#egg=subdir&subdirectory=agent"
+RUN pip3 install -e "git+https://github.com/bcgov/indy-catalyst.git@master#egg=subdir&subdirectory=agent"

@@ -3,6 +3,7 @@ import io
 import os
 import re
 import json
+from time import sleep
 
 import qrcode
 import requests
@@ -122,13 +123,15 @@ def webhooks(request, topic):
             "connection_id": message["connection_id"],
             "credential_definition_id": credential_definition_id,
         }
+
+        # sleep(1)
         response = requests.post(
             f"{AGENT_URL}/credential_exchange/send-offer", json=request_body
         )
 
         return HttpResponse()
 
-    # Handle new invites, send cred offer
+    # Handle cred request, issue cred
     if topic == "credentials" and message["state"] == "request_received":
         credential_exchange_id = message["credential_exchange_id"]
         connection_id = message["connection_id"]

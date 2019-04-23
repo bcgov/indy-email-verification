@@ -136,7 +136,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
+        'LOCATION': 'd6bfd18a-1e7a-478c-87e7-775161be591a',
     }
 }
 
