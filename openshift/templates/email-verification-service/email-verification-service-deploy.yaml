@@ -63,10 +63,6 @@ objects:
       spec:
         containers:
         - name: ${NAME}
-          command:
-          - bash
-          - -c
-          - ./manage.py makemigrations && ./manage.py migrate && ./manage.py runserver 0.0.0.0:$\{PORT\}
           env:
           - name: PORT
             value: ${PORT}
@@ -98,6 +94,10 @@ objects:
             value: ${EMAIL_PORT}
           - name: EMAIL_USE_SSL
             value: ${EMAIL_USE_SSL}
+          - name: APP_HOME
+            value: ${APP_HOME}
+          - name: WEB_CONCURRENCY
+            value: ${WEB_CONCURRENCY}
           image: " "
           ports:
           - containerPort: ${{PORT}}
@@ -166,6 +166,16 @@ parameters:
   description: The TAG name for this environment, e.g., dev, test, prod.
   required: true
   value: dev
+- name: APP_HOME
+  displayName: Application Home
+  description: The directory pointed to by this variable needs to contain wsgi.py (for Gunicorn) or manage.py (for Django).
+  required: true
+  value: email_verification_service
+- name: WEB_CONCURRENCY
+  displayName: Web Concurrency
+  description: Controls/overrides the number of Gunicorn workers.  This MUST be set to 1 when using a SQLite wallet.
+  required: true
+  value: "1"
 - name: PORT
   displayName: Port
   description: The port on which the service will listen.

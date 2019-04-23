@@ -44,9 +44,18 @@
           "contextDir": "${SOURCE_CONTEXT_DIR}"
         },
         "strategy": {
-          "type": "Docker",
-          "dockerStrategy": {
-            "dockerfilePath": "${DOCKER_FILE_PATH}"
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "${SOURCE_IMAGE_KIND}",
+              "name": "${SOURCE_IMAGE_NAME}:${SOURCE_IMAGE_TAG}"
+            },
+            "env": [
+              {
+                "name": "PIP_INDEX_URL",
+                "value": "${PIP_INDEX_URL}"
+              }
+            ]
           }
         },
         "output": {
@@ -92,14 +101,34 @@
       "displayName": "Source Context Directory",
       "description": "The source context directory.",
       "required": false,
-      "value": ""
+      "value": "src"
     },
     {
-      "name": "DOCKER_FILE_PATH",
-      "displayName": "Docker File Path",
-      "description": "The path to the docker file defining the build.",
-      "required": false,
-      "value": "./docker/email-verification-service/Dockerfile"
+      "name": "SOURCE_IMAGE_KIND",
+      "displayName": "Source Image Kind",
+      "description": "The 'kind' (type) of the  source image; typically ImageStreamTag, or DockerImage.",
+      "required": true,
+      "value": "DockerImage"
+    },
+    {
+      "name": "SOURCE_IMAGE_NAME",
+      "displayName": "Source Image Name",
+      "description": "The name of the source image.",
+      "required": true,
+      "value": "registry.access.redhat.com/rhscl/python-36-rhel7"
+    },
+    {
+      "name": "SOURCE_IMAGE_TAG",
+      "displayName": "Source Image Tag",
+      "description": "The tag of the source image.",
+      "required": true,
+      "value": "latest"
+    },
+    {
+      "name": "PIP_INDEX_URL",
+      "displayName": "Custom PyPi Index URL",
+      "description": "The custom PyPi index URL",
+      "value": ""
     },
     {
       "name": "OUTPUT_IMAGE_TAG",
