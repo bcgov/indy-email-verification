@@ -3,18 +3,12 @@ import io
 import os
 import re
 import json
-from time import sleep
 
 import qrcode
 import requests
 
 
-from django.http import (
-    HttpResponse,
-    HttpResponseRedirect,
-    HttpResponseNotFound,
-    HttpResponseBadRequest,
-)
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.template import loader
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
@@ -75,7 +69,7 @@ def submit(request):
 def thanks(request):
     try:
         email = request.GET["email"]
-    except:
+    except Exception:
         return HttpResponseBadRequest()
 
     template = loader.get_template("thanks.html")
@@ -84,21 +78,27 @@ def thanks(request):
 
 def verify_redirect(request, connection_id):
     verification = get_object_or_404(Verification, connection_id=connection_id)
+    invitation_url = verification.invite_url
 
     streetcred_url = re.sub(
-        r"^https?:\/\/\S*\?", "id.streetcred://invite?", verification.invite_url
+        r"^https?:\/\/\S*\?", "id.streetcred://invite?", invitation_url
     )
 
     template = loader.get_template("verify.html")
 
     stream = io.BytesIO()
-    qr_png = qrcode.make(verification.invite_url)
+    qr_png = qrcode.make(invitation_url)
     qr_png.save(stream, "PNG")
     qr_png_b64 = base64.b64encode(stream.getvalue()).decode("utf-8")
 
     return HttpResponse(
         template.render(
-            {"qr_png": qr_png_b64, "streetcred_url": streetcred_url}, request
+            {
+                "qr_png": qr_png_b64,
+                "streetcred_url": streetcred_url,
+                "invitation_url": invitation_url,
+            },
+            request,
         )
     )
 
@@ -152,4 +152,3 @@ def webhooks(request, topic):
         return HttpResponse()
 
     return HttpResponse()
-
