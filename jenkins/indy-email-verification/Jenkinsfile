@@ -5,6 +5,10 @@ def COMPONENTS = ['indy-catalyst-agent', 'email-verification-service']
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
 
+// Edit your deployment environment names below
+def DEP_ENV_NAMES = ['tools', 'dev', 'test', 'prod']
+
+
 // The base namespace of you environments.
 def NAME_SPACE = 'devex-von-image'
 
@@ -52,7 +56,7 @@ node {
             openshift.tag("${item}@${IMAGE_HASH}", "${item}:${TAG_NAMES[0]}")
           }
 
-          openshift.withProject("${NAME_SPACE}-${TAG_NAMES[0]}") {
+          openshift.withProject("${NAME_SPACE}-${DEP_ENV_NAMES[0]}") {
               def dc = openshift.selector('dc', "${item}")
               // Wait for the deployment to complete.
               // This will wait until the desired replicas are all available
