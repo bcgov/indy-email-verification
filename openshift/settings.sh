@@ -1,5 +1,5 @@
 export PROJECT_NAMESPACE="devex-von-image"
-export GIT_URI="https://github.com/nrempel/indy-email-verification.git"
+export GIT_URI="https://github.com/bcgov/indy-email-verification.git"
 export GIT_REF="master"
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
