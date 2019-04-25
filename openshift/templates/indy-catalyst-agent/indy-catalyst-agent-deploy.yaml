@@ -10,7 +10,8 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      app: ${NAME}
+      name: ${NAME}
+      app: ${APP_GROUP}
       app-group: ${APP_GROUP}
   spec:
     ports:
@@ -30,7 +31,8 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      app: ${NAME}
+      name: ${NAME}
+      app: ${APP_GROUP}
       app-group: ${APP_GROUP}
   spec:
     host: ${APPLICATION_DOMAIN}
@@ -49,7 +51,8 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      app: ${NAME}
+      name: ${NAME}
+      app: ${APP_GROUP}
       app-group: ${APP_GROUP}
   spec:
     accessModes:
@@ -64,7 +67,8 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      app: ${NAME}
+      name: ${NAME}
+      app: ${APP_GROUP}
       app-group: ${APP_GROUP}
   spec:
     replicas: 1
@@ -77,7 +81,7 @@ objects:
         name: ${NAME}
         labels:
           name: ${NAME}
-          app: ${NAME}
+          app: ${APP_GROUP}
           app-group: ${APP_GROUP}
       spec:
         containers:
@@ -113,14 +117,14 @@ objects:
           - containerPort: ${{INDY_AGENT_PORT}}
             protocol: TCP
           readinessProbe:
-            timeoutSeconds: 3
+            timeoutSeconds: 30
             initialDelaySeconds: 3
             httpGet:
               path: "/"
               port: ${{INDY_AGENT_PORT}}
           livenessProbe:
-            timeoutSeconds: 3
-            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            initialDelaySeconds: 300
             httpGet:
               path: "/"
               port: ${{INDY_AGENT_PORT}}
@@ -163,7 +167,8 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      app: ${NAME}
+      name: ${NAME}
+      app: ${APP_GROUP}
       app-group: ${APP_GROUP}
   data:
     genesis: |

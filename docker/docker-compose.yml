@@ -13,7 +13,6 @@ services:
       SITE_URL: https://d37e4dca.ngrok.io
       WEBHOOK_URL: http://django:8080/webhooks
       AGENT_LABEL: BC Email Verifier
-      DATABASE_URL: postgres
     build:
       context: ..
       dockerfile: ./docker/indy-catalyst-agent/Dockerfile
