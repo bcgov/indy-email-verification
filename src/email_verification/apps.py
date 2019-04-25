@@ -26,8 +26,8 @@ class EmailVerificationConfig(AppConfig):
         if cache.get("credential_definition_id") is None:
             schema_body = {
                 "schema_name": "verified-email",
-                "schema_version": "1.1.2",
-                "attributes": ["email"],
+                "schema_version": "1.2.0",
+                "attributes": ["email", "time"],
             }
             schema_response = requests.post(f"{AGENT_URL}/schemas", json=schema_body)
 

@@ -3,6 +3,7 @@ import io
 import os
 import re
 import json
+from datetime import datetime
 
 import qrcode
 import requests
@@ -142,7 +143,12 @@ def webhooks(request, topic):
         )
 
         verification = get_object_or_404(Verification, connection_id=connection_id)
-        request_body = {"credential_values": {"email": verification.email}}
+        request_body = {
+            "credential_values": {
+                "email": verification.email,
+                "time": str(datetime.utcnow()),
+            }
+        }
 
         response = requests.post(
             f"{AGENT_URL}/credential_exchange/{credential_exchange_id}/issue",
