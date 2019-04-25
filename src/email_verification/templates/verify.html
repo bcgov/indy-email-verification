@@ -20,6 +20,7 @@
 
     <link rel="stylesheet" href="{% static 'css/bcgov_theme.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
     <script>
       __streetcred_url = "{{streetcred_url}}";
@@ -62,18 +63,26 @@
     <main role="main">
       <div class="container">
         <div class="row">
-          <div class="col-md-9 col-sm-8">
+          <div class="col-lg-9 col-md-12">
             <h1>Get Verified</h1>
             <p class="lead">
               Scan the QR code or click connect from your phone to form a
               connection with our verification service.
             </p>
-
-            <img width="200" src="data:image/png;base64, {{ qr_png }}" />
-            <br />
-            <a class="btn btn-primary btn-large" href="{{ streetcred_url }}"
-              >Connect</a
-            >
+            <div class="row">
+              <div class="col-sm-6 col-md-4">
+                <img width="200" src="data:image/png;base64, {{ qr_png }}" />
+              </div>
+              <div class="col-sm-6 col-md-8 pt-3">
+                <a class="btn btn-primary btn-lg" href="{{ streetcred_url }}"
+                  ><span class="fa fa-link"></span> Open in Streetcred Agent</a>
+                <br />
+                <input type="text" readonly="readonly" size="40" id="invitation-url" class="form-control mt-4" value="{{ invitation_url }}">
+                <button type="button" class="btn btn-primary btn-lg mt-2"
+                  onclick="var invite = document.getElementById('invitation-url'); if(invite) { invite.focus(); invite.select(); document.execCommand('copy'); }"
+                  ><span class="fa fa-clipboard"></span> Copy Invitation</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

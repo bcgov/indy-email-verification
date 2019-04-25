@@ -101,6 +101,8 @@ objects:
             value: ${APP_HOME}
           - name: WEB_CONCURRENCY
             value: ${WEB_CONCURRENCY}
+          - name: APP_CONFIG
+            value: ${APP_CONFIG}
           image: " "
           ports:
           - containerPort: ${{PORT}}
@@ -243,3 +245,8 @@ parameters:
   description: The resources Memory limit (in Mi, Gi, etc) for this build.
   required: true
   value: 1Gi
+- name: APP_CONFIG
+  displayName: Gunicorn Config File
+  description: option to be passed to gunicorn -c
+  required: false
+  value: python:email_verification_service.settings

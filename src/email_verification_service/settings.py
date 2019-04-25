@@ -31,7 +31,6 @@ DEBUG = os.environ.get("DEBUG") == "true"
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -181,3 +180,7 @@ EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_PORT = os.environ.get("EMAIL_PORT")
 # EMAIL_USE_TLS = True
 EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL") == "true"
+
+
+# Gunicorn options
+timeout = 300
