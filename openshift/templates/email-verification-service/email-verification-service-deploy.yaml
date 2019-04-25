@@ -97,12 +97,12 @@ objects:
             value: ${EMAIL_PORT}
           - name: EMAIL_USE_SSL
             value: ${EMAIL_USE_SSL}
-          - name: APP_HOME
-            value: ${APP_HOME}
-          - name: WEB_CONCURRENCY
-            value: ${WEB_CONCURRENCY}
+          - name: APP_MODULE
+            value: ${APP_MODULE}
           - name: APP_CONFIG
             value: ${APP_CONFIG}
+          - name: WEB_CONCURRENCY
+            value: ${WEB_CONCURRENCY}
           image: " "
           ports:
           - containerPort: ${{PORT}}
@@ -171,11 +171,16 @@ parameters:
   description: The TAG name for this environment, e.g., dev, test, prod.
   required: true
   value: dev
-- name: APP_HOME
-  displayName: Application Home
-  description: The directory pointed to by this variable needs to contain wsgi.py (for Gunicorn) or manage.py (for Django).
+- name: APP_MODULE
+  displayName: Application Module
+  description: Used to run the application with Gunicorn.
   required: true
-  value: email_verification_service
+  value: email_verification_service.wsgi
+- name: APP_CONFIG
+  displayName: Gunicorn Config File
+  description: option to be passed to gunicorn -c
+  required: false
+  value: python:email_verification_service.settings
 - name: WEB_CONCURRENCY
   displayName: Web Concurrency
   description: Controls/overrides the number of Gunicorn workers.  This MUST be set to 1 when using a SQLite wallet.
@@ -245,8 +250,3 @@ parameters:
   description: The resources Memory limit (in Mi, Gi, etc) for this build.
   required: true
   value: 1Gi
-- name: APP_CONFIG
-  displayName: Gunicorn Config File
-  description: option to be passed to gunicorn -c
-  required: false
-  value: python:email_verification_service.settings
