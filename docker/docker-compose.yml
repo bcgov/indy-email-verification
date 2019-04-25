@@ -13,7 +13,6 @@ services:
       SITE_URL: http://ed9170a2.ngrok.io
       WEBHOOK_URL: http://email-verifier-service:8080/webhooks
       AGENT_LABEL: BC Email Verifier
-      DATABASE_URL: postgres
     build:
       context: ..
       dockerfile: ./docker/indy-catalyst-agent/Dockerfile
