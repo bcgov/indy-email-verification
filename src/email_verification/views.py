@@ -56,7 +56,7 @@ def submit(request):
             send_mail(
                 "BC Email Verification Invite",
                 f"Follow this link to connect with our verification service: {redirect_url}",
-                "noreply@gov.bc.ca",
+                "Email Verification Service <noreply@gov.bc.ca>",
                 [email],
                 fail_silently=False,
                 html_message=email_html,
