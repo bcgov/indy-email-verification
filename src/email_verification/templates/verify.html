@@ -65,9 +65,10 @@
         <div class="row">
           <div class="col-lg-9 col-md-12">
             <h1>Get Verified</h1>
-            <p class="lead">
+            <p>
               Scan the QR code or click connect from your phone to form a
-              connection with our verification service.
+              connection with this Email Verification Service. Once the connection
+              is established, the service will offer you a verifiable credential.
             </p>
             <div class="row">
               <div class="col-sm-6 col-md-4">
@@ -75,12 +76,12 @@
               </div>
               <div class="col-sm-6 col-md-8 pt-3">
                 <a class="btn btn-primary btn-lg" href="{{ streetcred_url }}"
-                  ><span class="fa fa-link"></span> Open in Streetcred Agent</a>
+                  ><span class="fa fa-link"></span> Open in Streetcred </a>
                 <br />
                 <input type="text" readonly="readonly" size="40" id="invitation-url" class="form-control mt-4" value="{{ invitation_url }}">
                 <button type="button" class="btn btn-primary btn-lg mt-2"
                   onclick="var invite = document.getElementById('invitation-url'); if(invite) { invite.focus(); invite.select(); document.execCommand('copy'); }"
-                  ><span class="fa fa-clipboard"></span> Copy Invitation</button>
+                  ><span class="fa fa-clipboard"></span> Copy Invitation </button>
               </div>
             </div>
           </div>
