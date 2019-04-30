@@ -33,7 +33,15 @@ node {
 
             echo "Building the ${item} image ..."
             def build = openshift.selector("bc", "${item}")
-            build.startBuild().logs("-f")
+            build.startBuild()
+            
+            // wait for the build to actually start ...
+            timeout(5) {
+              build.watch {
+                return (it.count() > 0)
+              }
+            }
+            build.logs("-f")
           }
         }
       }
