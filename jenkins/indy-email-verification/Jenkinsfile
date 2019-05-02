@@ -1,5 +1,14 @@
-// Assumes Builds, Images, and Deployments have the same name(s)
-// If necessary place in the order they need to be deployed.
+// The applicatino label
+// This is used to find all of the build configurations associated to the application
+// To work the build configurations must have an "app" label;
+// - For example; app=iiw-book
+def APP_LABEL = 'indy-email-verification-service'
+
+// Wait timeout in minutes
+def WAIT_TIMEOUT = 5
+
+// Assumes Builds, Images, and Deployments all have the same name(s)
+// Components will be deployed in the order they are listed.
 def COMPONENTS = ['indy-catalyst-agent', 'email-verification-service']
 
 // Edit your environment TAG names below
@@ -7,7 +16,6 @@ def TAG_NAMES = ['dev', 'test', 'prod']
 
 // Edit your deployment environment names below
 def DEP_ENV_NAMES = ['tools', 'dev', 'test', 'prod']
-
 
 // The base namespace of you environments.
 def NAME_SPACE = 'devex-von-image'
@@ -24,25 +32,34 @@ String getImageTagHash(String imageName, String tag = "") {
 }
 
 node {
-  for(item in COMPONENTS)
-  {
-    stage("Building ${item}") {
-      script {
-        openshift.withCluster() {
-          openshift.withProject() {
+  stage("Building images ...") {
+    script {
+      openshift.withCluster() {
+        openshift.withProject() {
 
-            echo "Building the ${item} image ..."
-            def build = openshift.selector("bc", "${item}")
-            build.startBuild()
-            
-            // wait for the build to actually start ...
-            timeout(5) {
-              build.watch {
-                return (it.count() > 0)
+          // Find all of the build configurations associated to the application using labels ...
+          def buildconfigs = openshift.selector("bc", [ app : "${APP_LABEL}" ])
+          echo "Found ${buildconfigs.count()} buildconfigs for app label (app=${APP_LABEL}): ${buildconfigs.names()}"
+
+          // Kick off all the builds in parallel ...
+          def builds = buildconfigs.startBuild()
+          echo "Started ${builds.count()} builds: ${builds.names()}"
+
+          timeout(WAIT_TIMEOUT) {
+            // Wait for all the builds to complete ...
+            // This section will exit after the last build completes.
+            echo "Waiting for builds to complete ..."
+            builds.withEach {
+              // untilEach and watch - do not support watching multiple named resources,
+              // so we have to feed it one at a time.
+              it.untilEach(1) {
+                  echo "${it.object().status.phase} - ${it.name()}"
+                  return (it.object().status.phase == "Complete")
               }
             }
-            build.logs("-f")
           }
+
+          echo "Builds complete ..."
         }
       }
     }
