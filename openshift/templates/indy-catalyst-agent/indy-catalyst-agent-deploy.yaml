@@ -89,7 +89,7 @@ objects:
           command:
           - bash
           - -c
-          - icatagent -it http 0.0.0.0 ${AGENT_PORT} -ot http --admin 0.0.0.0 ${ADMIN_PORT}
+          - acagent -it http 0.0.0.0 ${AGENT_PORT} -ot http --admin 0.0.0.0 ${ADMIN_PORT}
             -e "${SITE_URL}" --wallet-type indy --seed "${INDY_SEED}" --genesis-transactions
             "${GENESIS_TRANSACTIONS}" --accept-invites --accept-requests --label "${LABEL}"
           env:

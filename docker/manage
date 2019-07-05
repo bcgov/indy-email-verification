@@ -49,11 +49,11 @@ EOF
 # -----------------------------------------------------------------------------------------------------------------
 # Functions:
 # -----------------------------------------------------------------------------------------------------------------
-build-indy-catalyst-agent() {
+build-aries-cloudagent() {
   #
-  # indy-catalyst-agent
+  # aries-cloudagent
   #
-  echo -e "\nBuilding indy-catalyst-agentimage ..."
+  echo -e "\nBuilding aries-cloudagent image ..."
   docker-compose build
 }
 
@@ -71,7 +71,7 @@ build-email-verification-service() {
 
 buildImages() {
   build-email-verification-service
-  build-indy-catalyst-agent
+  build-aries-cloudagent
 }
 
 configureEnvironment() {
@@ -168,8 +168,8 @@ build)
   _startupParams=$(getStartupParams $@)
   configureEnvironment $@
   case "$@" in
-    indy-catalyst-agent)
-      build-indy-catalyst-agent
+    aries-cloudagent)
+      build-aries-cloudagent
       ;;
     email-verification-service)
       build-email-verification-service
