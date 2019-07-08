@@ -111,7 +111,7 @@ def webhooks(request, topic):
     logger.info(f"webhook recieved - topic: {topic} body: {request.body}")
 
     # Handle new invites, send cred offer
-    if topic == "connections" and message["state"] == "response":
+    if topic == "connections" and message["state"] == "active":
         credential_definition_id = cache.get("credential_definition_id")
         assert credential_definition_id is not None
 
