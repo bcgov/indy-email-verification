@@ -200,7 +200,7 @@ parameters:
   displayName: Agent URL
   description: The URL for the agent's admin endpoint.
   required: true
-  value: http://indy-catalyst-agent:5000
+  value: http://email-verification-agent:5000
 - name: DEBUG
   displayName: Debug
   description: Flag to indicate whether the service in running in debug mode.

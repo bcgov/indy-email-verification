@@ -190,7 +190,7 @@ parameters:
   displayName: Name
   description: The name assigned to all the objects defined in this template.
   required: true
-  value: indy-catalyst-agent
+  value: email-verification-agent
 - name: APP_GROUP
   displayName: App Group
   description: The name assigned to all of the deployments in this project.
