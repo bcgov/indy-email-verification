@@ -78,7 +78,7 @@
       "displayName": "Git Repo URL",
       "description": "The URL to your GIT repo.",
       "required": true,
-      "value": "https://github.com/nrempel/indy-email-verification.git"
+      "value": "https://github.com/bcgov/indy-email-verification.git"
     },
     {
       "name": "GIT_REF",
