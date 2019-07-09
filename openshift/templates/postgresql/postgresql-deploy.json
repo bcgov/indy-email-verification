@@ -251,7 +251,7 @@
             "displayName": "Name",
             "description": "The name assigned to all of the OpenShift resources associated to the server instance.",
             "required": true,
-            "value": "postgresql"
+            "value": "email-verification-postgres"
         },
         {
             "name": "APP_NAME",

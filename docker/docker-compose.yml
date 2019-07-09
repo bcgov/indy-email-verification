@@ -15,7 +15,7 @@ services:
       AGENT_LABEL: BC Email Verifier
     build:
       context: ..
-      dockerfile: ./docker/indy-catalyst-agent/Dockerfile
+      dockerfile: ./docker/email-verification-agent/Dockerfile
     ports:
       - "5000:5000"
       - "10000:10000"

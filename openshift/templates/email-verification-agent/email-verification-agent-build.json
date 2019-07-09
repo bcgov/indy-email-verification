@@ -64,7 +64,7 @@
       "displayName": "Name",
       "description": "The name assigned to all of the resources defined in this template.",
       "required": true,
-      "value": "indy-catalyst-agent"
+      "value": "email-verification-agent"
     },
     {
       "name": "APP_NAME",
@@ -78,7 +78,7 @@
       "displayName": "Git Repo URL",
       "description": "The URL to your GIT repo.",
       "required": true,
-      "value": "https://github.com/nrempel/indy-email-verification.git"
+      "value": "https://github.com/bcgov/indy-email-verification.git"
     },
     {
       "name": "GIT_REF",
@@ -99,7 +99,7 @@
       "displayName": "Docker File Path",
       "description": "The path to the docker file defining the build.",
       "required": false,
-      "value": "./docker/indy-catalyst-agent/Dockerfile"
+      "value": "./docker/email-verification-agent/Dockerfile"
     },
     {
       "name": "OUTPUT_IMAGE_TAG",

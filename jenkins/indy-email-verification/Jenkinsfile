@@ -9,7 +9,7 @@ def WAIT_TIMEOUT = 5
 
 // Assumes Builds, Images, and Deployments all have the same name(s)
 // Components will be deployed in the order they are listed.
-def COMPONENTS = ['indy-catalyst-agent', 'email-verification-service']
+def COMPONENTS = ['email-verification-agent', 'email-verification-service']
 
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
