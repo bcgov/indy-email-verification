@@ -4,274 +4,273 @@ apiVersion: v1
 metadata:
   name: ${NAME}
 objects:
-
-- kind: Service
-  apiVersion: v1
-  metadata:
-    name: ${NAME}
-    labels:
+  - kind: Service
+    apiVersion: v1
+    metadata:
       name: ${NAME}
-      app: ${APP_GROUP}
-      app-group: ${APP_GROUP}
-  spec:
-    ports:
-    - name: ${NAME}-admin
-      port: ${{INDY_ADMIN_PORT}}
-      protocol: TCP
-      targetPort: ${{INDY_ADMIN_PORT}}
-    - name: ${NAME}-agent
-      port: ${{INDY_AGENT_PORT}}
-      protocol: TCP
-      targetPort: ${{INDY_AGENT_PORT}}
-    selector:
-      name: ${NAME}
-
-- kind: Route
-  apiVersion: v1
-  metadata:
-    name: ${NAME}
-    labels:
-      name: ${NAME}
-      app: ${APP_GROUP}
-      app-group: ${APP_GROUP}
-  spec:
-    host: ${APPLICATION_DOMAIN}
-    port:
-      targetPort: ${NAME}-agent
-    tls:
-      insecureEdgeTerminationPolicy: Redirect
-      termination: edge
-    to:
-      kind: Service
-      name: ${NAME}
-      weight: 100
-
-- kind: PersistentVolumeClaim
-  apiVersion: v1
-  metadata:
-    name: ${NAME}
-    labels:
-      name: ${NAME}
-      app: ${APP_GROUP}
-      app-group: ${APP_GROUP}
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: ${PERSISTENT_VOLUME_SIZE}
-    storageClassName: ${PERSISTENT_VOLUME_CLASS}
-
-- kind: DeploymentConfig
-  apiVersion: v1
-  metadata:
-    name: ${NAME}
-    labels:
-      name: ${NAME}
-      app: ${APP_GROUP}
-      app-group: ${APP_GROUP}
-  spec:
-    replicas: 1
-    selector:
-      name: ${NAME}
-    strategy:
-      type: Rolling
-    template:
-      metadata:
+      labels:
         name: ${NAME}
-        labels:
-          name: ${NAME}
-          app: ${APP_GROUP}
-          app-group: ${APP_GROUP}
-      spec:
-        containers:
-        - name: ${NAME}
-          command:
-          - bash
-          - -c
-          - aca-py
-            -it http 0.0.0.0 ${AGENT_PORT}
-            -ot http 
-            --admin 0.0.0.0 ${ADMIN_PORT}
-            -e "${SITE_URL}"
-            --wallet-type indy
-            --seed "${INDY_SEED}"
-            --genesis-transactions "${GENESIS_TRANSACTIONS}"
-            --accept-invites
-            --accept-requests
-            --label "${LABEL}"
-          env:
-          - name: ADMIN_PORT
-            value: ${INDY_ADMIN_PORT}
-          - name: AGENT_PORT
-            value: ${INDY_AGENT_PORT}
-          - name: INDY_SEED
-            value: ${INDY_WALLET_SEED}
-          - name: GENESIS_TRANSACTIONS
-            valueFrom:
-              configMapKeyRef:
-                key: genesis
-                name: ${NAME}
-          - name: SITE_URL
-            value: ${AGENT_URL}
-          - name: WEBHOOK_URL
-            value: ${WEBHOOK_URL}
-          - name: LABEL
-            value: ${DISPLAY_LABEL}
-          image: " "
-          ports:
-          - containerPort: ${{INDY_ADMIN_PORT}}
-            protocol: TCP
-          - containerPort: ${{INDY_AGENT_PORT}}
-            protocol: TCP
-          readinessProbe:
-            timeoutSeconds: 30
-            initialDelaySeconds: 3
-            httpGet:
-              path: "/"
-              port: ${{INDY_AGENT_PORT}}
-          livenessProbe:
-            timeoutSeconds: 30
-            initialDelaySeconds: 300
-            httpGet:
-              path: "/"
-              port: ${{INDY_AGENT_PORT}}
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              cpu: ${CPU_LIMIT}
-              memory: ${MEMORY_LIMIT}
-            requests:
-              cpu: ${CPU_REQUEST}
-              memory: ${MEMORY_REQUEST}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-          - name: ${NAME}-data
-            mountPath: ${MOUNT_PATH}
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: ${NAME}-data
-          persistentVolumeClaim:
-            claimName: ${NAME}
-    triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}:${TAG_NAME}
-          namespace: ${IMAGE_NAMESPACE}
+        app: ${APP_GROUP}
+        app-group: ${APP_GROUP}
+    spec:
+      ports:
+        - name: ${NAME}-admin
+          port: ${{INDY_ADMIN_PORT}}
+          protocol: TCP
+          targetPort: ${{INDY_ADMIN_PORT}}
+        - name: ${NAME}-agent
+          port: ${{INDY_AGENT_PORT}}
+          protocol: TCP
+          targetPort: ${{INDY_AGENT_PORT}}
+      selector:
+        name: ${NAME}
 
-- kind: ConfigMap
-  apiVersion: v1
-  metadata:
-    name: ${NAME}
-    labels:
+  - kind: Route
+    apiVersion: v1
+    metadata:
       name: ${NAME}
-      app: ${APP_GROUP}
-      app-group: ${APP_GROUP}
-  data:
-    genesis: |
-      {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","client_ip":"52.224.127.162","client_port":9702,"node_ip":"52.224.127.162","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}
-      {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","client_ip":"52.224.127.162","client_port":9704,"node_ip":"52.224.127.162","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}
-      {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","client_ip":"52.224.127.162","client_port":9706,"node_ip":"52.224.127.162","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}
-      {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","client_ip":"52.224.127.162","client_port":9708,"node_ip":"52.224.127.162","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}
+      labels:
+        name: ${NAME}
+        app: ${APP_GROUP}
+        app-group: ${APP_GROUP}
+    spec:
+      host: ${APPLICATION_DOMAIN}
+      port:
+        targetPort: ${NAME}-agent
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: ${NAME}
+        weight: 100
+
+  - kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        app: ${APP_GROUP}
+        app-group: ${APP_GROUP}
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: ${PERSISTENT_VOLUME_SIZE}
+      storageClassName: ${PERSISTENT_VOLUME_CLASS}
+
+  - kind: DeploymentConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        app: ${APP_GROUP}
+        app-group: ${APP_GROUP}
+    spec:
+      replicas: 1
+      selector:
+        name: ${NAME}
+      strategy:
+        type: Rolling
+      template:
+        metadata:
+          name: ${NAME}
+          labels:
+            name: ${NAME}
+            app: ${APP_GROUP}
+            app-group: ${APP_GROUP}
+        spec:
+          containers:
+            - name: ${NAME}
+              command:
+                - bash
+                - -c
+                - aca-py
+                  -it http 0.0.0.0 ${AGENT_PORT}
+                  -ot http
+                  --admin 0.0.0.0 ${ADMIN_PORT}
+                  -e "${SITE_URL}"
+                  --wallet-type indy
+                  --seed "${INDY_SEED}"
+                  --genesis-transactions "${GENESIS_TRANSACTIONS}"
+                  --accept-invites
+                  --accept-requests
+                  --label "${LABEL}"
+              env:
+                - name: ADMIN_PORT
+                  value: ${INDY_ADMIN_PORT}
+                - name: AGENT_PORT
+                  value: ${INDY_AGENT_PORT}
+                - name: INDY_SEED
+                  value: ${INDY_WALLET_SEED}
+                - name: GENESIS_TRANSACTIONS
+                  valueFrom:
+                    configMapKeyRef:
+                      key: genesis
+                      name: ${NAME}
+                - name: SITE_URL
+                  value: ${AGENT_URL}
+                - name: WEBHOOK_URL
+                  value: ${WEBHOOK_URL}
+                - name: LABEL
+                  value: ${DISPLAY_LABEL}
+              image: " "
+              ports:
+                - containerPort: ${{INDY_ADMIN_PORT}}
+                  protocol: TCP
+                - containerPort: ${{INDY_AGENT_PORT}}
+                  protocol: TCP
+              readinessProbe:
+                timeoutSeconds: 30
+                initialDelaySeconds: 3
+                httpGet:
+                  path: "/"
+                  port: ${{INDY_AGENT_PORT}}
+              livenessProbe:
+                timeoutSeconds: 30
+                initialDelaySeconds: 300
+                httpGet:
+                  path: "/"
+                  port: ${{INDY_AGENT_PORT}}
+              imagePullPolicy: IfNotPresent
+              resources:
+                limits:
+                  cpu: ${CPU_LIMIT}
+                  memory: ${MEMORY_LIMIT}
+                requests:
+                  cpu: ${CPU_REQUEST}
+                  memory: ${MEMORY_REQUEST}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - name: ${NAME}-data
+                  mountPath: ${MOUNT_PATH}
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: ${NAME}-data
+              persistentVolumeClaim:
+                claimName: ${NAME}
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}:${TAG_NAME}
+              namespace: ${IMAGE_NAMESPACE}
+
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        app: ${APP_GROUP}
+        app-group: ${APP_GROUP}
+    data:
+      genesis: |
+        {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node1","blskey":"4N8aUNHSgjQVgkpm8nhNEfDf6txHznoYREg9kirmJrkivgL4oSEimFF6nsQ6M41QvhM2Z33nves5vfSn9n1UwNFJBYtWVnHYMATn76vLuL3zU88KyeAYcHfsih3He6UHcXDxcaecHVz6jhCYz1P2UZn2bDVruL5wXpehgBfBaLKm3Ba","blskey_pop":"RahHYiCvoNCtPTrVtP7nMC5eTYrsUA8WjXbdhNc8debh1agE9bGiJxWBXYNFbnJXoXhWFMvyqhqhRoq737YQemH5ik9oL7R4NTTCz2LEZhkgLJzB3QRQqJyBNyv7acbdHrAT8nQ9UkLbaVL9NBpnWXBTw4LEMePaSHEw66RzPNdAX1","client_ip":"138.197.138.255","client_port":9702,"node_ip":"138.197.138.255","node_port":9701,"services":["VALIDATOR"]},"dest":"Gw6pDLhcBcoQesN72qfotTgFa7cbuqZpkX3Xo6pLhPhv"},"metadata":{"from":"Th7MpTaRZVRYnPiabds81Y"},"type":"0"},"txnMetadata":{"seqNo":1,"txnId":"fea82e10e894419fe2bea7d96296a6d46f50f93f9eeda954ec461b2ed2950b62"},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node2","blskey":"37rAPpXVoxzKhz7d9gkUe52XuXryuLXoM6P6LbWDB7LSbG62Lsb33sfG7zqS8TK1MXwuCHj1FKNzVpsnafmqLG1vXN88rt38mNFs9TENzm4QHdBzsvCuoBnPH7rpYYDo9DZNJePaDvRvqJKByCabubJz3XXKbEeshzpz4Ma5QYpJqjk","blskey_pop":"Qr658mWZ2YC8JXGXwMDQTzuZCWF7NK9EwxphGmcBvCh6ybUuLxbG65nsX4JvD4SPNtkJ2w9ug1yLTj6fgmuDg41TgECXjLCij3RMsV8CwewBVgVN67wsA45DFWvqvLtu4rjNnE9JbdFTc1Z4WCPA3Xan44K1HoHAq9EVeaRYs8zoF5","client_ip":"138.197.138.255","client_port":9704,"node_ip":"138.197.138.255","node_port":9703,"services":["VALIDATOR"]},"dest":"8ECVSk179mjsjKRLWiQtssMLgp6EPhWXtaYyStWPSGAb"},"metadata":{"from":"EbP4aYNeTHL6q385GuVpRV"},"type":"0"},"txnMetadata":{"seqNo":2,"txnId":"1ac8aece2a18ced660fef8694b61aac3af08ba875ce3026a160acbc3a3af35fc"},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node3","blskey":"3WFpdbg7C5cnLYZwFZevJqhubkFALBfCBBok15GdrKMUhUjGsk3jV6QKj6MZgEubF7oqCafxNdkm7eswgA4sdKTRc82tLGzZBd6vNqU8dupzup6uYUf32KTHTPQbuUM8Yk4QFXjEf2Usu2TJcNkdgpyeUSX42u5LqdDDpNSWUK5deC5","blskey_pop":"QwDeb2CkNSx6r8QC8vGQK3GRv7Yndn84TGNijX8YXHPiagXajyfTjoR87rXUu4G4QLk2cF8NNyqWiYMus1623dELWwx57rLCFqGh7N4ZRbGDRP4fnVcaKg1BcUxQ866Ven4gw8y4N56S5HzxXNBZtLYmhGHvDtk6PFkFwCvxYrNYjh","client_ip":"138.197.138.255","client_port":9706,"node_ip":"138.197.138.255","node_port":9705,"services":["VALIDATOR"]},"dest":"DKVxG2fXXTU8yT5N7hGEbXB3dfdAnYv1JczDUHpmDxya"},"metadata":{"from":"4cU41vWW82ArfxJxHkzXPG"},"type":"0"},"txnMetadata":{"seqNo":3,"txnId":"7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"},"ver":"1"}
+        {"reqSignature":{},"txn":{"data":{"data":{"alias":"Node4","blskey":"2zN3bHM1m4rLz54MJHYSwvqzPchYp8jkHswveCLAEJVcX6Mm1wHQD1SkPYMzUDTZvWvhuE6VNAkK3KxVeEmsanSmvjVkReDeBEMxeDaayjcZjFGPydyey1qxBHmTvAnBKoPydvuTAqx5f7YNNRAdeLmUi99gERUU7TD8KfAa6MpQ9bw","blskey_pop":"RPLagxaR5xdimFzwmzYnz4ZhWtYQEj8iR5ZU53T2gitPCyCHQneUn2Huc4oeLd2B2HzkGnjAff4hWTJT6C7qHYB1Mv2wU5iHHGFWkhnTX9WsEAbunJCV2qcaXScKj4tTfvdDKfLiVuU2av6hbsMztirRze7LvYBkRHV3tGwyCptsrP","client_ip":"138.197.138.255","client_port":9708,"node_ip":"138.197.138.255","node_port":9707,"services":["VALIDATOR"]},"dest":"4PS3EDQ3dW1tci1Bp6543CfuuebjFrg36kLAUcskGfaA"},"metadata":{"from":"TWwCRQRZ2ZHMJFn9TzLp7W"},"type":"0"},"txnMetadata":{"seqNo":4,"txnId":"aa5e817d7cc626170eca175822029339a444eb0ee8f0bd20d3b0b76e566fb008"},"ver":"1"}
 
 parameters:
-- name: NAME
-  displayName: Name
-  description: The name assigned to all the objects defined in this template.
-  required: true
-  value: email-verification-agent
-- name: APP_GROUP
-  displayName: App Group
-  description: The name assigned to all of the deployments in this project.
-  required: true
-  value: email-verification-service
-- name: APPLICATION_DOMAIN
-  displayName: Application Hostname
-  description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
-  required: false
-  value: email-verification-agent.vonx.io
-- name: IMAGE_NAMESPACE
-  displayName: Namespace containing application images.
-  required: true
-  value: devex-von-image-tools
-- name: TAG_NAME
-  displayName: Environment TAG name
-  description: The TAG name for this environment, e.g., dev, test, prod.
-  required: true
-  value: dev
-- name: INDY_ADMIN_PORT
-  displayName: Admin Port
-  description: The admin port on which the service will listen.
-  required: true
-  value: "5000"
-- name: INDY_AGENT_PORT
-  displayName: Agent Port
-  description: The agent port on which the service will listen.
-  required: true
-  value: "10000"
-- name: INDY_WALLET_SEED
-  displayName: Indy Seed
-  description: The indy seed for the agent.
-  required: true
-  value: "000000000000000000000000Steward1"
-- name: AGENT_URL
-  displayName: Site URL
-  description: The URL for the site
-  required: true
-  value: https://email-verification-agent.vonx.io
-- name: WEBHOOK_URL
-  displayName: Webhook URL
-  description: The webhook endpoint
-  required: true
-  value: http://email-verification-service:8080/webhooks
-- name: DISPLAY_LABEL
-  displayName: Display Label
-  description: Display label
-  required: true
-  value: Email Verification Service
-- name: MOUNT_PATH
-  displayName: Mount Path
-  description: The path to mount the persistent volume.
-  required: true
-  value: /home/indy/.indy_client/wallet
-- name: PERSISTENT_VOLUME_SIZE
-  displayName: Persistent Volume Size
-  description: The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.
-  required: true
-  value: 5Gi
-- name: PERSISTENT_VOLUME_CLASS
-  displayName: Persistent Volume Class name
-  description: The class of the volume; gluster-file, gluster-block, gluster-file-db
-  required: false
-  value: gluster-file-db
-- name: CPU_REQUEST
-  displayName: Resources CPU Request
-  description: The resources CPU request (in cores) for this build.
-  required: true
-  value: 10m
-- name: CPU_LIMIT
-  displayName: Resources CPU Limit
-  description: The resources CPU limit (in cores) for this build.
-  required: true
-  value: 250m
-- name: MEMORY_REQUEST
-  displayName: Resources Memory Request
-  description: The resources Memory request (in Mi, Gi, etc) for this build.
-  required: true
-  value: 10Mi
-- name: MEMORY_LIMIT
-  displayName: Resources Memory Limit
-  description: The resources Memory limit (in Mi, Gi, etc) for this build.
-  required: true
-  value: 1Gi
+  - name: NAME
+    displayName: Name
+    description: The name assigned to all the objects defined in this template.
+    required: true
+    value: email-verification-agent
+  - name: APP_GROUP
+    displayName: App Group
+    description: The name assigned to all of the deployments in this project.
+    required: true
+    value: email-verification-service
+  - name: APPLICATION_DOMAIN
+    displayName: Application Hostname
+    description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
+    required: false
+    value: email-verification-agent.vonx.io
+  - name: IMAGE_NAMESPACE
+    displayName: Namespace containing application images.
+    required: true
+    value: devex-von-image-tools
+  - name: TAG_NAME
+    displayName: Environment TAG name
+    description: The TAG name for this environment, e.g., dev, test, prod.
+    required: true
+    value: dev
+  - name: INDY_ADMIN_PORT
+    displayName: Admin Port
+    description: The admin port on which the service will listen.
+    required: true
+    value: "5000"
+  - name: INDY_AGENT_PORT
+    displayName: Agent Port
+    description: The agent port on which the service will listen.
+    required: true
+    value: "10000"
+  - name: INDY_WALLET_SEED
+    displayName: Indy Seed
+    description: The indy seed for the agent.
+    required: true
+    value: "000000000000000000000000Steward1"
+  - name: AGENT_URL
+    displayName: Site URL
+    description: The URL for the site
+    required: true
+    value: https://email-verification-agent.vonx.io
+  - name: WEBHOOK_URL
+    displayName: Webhook URL
+    description: The webhook endpoint
+    required: true
+    value: http://email-verification-service:8080/webhooks
+  - name: DISPLAY_LABEL
+    displayName: Display Label
+    description: Display label
+    required: true
+    value: Email Verification Service
+  - name: MOUNT_PATH
+    displayName: Mount Path
+    description: The path to mount the persistent volume.
+    required: true
+    value: /home/indy/.indy_client/wallet
+  - name: PERSISTENT_VOLUME_SIZE
+    displayName: Persistent Volume Size
+    description: The size of the persistent volume , e.g. 512Mi, 1Gi, 2Gi.
+    required: true
+    value: 5Gi
+  - name: PERSISTENT_VOLUME_CLASS
+    displayName: Persistent Volume Class name
+    description: The class of the volume; gluster-file, gluster-block, gluster-file-db
+    required: false
+    value: gluster-file-db
+  - name: CPU_REQUEST
+    displayName: Resources CPU Request
+    description: The resources CPU request (in cores) for this build.
+    required: true
+    value: 10m
+  - name: CPU_LIMIT
+    displayName: Resources CPU Limit
+    description: The resources CPU limit (in cores) for this build.
+    required: true
+    value: 250m
+  - name: MEMORY_REQUEST
+    displayName: Resources Memory Request
+    description: The resources Memory request (in Mi, Gi, etc) for this build.
+    required: true
+    value: 10Mi
+  - name: MEMORY_LIMIT
+    displayName: Resources Memory Limit
+    description: The resources Memory limit (in Mi, Gi, etc) for this build.
+    required: true
+    value: 1Gi
