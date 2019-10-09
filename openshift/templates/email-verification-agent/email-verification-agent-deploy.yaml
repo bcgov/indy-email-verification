@@ -89,6 +89,7 @@ objects:
                 - bash
                 - -c
                 - aca-py
+                  start
                   -it http 0.0.0.0 ${AGENT_PORT}
                   -ot http
                   --admin 0.0.0.0 ${ADMIN_PORT}
@@ -96,8 +97,9 @@ objects:
                   --wallet-type indy
                   --seed "${INDY_SEED}"
                   --genesis-transactions "${GENESIS_TRANSACTIONS}"
-                  --accept-invites
-                  --accept-requests
+                  --auto-accept-invites
+                  --auto-accept-requests
+                  --admin-insecure-mode
                   --label "${LABEL}"
               env:
                 - name: ADMIN_PORT
