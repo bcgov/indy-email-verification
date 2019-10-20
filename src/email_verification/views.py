@@ -3,6 +3,7 @@ import io
 import os
 import re
 import json
+import time
 from datetime import datetime
 
 import qrcode
@@ -115,6 +116,8 @@ def webhooks(request, topic):
         credential_definition_id = cache.get("credential_definition_id")
         assert credential_definition_id is not None
 
+        time.sleep(5)
+
         logger.info(
             f"Sending credential offer for connection {message['connection_id']} "
             + f"and credential definition {credential_definition_id}"
@@ -125,7 +128,6 @@ def webhooks(request, topic):
             "credential_definition_id": credential_definition_id,
         }
 
-        # sleep(1)
         response = requests.post(
             f"{AGENT_URL}/credential_exchange/send-offer", json=request_body
         )
