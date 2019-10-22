@@ -26,22 +26,45 @@
       __streetcred_url = "{{streetcred_url}}";
     </script>
 
+
     <script>
       (async () => {
-        var interval = setInterval(async function(){
+        var state = '{{state}}'
+        setInterval(async function(){
           try {
             console.log("getting state...")
             const response = await fetch('/state/' + '{{connection_id}}');
-            const state = await response.json();
+            state = await response.json();
             console.log(state)
-            if (state["state"] !== 'invite-created') {
-              clearInterval(interval)
-              location.href = '/in-progress/' + '{{connection_id}}';
+
+            if(state["state"] == 'offer-sent') {
+              el = document.querySelector('#connection-request-sent');
+              el.style.display = 'none';
+
+              el = document.querySelector('#connection-formed');
+              el.style.display = 'block';
+
+              el = document.querySelector('#offer-sending');
+              el.style.display = 'block';
+            } else if (state["state"] == 'credential-issued') {
+              el = document.querySelector('#connection-request-sent');
+              el.style.display = 'none';
+
+              el = document.querySelector('#offer-sending');
+              el.style.display = 'none';
+
+              el = document.querySelector('#credential-issued');
+              el.style.display = 'block';
+              
+              el = document.querySelector('#email-placeholder');
+              el.textContent = state["email"]
             }
+            
           } catch (e) {
             console.error(e)
           }
         }, 500)
+
       })();
     </script>
   </head>
@@ -83,26 +106,38 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-9 col-md-12">
-            <h1>Get Verified</h1>
-            <p>
-              Scan the QR code or click connect from your phone to form a
-              connection with this Email Verification Service. Once the connection
-              is established, the service will offer you a verifiable credential.
-            </p>
-            <div class="row">
-              <div class="col-sm-6 col-md-4">
-                <img width="200" src="data:image/png;base64, {{ qr_png }}" />
-              </div>
-              <div class="col-sm-6 col-md-8 pt-3">
-                <a class="btn btn-primary btn-lg" href="{{ streetcred_url }}"
-                  ><span class="fa fa-link"></span> Open in Streetcred </a>
-                <br />
-                <input type="text" readonly="readonly" size="40" id="invitation-url" class="form-control mt-4" value="{{ invitation_url }}">
-                <button type="button" class="btn btn-primary btn-lg mt-2"
-                  onclick="var invite = document.getElementById('invitation-url'); if(invite) { invite.focus(); invite.select(); document.execCommand('copy'); }"
-                  ><span class="fa fa-clipboard"></span> Copy Invitation </button>
-              </div>
-            </div>
+            <h1>Credential Exchange in Progress</h1>
+            <ul style="list-style: none;">
+              {% comment %} Connection request sent {% endcomment %}
+              <li id="connection-request-sent">
+                <h2>Sending Connection Request <span class="fa fa-spinner fa-spin"></span></h2>
+              </li>
+
+              {% comment %} Connection formed {% endcomment %}
+              <li id="connection-formed">
+                <h2>Connection Formed <span class="fa fa-check"></span></h2>
+                <p>
+                You now have a connection with the email verification service.
+                </p>
+              </li>
+
+              <li id="offer-sending">
+                <h2>Credential Offer Sent <span class="fa fa-spinner fa-spin"></span></h2>
+                <p>
+                We have sent a credential offer to you. Please use your agent to accept the offer.
+                </p>
+              </li>
+
+              {% comment %} Credential issued {% endcomment %}
+              <li id="credential-issued" style="display: none">
+                <h2>Credential issued <span class="fa fa-check"></span></h2>
+                <p>
+                Thank you <b id="email-placeholder"></b>. You have accepted our credential offer.
+                We have now issued you a credential which can be accepted using your mobile agent!
+                </p>
+              </li>
+
+            </ul>
           </div>
         </div>
       </div>

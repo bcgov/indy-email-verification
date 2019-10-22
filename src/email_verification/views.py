@@ -10,7 +10,12 @@ import qrcode
 import requests
 
 
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import (
+    JsonResponse,
+    HttpResponse,
+    HttpResponseRedirect,
+    HttpResponseBadRequest,
+)
 from django.template import loader
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
@@ -18,7 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 
 from .forms import EmailForm
-from .models import Verification
+from .models import Verification, SessionState
 
 import logging
 
@@ -63,6 +68,10 @@ def submit(request):
                 html_message=email_html,
             )
 
+            SessionState.objects.get_or_create(
+                connection_id=connection_id, state="invite-created"
+            )
+
             return HttpResponseRedirect(f"/thanks?email={form.instance.email}")
         else:
             return HttpResponseBadRequest()
@@ -76,6 +85,26 @@ def thanks(request):
 
     template = loader.get_template("thanks.html")
     return HttpResponse(template.render({"email": email}, request))
+
+
+def state(request, connection_id):
+    state = SessionState.objects.get(connection_id=connection_id)
+    resp = {"state": state.state}
+    try:
+        attendee = Verification.objects.get(connection_id=connection_id)
+        resp["email"] = attendee.email
+    except:
+        pass
+
+    return JsonResponse(resp)
+
+
+def in_progress(request, connection_id):
+    state = SessionState.objects.get(connection_id=connection_id)
+    template = loader.get_template("in_progress.html")
+    return HttpResponse(
+        template.render({"connection_id": connection_id, state: state.state}, request)
+    )
 
 
 def verify_redirect(request, connection_id):
@@ -99,6 +128,7 @@ def verify_redirect(request, connection_id):
                 "qr_png": qr_png_b64,
                 "streetcred_url": streetcred_url,
                 "invitation_url": invitation_url,
+                "connection_id": verification.connection_id,
             },
             request,
         )
@@ -111,10 +141,20 @@ def webhooks(request, topic):
     message = json.loads(request.body)
     logger.info(f"webhook recieved - topic: {topic} body: {request.body}")
 
+    if topic == "connections" and message["state"] == "request":
+        connection_id = message["connection_id"]
+        SessionState.objects.filter(connection_id=connection_id).update(
+            state="connection-request-received"
+        )
+
     # Handle new invites, send cred offer
     if topic == "connections" and message["state"] == "response":
         credential_definition_id = cache.get("credential_definition_id")
         assert credential_definition_id is not None
+
+        SessionState.objects.filter(connection_id=message["connection_id"]).update(
+            state="connection-formed"
+        )
 
         time.sleep(5)
 
@@ -130,6 +170,10 @@ def webhooks(request, topic):
 
         response = requests.post(
             f"{AGENT_URL}/credential_exchange/send-offer", json=request_body
+        )
+
+        SessionState.objects.filter(connection_id=str(message["connection_id"])).update(
+            state="offer-sent"
         )
 
         return HttpResponse()
@@ -155,6 +199,10 @@ def webhooks(request, topic):
         response = requests.post(
             f"{AGENT_URL}/credential_exchange/{credential_exchange_id}/issue",
             json=request_body,
+        )
+
+        SessionState.objects.filter(connection_id=connection_id).update(
+            state="credential-issued"
         )
 
         return HttpResponse()
