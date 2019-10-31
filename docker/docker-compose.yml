@@ -26,10 +26,6 @@ services:
   email-verifier-service:
     restart: always
     image: email-verification-service
-    # build:
-    #   context: ..
-    #   dockerfile: ./docker/email-verification-service/Dockerfile
-    # working_dir: /app
     depends_on:
       - email-verifier-postgres
       - email-verifier-agent
@@ -53,11 +49,11 @@ services:
       - 8080:8080
     # command: bash -c "sleep 5 && ./manage.py makemigrations &&./manage.py migrate && ./manage.py runserver 0.0.0.0:$${PORT}"
     command: >
-        bash -c "
-        echo waiting for aca-py ...;
-        sleep 5;
-        ./manage.py migrate;
-        $${STI_SCRIPTS_PATH}/run;"
+      bash -c "
+      echo waiting for aca-py ...;
+      sleep 5;
+      python ./manage.py migrate;
+      $${STI_SCRIPTS_PATH}/run;"
     volumes:
       - ../src:/app
 
@@ -66,11 +62,11 @@ services:
     image: postgres:latest
     volumes:
       - /var/lib/postgresql
-    # ports:
-      # - "5432:5432"
+    ports:
+      - "5432:5432"
     environment:
-      # POSTGRES_DB: app
-      # POSTGRES_USER: user
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
 
   maildev:
