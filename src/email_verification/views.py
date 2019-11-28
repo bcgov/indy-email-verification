@@ -151,7 +151,7 @@ def webhooks(request, topic):
         )
 
     # Handle new invites, send cred offer
-    if topic == "connections" and message["state"] == "response":
+    if topic == "connections" and message["state"] == "active":
         credential_definition_id = cache.get("credential_definition_id")
         assert credential_definition_id is not None
 
@@ -167,17 +167,26 @@ def webhooks(request, topic):
         )
 
         request_body = {
+            "auto_issue": False,
             "connection_id": message["connection_id"],
-            "cred_def_id": credential_definition_id,
+            # FIXME - cred_def_id in 0.4.0+
+            "credential_definition_id": credential_definition_id,
         }
 
-        response = requests.post(
-            f"{AGENT_URL}/issue-credential/send-offer", json=request_body
-        )
-
-        SessionState.objects.filter(connection_id=str(message["connection_id"])).update(
-            state="offer-sent"
-        )
+        try:
+            response = requests.post(
+                f"{AGENT_URL}/issue-credential/send-offer", json=request_body
+            )
+            response.raise_for_status()
+        except Exception:
+            logger.exception("Error sending credential offer:")
+            SessionState.objects.filter(
+                connection_id=str(message["connection_id"])
+            ).update(state="offer-error")
+        else:
+            SessionState.objects.filter(
+                connection_id=str(message["connection_id"])
+            ).update(state="offer-sent")
 
         return HttpResponse()
 
@@ -201,14 +210,21 @@ def webhooks(request, topic):
             }
         }
 
-        response = requests.post(
-            f"{AGENT_URL}/issue_credential/{credential_exchange_id}/issue",
-            json=request_body,
-        )
-
-        SessionState.objects.filter(connection_id=connection_id).update(
-            state="credential-issued"
-        )
+        try:
+            response = requests.post(
+                f"{AGENT_URL}/issue-credential/records/{credential_exchange_id}/issue",
+                json=request_body,
+            )
+            response.raise_for_status()
+        except Exception:
+            logger.exception("Error issuing credential:")
+            SessionState.objects.filter(connection_id=connection_id).update(
+                state="credential-error"
+            )
+        else:
+            SessionState.objects.filter(connection_id=connection_id).update(
+                state="credential-issued"
+            )
 
         return HttpResponse()
 
