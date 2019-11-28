@@ -61,7 +61,10 @@ def submit(request):
 
             send_mail(
                 "BC Email Verification Invite",
-                f"Follow this link to connect with our verification service: {redirect_url}",
+                (
+                    "Follow this link to connect with our "
+                    f"verification service: {redirect_url}"
+                ),
                 "Email Verification Service <noreply@gov.bc.ca>",
                 [email],
                 fail_silently=False,
@@ -93,7 +96,7 @@ def state(request, connection_id):
     try:
         attendee = Verification.objects.get(connection_id=connection_id)
         resp["email"] = attendee.email
-    except:
+    except Exception:
         pass
 
     return JsonResponse(resp)
@@ -160,16 +163,16 @@ def webhooks(request, topic):
 
         logger.info(
             f"Sending credential offer for connection {message['connection_id']} "
-            + f"and credential definition {credential_definition_id}"
+            f"and credential definition {credential_definition_id}"
         )
 
         request_body = {
             "connection_id": message["connection_id"],
-            "credential_definition_id": credential_definition_id,
+            "cred_def_id": credential_definition_id,
         }
 
         response = requests.post(
-            f"{AGENT_URL}/credential_exchange/send-offer", json=request_body
+            f"{AGENT_URL}/issue-credential/send-offer", json=request_body
         )
 
         SessionState.objects.filter(connection_id=str(message["connection_id"])).update(
@@ -179,25 +182,27 @@ def webhooks(request, topic):
         return HttpResponse()
 
     # Handle cred request, issue cred
-    if topic == "credentials" and message["state"] == "request_received":
+    if topic == "issue_credential" and message["state"] == "request_received":
         credential_exchange_id = message["credential_exchange_id"]
         connection_id = message["connection_id"]
 
         logger.info(
             "Sending credential issue for credential exchange "
-            + f"{credential_exchange_id} and connection {connection_id}"
+            f"{credential_exchange_id} and connection {connection_id}"
         )
 
         verification = get_object_or_404(Verification, connection_id=connection_id)
         request_body = {
-            "credential_values": {
-                "email": verification.email,
-                "time": str(datetime.utcnow()),
+            "credential_preview": {
+                "attributes": [
+                    {"name": "email", "value": verification.email},
+                    {"name": "time", "value": str(datetime.utcnow())},
+                ]
             }
         }
 
         response = requests.post(
-            f"{AGENT_URL}/credential_exchange/{credential_exchange_id}/issue",
+            f"{AGENT_URL}/issue_credential/{credential_exchange_id}/issue",
             json=request_body,
         )
 
