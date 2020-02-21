@@ -169,8 +169,7 @@ def webhooks(request, topic):
         request_body = {
             "auto_issue": False,
             "connection_id": message["connection_id"],
-            # FIXME - cred_def_id in 0.4.0+
-            "credential_definition_id": credential_definition_id,
+            "cred_def_id": credential_definition_id,
         }
 
         try:
