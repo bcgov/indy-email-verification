@@ -115,7 +115,7 @@ def verify_redirect(request, connection_id):
     invitation_url = verification.invite_url
 
     streetcred_url = re.sub(
-        r"^https?:\/\/\S*\?", "id.streetcred://invite?", invitation_url
+        r"^https?:\/\/\S*\?", "didcomm://invite?", invitation_url
     )
 
     template = loader.get_template("verify.html")
