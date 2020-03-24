@@ -1,22 +1,38 @@
 version: "3"
 services:
   email-verifier-agent:
+    image: bcgovimages/aries-cloudagent:py36-1.14-1_0.4.5
     environment:
       ADMIN_PORT: 5000
       AGENT_PORT: 10000
-      INDY_SEED: "00000000000000000000000000000001"
-      SITE_URL: https://132faea5.ngrok.io
+      INDY_SEED: ${AGENT_WALLET_SEED}
+      SITE_URL: ${SITE_URL}
       WEBHOOK_URL: http://email-verifier-service:8080/webhooks
       AGENT_LABEL: BC Email Verifier
-    build:
-      context: ..
-      dockerfile: ./docker/email-verification-agent/Dockerfile
     ports:
       - "5000:5000"
       - "10000:10000"
     volumes:
       - aca-py:/home/indy/.indy_client/wallet
-    command: start -it http 0.0.0.0 10000 -ot http --admin 0.0.0.0 5000 -e https://132faea5.ngrok.io --wallet-type indy --seed 00000000000000000000000000000001 --genesis-url http://138.197.138.255/genesis --label "BC Email Verifier" --auto-accept-invites --auto-accept-requests --admin-insecure-mode --log-level info
+    entrypoint: /bin/bash
+    command: [
+        "-c",
+        "curl -d '{\"seed\":\"${AGENT_WALLET_SEED}\", \"role\":\"TRUST_ANCHOR\", \"alias\":\"BC Email Verifier (Docker)\"}' -X POST http://test.bcovrin.vonx.io/register; \
+        sleep 5; \
+        aca-py start \
+        -it http '0.0.0.0' 10000 \
+        -ot http \
+        --admin '0.0.0.0' 5000 \
+        -e $SITE_URL \
+        --wallet-type indy \
+        --seed $AGENT_WALLET_SEED \
+        --genesis-url http://test.bcovrin.vonx.io/genesis \
+        --label 'BC Email Verifier' \
+        --auto-accept-invites \
+        --auto-accept-requests \
+        --admin-insecure-mode \
+        --log-level info",
+      ]
 
   email-verifier-service:
     restart: always

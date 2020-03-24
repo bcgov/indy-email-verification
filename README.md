@@ -1,18 +1,27 @@
 # HL Indy Email Verification Service
 
+## Pre-Requisites
+
+- [Docker](https://www.docker.com/products/docker-desktop)
+
+- [s2i](https://github.com/openshift/source-to-image/releases)
+
+- [jq](https://stedolan.github.io/jq)
+
+- [ngrok](https://ngrok.com)
+
+`jq` and `ngrok` are available on package manager systems for different platforms such as [Homebrew](https://brew.sh/) (Mac), [Chocolatey](https://chocolatey.org/) (Windows) and various Linux distribution package managers.
+
 ## Running
 
-Make sure [Docker](https://docker.com) is installed and running.
+Open two shell/terminal sessions:
 
-Install [ngrok[](https://ngrok.com).
+1. From within the [scripts](./scripts) folder execute `./start-ngrok.sh`. This will create a tunnel for the agent.
 
-1. Run `ngrok http 10000`
+2. From within the [docker](./docker) folder:
+    - run `./manage build` to assemble the runtime images for the services
+    - when the build completes, run `./manage up`
 
-1. Copy the `https` url it generates for you (**must be https**)
+_Refer to `manage -h` for additional usage information._
 
-1. Search and replace `https://65cf3bd1.ngrok.io` with the link to the ngrok link you copied (there should be two instances, at lines 13 and 24).
-
-1. In the `docker` directory run;
-   1. `manage build` and `manage up`. _Refer to `manage -h` for additional usage information._
-
-Then visit [http://localhost:8080](http://localhost:8080) to see the app running and visit [http://localhost:8050](http://localhost:8050) to see any outbound mail the app is sending (it won't actually send any email message in the development environment.)
+Once services are started, visit [http://localhost:8080](http://localhost:8080) to see the app running and visit [http://localhost:8050](http://localhost:8050) to see any outbound mail the app is sending (it won't actually send any email message in the development environment.)
