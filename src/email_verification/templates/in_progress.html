@@ -30,7 +30,7 @@
     <script>
       (async () => {
         var state = '{{state}}'
-        setInterval(async function(){
+        var interval = setInterval(async function(){
           try {
             console.log("getting state...")
             const response = await fetch('/state/' + '{{connection_id}}');
@@ -58,6 +58,8 @@
               
               el = document.querySelector('#email-placeholder');
               el.textContent = state["email"]
+
+              clearInterval(interval)
             }
             
           } catch (e) {
