@@ -3,13 +3,95 @@ export MSYS_NO_PATHCONV=1
 export DOCKERHOST=${APPLICATION_URL-$(docker run --rm --net=host eclipse/che-ip)}
 set -e
 
-S2I_EXE=s2i
-if [ -z $(type -P "$S2I_EXE") ]; then
-  echo -e "The ${S2I_EXE} executable is needed and not on your path."
-  echo -e "It can be downloaded from here: https://github.com/openshift/source-to-image"
-  echo -e "Make sure you place it in a directory on your path."
-  exit 1
-fi
+function echoError (){
+  _msg=${1}
+  _red='\e[31m'
+  _nc='\e[0m' # No Color
+  echo -e "${_red}${_msg}${_nc}"
+}
+
+function echoWarning (){
+  _msg=${1}
+  _yellow='\e[33m'
+  _nc='\e[0m' # No Color
+  echo -e "${_yellow}${_msg}${_nc}"
+}
+
+function isInstalled () {
+  rtnVal=$(type "$1" >/dev/null 2>&1)
+  rtnCd=$?
+  if [ ${rtnCd} -ne 0 ]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+function isS2iInstalled () {
+  S2I_EXE=s2i
+  if ! isInstalled ${S2I_EXE}; then
+    echoError "The ${S2I_EXE} executable is needed and not on your path."
+    echoError "It can be downloaded from here: https://github.com/openshift/source-to-image/releases"
+    echoError "Make sure you extract the binary and place it in a directory on your path."
+    exit 1
+  fi
+}
+
+function isJQInstalled () {
+  JQ_EXE=jq
+  if ! isInstalled ${JQ_EXE}; then
+    echoError "The ${JQ_EXE} executable is required and was not found on your path."
+    echoError "Installation instructions can be found here: https://stedolan.github.io/jq/download"
+    echoError "Alternatively, a package manager such as Chocolatey (Windows) or Brew (Mac) can be used to install this dependecy."
+    exit 1
+  fi
+}
+
+function isCurlInstalled () {
+  CURL_EXE=curl
+  if ! isInstalled ${CURL_EXE}; then
+    echoError "The ${CURL_EXE} executable is required and was not found on your path."
+    echoError "If your shell of choice doesn't come with curl preinstalled, try installing it using either [Homebrew](https://brew.sh/) (MAC) or [Chocolatey](https://chocolatey.org/) (Windows)."
+    exit 1
+  fi
+}
+
+function isNgrokInstalled () {
+  NGROK_EXE=ngrok
+  if ! isInstalled ${NGROK_EXE}; then
+    echoError "The ${NGROK_EXE} executable is needed and not on your path."
+    echoError "It can be downloaded from here: https://ngrok.com/download"
+    echoError "Alternatively, a package manager such as Chocolatey (Windows) or Brew (Mac) can be used to install this dependecy."
+    exit 1
+  fi
+}
+
+function checkNgrokTunnelActive () {
+  if [ -z "${SITE_URL}" ]; then
+    echoError "It appears that ngrok tunneling is not enabled."
+    echoError "Please open another shell in the scripts folder and execute start-ngrok.sh before trying again."
+    exit 1
+  fi
+}
+
+function generateKey(){
+  (
+    _length=${1:-48}
+    # Format can be `-base64` or `-hex`
+    _format=${2:--base64}
+
+    echo $(openssl rand ${_format} ${_length})
+  )
+}
+
+function generateSeed(){
+  (
+    _prefix=${1}
+    _seed=$(echo "${_prefix}$(generateKey 32)" | fold -w 32 | head -n 1 )
+    _seed=$(echo -n "${_seed}")
+    echo ${_seed}
+  )
+}
 
 SCRIPT_HOME="$(cd "$(dirname "$0")" && pwd)"
 
@@ -146,6 +228,17 @@ shift || COMMAND=usage
 
 case "${COMMAND}" in
 start|up)
+  isJQInstalled
+  isCurlInstalled
+  isNgrokInstalled
+  
+  export SITE_URL=$(${CURL_EXE} http://localhost:4040/api/tunnels | ${JQ_EXE} --raw-output '.tunnels | map(select(.name | contains("(http)"))) | .[0] | .public_url')
+  checkNgrokTunnelActive
+
+  if [ -z "${AGENT_WALLET_SEED}" ]; then
+    export AGENT_WALLET_SEED=$(generateSeed indy-evs)
+  fi
+
   _startupParams=$(getStartupParams $@)
   configureEnvironment $@
   docker-compose up -d ${_startupParams}
@@ -160,11 +253,13 @@ stop)
   docker-compose stop 
   ;;
 rm|down)
+  unset AGENT_WALLET_SEED 
   configureEnvironment
   docker-compose down
   deleteVolumes
   ;;
 build)
+  isS2iInstalled
   _startupParams=$(getStartupParams $@)
   configureEnvironment $@
   case "$@" in
