@@ -1,8 +1,8 @@
-certifi==2019.3.9
+certifi>=2019.3.9
 chardet==3.0.4
-Django==2.2.4
+Django>=2.2.4,<3
 idna==2.8
-Pillow==6.2.0
+Pillow>=6.2.2,<7
 psycopg2==2.8.2
 pytz==2019.1
 qrcode==6.1
