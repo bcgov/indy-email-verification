@@ -114,9 +114,7 @@ def verify_redirect(request, connection_id):
     verification = get_object_or_404(Verification, connection_id=connection_id)
     invitation_url = verification.invite_url
 
-    streetcred_url = re.sub(
-        r"^https?:\/\/\S*\?", "didcomm://invite?", invitation_url
-    )
+    streetcred_url = re.sub(r"^https?:\/\/\S*\?", "didcomm://invite?", invitation_url)
 
     template = loader.get_template("verify.html")
 
@@ -154,53 +152,25 @@ def webhooks(request, topic):
     if topic == "connections" and message["state"] == "response":
         credential_definition_id = cache.get("credential_definition_id")
         assert credential_definition_id is not None
+        connection_id = str(message["connection_id"])
 
-        SessionState.objects.filter(connection_id=message["connection_id"]).update(
+        SessionState.objects.filter(connection_id=connection_id).update(
             state="connection-formed"
         )
 
         time.sleep(5)
 
         logger.info(
-            f"Sending credential offer for connection {message['connection_id']} "
+            f"Sending credential offer for connection {connection_id} "
             f"and credential definition {credential_definition_id}"
         )
 
-        request_body = {
-            "auto_issue": False,
-            "connection_id": message["connection_id"],
-            "cred_def_id": credential_definition_id,
-        }
-
-        try:
-            response = requests.post(
-                f"{AGENT_URL}/issue-credential/send-offer", json=request_body
-            )
-            response.raise_for_status()
-        except Exception:
-            logger.exception("Error sending credential offer:")
-            SessionState.objects.filter(
-                connection_id=str(message["connection_id"])
-            ).update(state="offer-error")
-        else:
-            SessionState.objects.filter(
-                connection_id=str(message["connection_id"])
-            ).update(state="offer-sent")
-
-        return HttpResponse()
-
-    # Handle cred request, issue cred
-    if topic == "issue_credential" and message["state"] == "request_received":
-        credential_exchange_id = message["credential_exchange_id"]
-        connection_id = message["connection_id"]
-
-        logger.info(
-            "Sending credential issue for credential exchange "
-            f"{credential_exchange_id} and connection {connection_id}"
-        )
-
         verification = get_object_or_404(Verification, connection_id=connection_id)
+
         request_body = {
+            "auto_issue": True,
+            "connection_id": connection_id,
+            "cred_def_id": credential_definition_id,
             "credential_preview": {
                 "attributes": [
                     {
@@ -214,24 +184,39 @@ def webhooks(request, topic):
                         "mime-type": "text/plain",
                     },
                 ]
-            }
+            },
         }
 
         try:
             response = requests.post(
-                f"{AGENT_URL}/issue-credential/records/{credential_exchange_id}/issue",
-                json=request_body,
+                f"{AGENT_URL}/issue-credential/send-offer", json=request_body
             )
             response.raise_for_status()
         except Exception:
-            logger.exception("Error issuing credential:")
+            logger.exception("Error sending credential offer:")
             SessionState.objects.filter(connection_id=connection_id).update(
-                state="credential-error"
+                state="offer-error"
             )
         else:
             SessionState.objects.filter(connection_id=connection_id).update(
-                state="credential-issued"
+                state="offer-sent"
             )
+
+        return HttpResponse()
+
+    # Handle completion of credential issue
+    if topic == "issue_credential" and message["state"] == "credential_acked":
+        credential_exchange_id = message["credential_exchange_id"]
+        connection_id = message["connection_id"]
+
+        logger.info(
+            "Completed credential issue for credential exchange "
+            f"{credential_exchange_id} and connection {connection_id}"
+        )
+
+        SessionState.objects.filter(connection_id=connection_id).update(
+            state="credential-issued"
+        )
 
         return HttpResponse()
 
