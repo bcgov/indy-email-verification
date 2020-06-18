@@ -205,7 +205,7 @@ def webhooks(request, topic):
         return HttpResponse()
 
     # Handle completion of credential issue
-    if topic == "issue_credential" and message["state"] == "credential_acked":
+    if topic == "issue_credential" and message["state"] == "credential_issued":
         credential_exchange_id = message["credential_exchange_id"]
         connection_id = message["connection_id"]
 
@@ -220,4 +220,5 @@ def webhooks(request, topic):
 
         return HttpResponse()
 
+    logger.warning(f"Webhook for topic {topic} and state {message['state']} is not implemented")
     return HttpResponse()
