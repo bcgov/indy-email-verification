@@ -1,0 +1,29 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.json
+#=========================================================
+# NAME=email-verification-demo
+# APP_NAME=email-verification-demo
+# APP_GROUP=email-verification-demo
+# SUFFIX=
+ROLE=email-verification-demo
+APPLICATION_DOMAIN=verified-email-authentication.pathfinder.gov.bc.ca
+# IMAGE_NAMESPACE=devex-von-image-tools
+TAG_NAME=latest
+# APP_FILE=
+# APP_CONFIG=
+# APP_MODULE=
+# #DJANGO_SECRET_KEY=[\w]{50}
+# DJANGO_DEBUG=False
+# VERIFIER_NAME=VC Visual Verifier
+# OIDC_RP_PROVIDER_ENDPOINT=
+# OIDC_RP_CLIENT_ID=
+# OIDC_RP_CLIENT_SECRET=
+# OIDC_RP_SCOPES=openid profile vc_authn
+# VC_AUTHN_PRES_REQ_CONF_ID=
+# OIDC_CLAIMS_REQUIRED=
+# CPU_REQUEST=10m
+# CPU_LIMIT=300m
+# MEMORY_REQUEST=10Mi
+# MEMORY_LIMIT=256Mi
