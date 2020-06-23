@@ -1,3 +1,4 @@
+# Description: Email Verification OIDC Demo App
 export PROJECT_NAMESPACE="devex-von-image"
 export GIT_URI="https://github.com/bcgov/vc-authn-oidc.git"
 export GIT_REF="master"
