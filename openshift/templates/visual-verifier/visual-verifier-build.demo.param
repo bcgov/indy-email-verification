@@ -1,0 +1,22 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/visual-verifier/visual-verifier-build.json
+#=========================================================
+NAME=email-verification-demo
+APP_NAME=email-verification-demo
+APP_GROUP=email-verification-demo
+OUTPUT_IMAGE_TAG=latest
+SOURCE_IMAGE_NAME=registry.fedoraproject.org/f32/python3
+SOURCE_IMAGE_TAG=latest
+SOURCE_IMAGE_KIND=DockerImage
+SOURCE_CONTEXT_DIR=src
+GIT_REPO_URL=https://github.com/bcgov/vc-visual-verifier.git
+GIT_REF=master
+PIP_INDEX_URL=
+UPGRADE_PIP_TO_LATEST=true
+PIP_NO_CACHE_DIR=
+CPU_LIMIT=1
+MEMORY_LIMIT=1Gi
+CPU_REQUEST=250m
+MEMORY_REQUEST=250m
