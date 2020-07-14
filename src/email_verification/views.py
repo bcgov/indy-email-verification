@@ -114,7 +114,7 @@ def verify_redirect(request, connection_id):
     verification = get_object_or_404(Verification, connection_id=connection_id)
     invitation_url = verification.invite_url
 
-    streetcred_url = re.sub(r"^https?:\/\/\S*\?", "didcomm://invite?", invitation_url)
+    didcomm_url = re.sub(r"^https?:\/\/\S*\?", "didcomm://invite?", invitation_url)
 
     template = loader.get_template("verify.html")
 
@@ -127,7 +127,7 @@ def verify_redirect(request, connection_id):
         template.render(
             {
                 "qr_png": qr_png_b64,
-                "streetcred_url": streetcred_url,
+                "didcomm_url": didcomm_url,
                 "invitation_url": invitation_url,
                 "connection_id": verification.connection_id,
             },
