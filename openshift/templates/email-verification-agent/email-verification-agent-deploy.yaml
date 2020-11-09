@@ -71,6 +71,7 @@ objects:
         app-group: ${APP_GROUP}
     stringData:
       seed: ${WALLET_SEED}
+      key: ${WALLET_KEY}
     type: Opaque
 
   - kind: DeploymentConfig
@@ -105,31 +106,34 @@ objects:
                   -it http 0.0.0.0 ${AGENT_PORT}
                   -ot http
                   --admin 0.0.0.0 ${ADMIN_PORT}
-                  -e "${SITE_URL}"
                   --wallet-type indy
-                  --seed "${INDY_WALLET_SEED}"
-                  --genesis-url "${GENESIS_URL}"
                   --auto-accept-invites
                   --auto-accept-requests
                   --admin-insecure-mode
-                  --label "${LABEL}"
               env:
                 - name: ADMIN_PORT
                   value: ${INDY_ADMIN_PORT}
                 - name: AGENT_PORT
-                  value: ${INDY_AGENT_PORT}  
-                - name: INDY_WALLET_SEED
+                  value: ${INDY_AGENT_PORT}
+                - name: ACAPY_WALLET_NAME
+                  value: ${NAME}-wallet
+                - name: ACAPY_WALLET_KEY
                   valueFrom:
                     secretKeyRef:
                       name: ${NAME}
-                      key: seed            
-                - name: GENESIS_URL
+                      key: key
+                - name: ACAPY_WALLET_SEED
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}
+                      key: seed
+                - name: ACAPY_GENESIS_URL
                   value: ${GENESIS_FILE_URL}
-                - name: SITE_URL
+                - name: ACAPY_ENDPOINT
                   value: ${AGENT_URL}
-                - name: WEBHOOK_URL
+                - name: ACAPY_WEBHOOK_URL
                   value: ${WEBHOOK_URL}
-                - name: LABEL
+                - name: ACAPY_LABEL
                   value: ${DISPLAY_LABEL}
               image: " "
               ports:
@@ -218,6 +222,12 @@ parameters:
     description: The agent port on which the service will listen.
     required: true
     value: "10000"
+  - name: WALLET_KEY
+    displayName: Wallet Encryption Key
+    description: The encryption key to be used for the wallets.  Needs to be base64 encoded.
+    required: true
+    generate: expression
+    from: "[a-zA-Z0-9]{32}"
   - name: WALLET_SEED
     displayName: Indy Wallet Seed
     description: The Seed used for the indy wallet.  Needs to be base64 encoded.

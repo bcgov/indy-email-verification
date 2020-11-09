@@ -12,10 +12,12 @@ fi
 if createOperation; then
   # Ask the user to supply the sensitive parameters ...
   readParameter "WALLET_SEED - Please provide the indy wallet seed for the environment.  If left blank, a seed will be randomly generated using openssl:" WALLET_SEED $(generateSeed) "false"
-else
+  readParameter "WALLET_KEY - Please provide the wallet encryption key for the environment.  If left blank, a 48 character long base64 encoded value will be randomly generated using openssl:" WALLET_KEY $(generateKey) "false"
+  else
   # Secrets are removed from the configurations during update operations ...
   printStatusMsg "Update operation detected ...\nSkipping the prompts for WALLET_SEED secret... \n"
   writeParameter "WALLET_SEED" "prompt_skipped" "false"
+  writeParameter "WALLET_KEY" "prompt_skipped" "false"
 fi
 
 SPECIALDEPLOYPARMS="--param-file=${_overrideParamFile}"
