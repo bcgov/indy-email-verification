@@ -8,10 +8,15 @@
       {
         "name": "email",
         "label": "Verified Email",
-        "restrictions": [
+        "restrictions": [          
           {
             "schema_name": "verified-email",
             "schema_version": "1.2.2",
+            "issuer_did": "MTYqmTBoLT7KLP5RNfgK3b"
+          },
+          {
+            "schema_name": "verified-email",
+            "schema_version": "1.2.3",
             "issuer_did": "MTYqmTBoLT7KLP5RNfgK3b"
           }
         ]
