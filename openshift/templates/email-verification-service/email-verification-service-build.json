@@ -7,6 +7,30 @@
   },
   "objects": [
     {
+      "kind": "NetworkSecurityPolicy",
+      "apiVersion": "security.devops.gov.bc.ca/v1alpha1",
+      "metadata": {
+        "name": "${ENV_NAME}-pods-to-external-network",
+        "labels": {
+          "name": "pods-to-external-network",
+          "env": "${ENV_NAME}"
+        }
+      },
+      "spec": {
+        "description": "Allow the builds to access the internet.\nThis only needs to be specified once per environment.\n",
+        "source": [
+          [
+            "$namespace=${NAMESPACE_NAME}-${ENV_NAME}"
+          ]
+        ],
+        "destination": [
+          [
+            "ext:network=any"
+          ]
+        ]
+      }
+    },
+    {
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
@@ -81,6 +105,20 @@
       "description": "Used to group components together.",
       "required": true,
       "value": "indy-email-verification-service"
+    },
+    {
+      "name": "ENV_NAME",
+      "displayName": "Environment Name",
+      "description": "Environment name.  For the build environment this will typically be 'tools'",
+      "required": true,
+      "value": "tools"
+    },
+    {
+      "name": "NAMESPACE_NAME",
+      "displayName": "NameSpace name",
+      "description": "name of the project namespace",
+      "required": true,
+      "value": "myproject"
     },
     {
       "name": "GIT_REPO_URL",
