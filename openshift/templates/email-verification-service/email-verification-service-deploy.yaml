@@ -11,7 +11,7 @@ objects:
     name: ${NAME}
     labels:
       name: ${NAME}
-      app: ${APP_GROUP}
+      app: ${APP_NAME}
       app-group: ${APP_GROUP}
   spec:
     ports:
@@ -28,7 +28,7 @@ objects:
     name: ${NAME}
     labels:
       name: ${NAME}
-      app: ${APP_GROUP}
+      app: ${APP_NAME}
       app-group: ${APP_GROUP}
   spec:
     host: ${APPLICATION_DOMAIN}
@@ -48,7 +48,7 @@ objects:
     name: ${NAME}
     labels:
       name: ${NAME}
-      app: ${APP_GROUP}
+      app: ${APP_NAME}
       app-group: ${APP_GROUP}
   spec:
     replicas: 1
@@ -61,7 +61,7 @@ objects:
         name: ${NAME}
         labels:
           name: ${NAME}
-          app: ${APP_GROUP}
+          app: ${APP_NAME}
           app-group: ${APP_GROUP}
       spec:
         containers:
@@ -155,6 +155,11 @@ parameters:
 - name: APP_GROUP
   displayName: App Group
   description: The name assigned to all of the deployments in this project.
+  required: true
+  value: email-verification-service
+- name: APP_NAME
+  displayName: App Name
+  description: Used to group components together in the OpenShift console.
   required: true
   value: email-verification-service
 - name: APPLICATION_DOMAIN

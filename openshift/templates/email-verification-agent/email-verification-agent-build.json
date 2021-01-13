@@ -71,7 +71,7 @@
       "displayName": "App Name",
       "description": "Used to group components together.",
       "required": true,
-      "value": "indy-email-verification-service"
+      "value": "email-verification-service"
     },
     {
       "name": "GIT_REPO_URL",

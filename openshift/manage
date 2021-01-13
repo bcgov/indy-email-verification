@@ -237,14 +237,15 @@ updateDeploymentParams() {
 
 deployApp(){
   (
-    _appName=${1:-indy-email-verification-service}
+    _appName=${1:-email-verification-service}
 
     # Deploy or update the configuration ...
     updateDeploymentParams ${DEPLOYMENT_ENV_NAME}
     if dcExists ${_appName}; then
-      OPERATION=update genDepls.sh -u -l
+      OPERATION=update genDepls.sh -u
     else
-      genDepls.sh -l
+      echo "GOT HERE"
+      genDepls.sh
     fi
 
     # Tag the application images for deployment ...
@@ -259,7 +260,7 @@ deployApp(){
 deleteResources()
 {
   (
-    _appName=${1:-indy-email-verification-service}
+    _appName=${1:-email-verification-service}
     oc -n $(getProjectName) delete all,secret,pvc,configmap -l app=${_appName}
   )
 }
@@ -267,7 +268,7 @@ deleteResources()
 cleanResources()
 {
   (
-    _appName=${1:-indy-email-verification-service}
+    _appName=${1:-email-verification-service}
     oc -n $(getProjectName) delete all,configmap -l app=${_appName}
   )
 }
@@ -301,21 +302,21 @@ case "${_cmd}" in
 
   build)
     echoWarning "\nDeploying the build configuration.\nPlease wait for the build to complete before running any other command."
-    genBuilds.sh -l
+    genBuilds.sh
     ;;
 
   deploy)
-    appName=${1:-indy-email-verification-service}
+    appName=${1:-email-verification-service}
     deployApp ${appName}
     ;;
 
   clean)
-    appName=${1:-indy-email-verification-service}
+    appName=${1:-email-verification-service}
     cleanResources ${appName}
     ;;
 
   delete)
-    appName=${1:-indy-email-verification-service}
+    appName=${1:-email-verification-service}
     deleteResources ${appName}
     ;;
 
