@@ -207,7 +207,7 @@
                     "app-group": "${APP_NAME}"
                 }
             },
-            "data": {
+            "stringData": {
                 "admin-password": "${POSTGRESQL_ADMIN_PASSWORD}",
                 "database-password": "${POSTGRESQL_PASSWORD}",
                 "database-user": "${POSTGRESQL_USER}"
