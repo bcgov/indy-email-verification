@@ -66,8 +66,7 @@ parameters:
     value: email-verification-service
   - name: ENV_NAME
     displayName: Environment Name
-    description: Environment name.  For the build environment this will typically
-      be 'tools'
+    description: Environment name.  For the build environment this will typically be 'tools'
     required: true
     value: tools
   - name: NAMESPACE_NAME

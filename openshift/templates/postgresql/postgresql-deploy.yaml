@@ -12,9 +12,11 @@ objects:
       name: ${NAME}
       generation: 1
       labels:
-        name: ${NAME}
-        app: ${APP_NAME}
-        app-group: ${APP_NAME}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       strategy:
         type: Recreate
@@ -40,9 +42,11 @@ objects:
       template:
         metadata:
           labels:
-            name: ${NAME}
-            app: ${APP_NAME}
-            app-group: ${APP_NAME}
+            app: ${APP_NAME}${SUFFIX}
+            name: ${NAME}${SUFFIX}
+            app-group: ${APP_GROUP}
+            role: ${ROLE}
+            env: ${TAG_NAME}
         spec:
           volumes:
             - name: ${NAME}-data
@@ -119,13 +123,15 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_NAME}
-        app-group: ${APP_NAME}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       storageClassName: ${PERSISTENT_VOLUME_CLASS}
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       resources:
         requests:
           storage: ${PERSISTENT_VOLUME_SIZE}
@@ -134,9 +140,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_NAME}
-        app-group: ${APP_NAME}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     stringData:
       admin-password: ${POSTGRESQL_ADMIN_PASSWORD}
       database-password: ${POSTGRESQL_PASSWORD}
@@ -147,9 +155,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_NAME}
-        app-group: ${APP_NAME}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
       annotations:
         template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
     spec:
@@ -172,6 +182,21 @@ parameters:
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together.
+    required: true
+    value: email-verification-service
+  - name: SUFFIX
+    displayName: Suffix
+    description: A name suffix used for all objects
+    required: false
+    value: ''
+  - name: ROLE
+    displayName: Role
+    description: The role of this service within the application - used for Network Policies
+    required: true
+    value: db
+  - name: APP_GROUP
+    displayName: App Group
+    description: The name assigned to all of the deployments in this project.
     required: true
     value: email-verification-service
   - name: IMAGE_NAMESPACE

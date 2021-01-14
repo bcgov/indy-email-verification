@@ -200,20 +200,17 @@ parameters:
     value: ''
   - name: ROLE
     displayName: Role
-    description: The role of this service within the application - used for Network
-      Policies
+    description: The role of this service within the application - used for Network Policies
     required: true
     value: visual-verifier
-  - description: The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca,
-      if left blank a value will be defaulted.
+  - description: The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.
     displayName: Application Hostname
     name: APPLICATION_DOMAIN
     value: visual-verifier-dev.pathfinder.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     required: true
-    description: The namespace of the OpenShift project containing the imagestream
-      for the application.
+    description: The namespace of the OpenShift project containing the imagestream for the application.
     value: bztwou-tools
   - name: TAG_NAME
     displayName: Environment TAG name

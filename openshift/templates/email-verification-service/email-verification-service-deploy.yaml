@@ -4,15 +4,57 @@ apiVersion: v1
 metadata:
   name: ${NAME}
 objects:
-
+- kind: NetworkSecurityPolicy
+  apiVersion: security.devops.gov.bc.ca/v1alpha1
+  metadata:
+    name: ${NAME}-to-agent
+    labels:
+      name: ${NAME}-to-agent
+      env: ${TAG_NAME}
+  spec:
+    description: Allow the builds to access the internet. This only needs to be specified once per environment.
+    source:
+      - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+        - role=${ROLE}
+        - app=${APP_NAME}${SUFFIX}
+        - env=${TAG_NAME}
+    destination:
+      - - role=agent
+        - app=${APP_NAME}${SUFFIX}
+        - env=${TAG_NAME}
+        - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+# - kind: NetworkSecurityPolicy
+#     apiVersion: security.devops.gov.bc.ca/v1alpha1
+#     metadata:
+#       name: ${NAME}-to-agent
+#       labels:
+#         name: custom-${APP_NAME}-${NAME}${SUFFIX}-policy
+#         app: ${APP_NAME}${SUFFIX}
+#         app-group: ${APP_GROUP}
+#         role: ${ROLE}
+#         env: ${TAG_NAME}
+#     spec:
+#       description: 'Allow matomo to talk to the database.'
+#       source:
+#         - - role=${ROLE}
+#           - app=${APP_NAME}${SUFFIX}
+#           - env=${TAG_NAME}
+#           - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+#       destination:
+#         - - role=agent
+#           - app=${APP_NAME}${SUFFIX}
+#           - env=${TAG_NAME}
+#           - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
 - kind: Service
   apiVersion: v1
   metadata:
     name: ${NAME}
     labels:
-      name: ${NAME}
-      app: ${APP_NAME}
+      app: ${APP_NAME}${SUFFIX}
+      name: ${NAME}${SUFFIX}
       app-group: ${APP_GROUP}
+      role: ${ROLE}
+      env: ${TAG_NAME}
   spec:
     ports:
     - name: ${NAME}
@@ -27,9 +69,11 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      name: ${NAME}
-      app: ${APP_NAME}
+      app: ${APP_NAME}${SUFFIX}
+      name: ${NAME}${SUFFIX}
       app-group: ${APP_GROUP}
+      role: ${ROLE}
+      env: ${TAG_NAME}
   spec:
     host: ${APPLICATION_DOMAIN}
     port:
@@ -47,9 +91,11 @@ objects:
   metadata:
     name: ${NAME}
     labels:
-      name: ${NAME}
-      app: ${APP_NAME}
+      app: ${APP_NAME}${SUFFIX}
+      name: ${NAME}${SUFFIX}
       app-group: ${APP_GROUP}
+      role: ${ROLE}
+      env: ${TAG_NAME}
   spec:
     replicas: 1
     selector:
@@ -60,9 +106,11 @@ objects:
       metadata:
         name: ${NAME}
         labels:
-          name: ${NAME}
-          app: ${APP_NAME}
+          app: ${APP_NAME}${SUFFIX}
+          name: ${NAME}${SUFFIX}
           app-group: ${APP_GROUP}
+          role: ${ROLE}
+          env: ${TAG_NAME}
       spec:
         containers:
         - name: ${NAME}
@@ -162,6 +210,16 @@ parameters:
   description: Used to group components together in the OpenShift console.
   required: true
   value: email-verification-service
+- name: SUFFIX
+  displayName: Suffix
+  description: A name suffix used for all objects
+  required: false
+  value: ''
+- name: ROLE
+  displayName: Role
+  description: The role of this service within the application - used for Network Policies
+  required: true
+  value: service
 - name: APPLICATION_DOMAIN
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.

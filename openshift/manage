@@ -283,7 +283,7 @@ initialize(){
 
   # Generate local params files ...
   echo "Generating local param files ..."
-  genTemplateParams.sh -f
+  genParams.sh -f
 
   echo "Environment settings:"
   echo "  Project namespace: ${PROJECT_NAMESPACE}"

@@ -9,9 +9,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
         app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       ports:
         - name: ${NAME}-admin
@@ -30,9 +32,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
         app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       host: ${APPLICATION_DOMAIN}
       port:
@@ -50,12 +54,14 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
         app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       resources:
         requests:
           storage: ${PERSISTENT_VOLUME_SIZE}
@@ -66,9 +72,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
         app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     stringData:
       seed: ${WALLET_SEED}
       key: ${WALLET_KEY}
@@ -79,9 +87,11 @@ objects:
     metadata:
       name: ${NAME}
       labels:
-        name: ${NAME}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}${SUFFIX}
+        name: ${NAME}${SUFFIX}
         app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
     spec:
       replicas: 1
       selector:
@@ -92,9 +102,11 @@ objects:
         metadata:
           name: ${NAME}
           labels:
-            name: ${NAME}
-            app: ${APP_GROUP}
+            app: ${APP_NAME}${SUFFIX}
+            name: ${NAME}${SUFFIX}
             app-group: ${APP_GROUP}
+            role: ${ROLE}
+            env: ${TAG_NAME}
         spec:
           containers:
             - name: ${NAME}
@@ -203,6 +215,16 @@ parameters:
     description: Used to group components together in the OpenShift console.
     required: true
     value: email-verification-service
+  - name: SUFFIX
+    displayName: Suffix
+    description: A name suffix used for all objects
+    required: false
+    value: ''
+  - name: ROLE
+    displayName: Role
+    description: The role of this service within the application - used for Network Policies
+    required: true
+    value: agent
   - name: APPLICATION_DOMAIN
     displayName: Application Hostname
     description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
