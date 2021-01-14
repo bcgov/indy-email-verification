@@ -131,7 +131,7 @@ objects:
     spec:
       storageClassName: ${PERSISTENT_VOLUME_CLASS}
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
       resources:
         requests:
           storage: ${PERSISTENT_VOLUME_SIZE}
@@ -178,7 +178,7 @@ parameters:
     description: The name assigned to all of the OpenShift resources associated to
       the server instance.
     required: true
-    value: email-verification-postgres
+    value: postgresql
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together.
@@ -255,7 +255,7 @@ parameters:
     displayName: Persistent Volume Class name
     description: The class of the volume; gluster-file, gluster-block, gluster-file-db
     required: false
-    value: gluster-file-db
+    value: netapp-block-standard
   - name: CPU_REQUEST
     displayName: Resources CPU Request
     description: The resources CPU request (in cores) for this build.

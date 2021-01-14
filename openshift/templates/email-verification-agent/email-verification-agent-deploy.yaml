@@ -4,6 +4,25 @@ apiVersion: v1
 metadata:
   name: ${NAME}
 objects:
+  - kind: NetworkSecurityPolicy
+    apiVersion: security.devops.gov.bc.ca/v1alpha1
+    metadata:
+      name: ${NAME}-to-service
+      labels:
+        name: ${NAME}-to-service
+        env: ${TAG_NAME}
+    spec:
+      description: Allow the the agent to access the service
+      source:
+        - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+          - role=${ROLE}
+          - app=${APP_NAME}${SUFFIX}
+          - env=${TAG_NAME}
+      destination:
+        - - role=service
+          - app=${APP_NAME}${SUFFIX}
+          - env=${TAG_NAME}
+          - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
   - kind: Service
     apiVersion: v1
     metadata:
@@ -61,7 +80,7 @@ objects:
         env: ${TAG_NAME}
     spec:
       accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
       resources:
         requests:
           storage: ${PERSISTENT_VOLUME_SIZE}
@@ -97,7 +116,7 @@ objects:
       selector:
         name: ${NAME}
       strategy:
-        type: Rolling
+        type: Recreate
       template:
         metadata:
           name: ${NAME}
@@ -210,6 +229,11 @@ parameters:
     description: The name assigned to all of the deployments in this project.
     required: true
     value: email-verification-service
+  - name: NAMESPACE_NAME
+    displayName: NameSpace name
+    description: name of the project namespace
+    required: true
+    value: myproject
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together in the OpenShift console.
@@ -295,7 +319,7 @@ parameters:
     displayName: Persistent Volume Class name
     description: The class of the volume; gluster-file, gluster-block, gluster-file-db
     required: false
-    value: gluster-file-db
+    value: netapp-file-standard
   - name: CPU_REQUEST
     displayName: Resources CPU Request
     description: The resources CPU request (in cores) for this build.
