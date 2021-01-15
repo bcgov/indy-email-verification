@@ -4,21 +4,45 @@ apiVersion: v1
 metadata:
   name: ${NAME}
 objects:
+  - kind: ExternalNetwork
+    apiVersion: security.devops.gov.bc.ca/v1alpha1
+    metadata:
+      name: ${NAME}${SUFFIX}
+      network: ${NAME}${SUFFIX}
+      labels:
+        name: ${NAME}${SUFFIX}
+        network: ${NAME}${SUFFIX}
+        app: ${APP_NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Define the network parameters for accessing remote agents.
+      entries:
+        - 0.0.0.0/0
+      servicePorts:
+        - tcp/9700:9799
+        - tcp/80
+        - tcp/443
   - kind: NetworkSecurityPolicy
     apiVersion: security.devops.gov.bc.ca/v1alpha1
     metadata:
-      name: ${NAME}-to-service
+      name: ${NAME}
       labels:
-        name: ${NAME}-to-service
+        name: ${NAME}
+        env: ${TAG_NAME}
+        app: ${APP_NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
         env: ${TAG_NAME}
     spec:
-      description: Allow the the agent to access the service
+      description: Allow the the agent to access the service and external network
       source:
         - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
           - role=${ROLE}
           - app=${APP_NAME}${SUFFIX}
           - env=${TAG_NAME}
       destination:
+        - - ext:name=${NAME}
         - - role=service
           - app=${APP_NAME}${SUFFIX}
           - env=${TAG_NAME}
@@ -59,13 +83,37 @@ objects:
     spec:
       host: ${APPLICATION_DOMAIN}
       port:
-        targetPort: ${NAME}-agent
+        targetPort: ${NAME}
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
       to:
         kind: Service
         name: ${NAME}
+        weight: 100
+  
+  - kind: Route
+    apiVersion: v1
+    metadata:
+      name: ${NAME}-admin
+      labels:
+        name: ${NAME}-admin
+        app: ${APP_NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
+      annotations:
+        haproxy.router.openshift.io/timeout: ${ROUTE_TIMEOUT}
+    spec:
+      host: ${APPLICATION_ADMIN_DOMAIN}
+      port:
+        targetPort: ${NAME}-admin
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+      to:
+        kind: Service
+        name: ${NAME}${SUFFIX}
         weight: 100
 
   - kind: PersistentVolumeClaim
@@ -99,6 +147,20 @@ objects:
     stringData:
       seed: ${WALLET_SEED}
       key: ${WALLET_KEY}
+    type: Opaque
+  
+  - kind: Secret
+    apiVersion: v1
+    metadata:
+      name: ${NAME}${SUFFIX}
+      labels:
+        name: ${NAME}${SUFFIX}
+        app: ${APP_NAME}${SUFFIX}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
+    stringData:
+      admin-api-key: ${ADMIN_API_KEY}
     type: Opaque
 
   - kind: DeploymentConfig
@@ -140,7 +202,7 @@ objects:
                   --wallet-type indy
                   --auto-accept-invites
                   --auto-accept-requests
-                  --admin-insecure-mode
+                  $([ ! -z "${AGENT_ADMIN_API_KEY}" ] && echo "--admin-api-key ${AGENT_ADMIN_API_KEY}" || echo "--admin-insecure-mode")
               env:
                 - name: ADMIN_PORT
                   value: ${INDY_ADMIN_PORT}
@@ -166,6 +228,8 @@ objects:
                   value: ${WEBHOOK_URL}
                 - name: ACAPY_LABEL
                   value: ${DISPLAY_LABEL}
+                - name: ACAPY_READ_ONLY_LEDGER
+                  value: ${AGENT_READ_ONLY_LEDGER}
               image: " "
               ports:
                 - containerPort: ${{INDY_ADMIN_PORT}}
@@ -249,15 +313,36 @@ parameters:
     description: The role of this service within the application - used for Network Policies
     required: true
     value: agent
+  - name: APPLICATION_ADMIN_DOMAIN
+    displayName: Application Admin Endpoint Hostname
+    description: The exposed admin hostname that will route to the service, if left blank a value will be defaulted.
+    required: false
+    value: bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
   - name: APPLICATION_DOMAIN
     displayName: Application Hostname
     description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
     required: false
-    value: email-verification-agent.vonx.io
+    value: bcgov-email-verification-agent-dev.apps.silver.devops.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Namespace containing application images.
     required: true
     value: devex-von-image-tools
+  - name: AGENT_ADMIN_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ${NAME}${SUFFIX}
+        key: admin-api-key
+  - name: AGENT_READ_ONLY_LEDGER
+    displayName: Set read only ledger flag.
+    description: Enable/Disable the read only ledger flag.  Controls the inclusion/exclusion of the agent '--read-only-ledger' startup parameter.  Defaults to disabled.
+    required: true
+    value: "false"
+  - name: ADMIN_API_KEY
+    displayName: Agent Admin API Key
+    description: The key used to authenticate client requests to the admin api.
+    required: true
+    generate: expression
+    from: "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
   - name: TAG_NAME
     displayName: Environment TAG name
     description: The TAG name for this environment, e.g., dev, test, prod.
