@@ -12,15 +12,15 @@ fi
 
 if createOperation; then
   # Ask the user to supply the sensitive parameters ...
+  readParameter "ADMIN_API_KEY - Please provide the key for the agent's Admin API.  If left blank, a 32 character long base64 encoded value will be randomly generated using openssl:" ADMIN_API_KEY $(generateKey 32) "false"
   readParameter "WALLET_SEED - Please provide the indy wallet seed for the environment.  If left blank, a seed will be randomly generated using openssl:" WALLET_SEED $(generateSeed) "false"
   readParameter "WALLET_KEY - Please provide the wallet encryption key for the environment.  If left blank, a 48 character long base64 encoded value will be randomly generated using openssl:" WALLET_KEY $(generateKey) "false"
-  readParameter "ADMIN_API_KEY - Please provide an administration api key. This key will be used to access the administration api. Leave blank for insecure mode:" ADMIN_API_KEY "" "false"
   else
   # Secrets are removed from the configurations during update operations ...
   printStatusMsg "Update operation detected ...\nSkipping the prompts for WALLET_SEED secret... \n"
+  writeParameter "ADMIN_API_KEY" "prompt_skipped" "false"
   writeParameter "WALLET_SEED" "prompt_skipped" "false"
   writeParameter "WALLET_KEY" "prompt_skipped" "false"
-  writeParameter "ADMIN_API_KEY" "prompt_skipped" "false"
 fi
 
 SPECIALDEPLOYPARMS="--param-file=${_overrideParamFile}"

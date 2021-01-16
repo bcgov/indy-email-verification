@@ -152,7 +152,7 @@ objects:
   - kind: Secret
     apiVersion: v1
     metadata:
-      name: ${NAME}${SUFFIX}
+      name: ${NAME}-api${SUFFIX}
       labels:
         name: ${NAME}${SUFFIX}
         app: ${APP_NAME}${SUFFIX}
@@ -192,17 +192,29 @@ objects:
           containers:
             - name: ${NAME}
               command:
+                # - bash
+                # - -c
+                # - $(echo aca-py
+                #   start
+                #   -it http 0.0.0.0 ${AGENT_PORT}
+                #   -ot http
+                #   --admin 0.0.0.0 ${ADMIN_PORT}
+                #   --wallet-type indy
+                #   --auto-accept-invites
+                #   --auto-accept-requests
+                #   $([ ! -z "${AGENT_ADMIN_API_KEY}" ] && echo "--admin-api-key ${AGENT_ADMIN_API_KEY}" || echo "--admin-insecure-mode")
+                #   );
                 - bash
                 - -c
-                - aca-py
-                  start
+                - $(echo aca-py start
                   -it http 0.0.0.0 ${AGENT_PORT}
                   -ot http
-                  --admin 0.0.0.0 ${ADMIN_PORT}
-                  --wallet-type indy
                   --auto-accept-invites
                   --auto-accept-requests
+                  --wallet-type 'indy'
+                  --admin '0.0.0.0' ${ADMIN_PORT}
                   $([ ! -z "${AGENT_ADMIN_API_KEY}" ] && echo "--admin-api-key ${AGENT_ADMIN_API_KEY}" || echo "--admin-insecure-mode")
+                  );
               env:
                 - name: ADMIN_PORT
                   value: ${INDY_ADMIN_PORT}
@@ -220,6 +232,11 @@ objects:
                     secretKeyRef:
                       name: ${NAME}
                       key: seed
+                - name: AGENT_ADMIN_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${NAME}-api${SUFFIX}
+                      key: admin-api-key
                 - name: ACAPY_GENESIS_URL
                   value: ${GENESIS_FILE_URL}
                 - name: ACAPY_ENDPOINT
@@ -330,7 +347,7 @@ parameters:
   - name: AGENT_ADMIN_API_KEY
     valueFrom:
       secretKeyRef:
-        name: ${NAME}${SUFFIX}
+        name: ${NAME}-api${suffix}
         key: admin-api-key
   - name: AGENT_READ_ONLY_LEDGER
     displayName: Set read only ledger flag.
