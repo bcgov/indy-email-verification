@@ -27,8 +27,8 @@ objects:
       source:
         type: Git
         git:
-          uri: ${GIT_REPO_URL}
-          ref: ${GIT_REF}
+          uri: ${VV_GIT_REPO_URL}
+          ref: ${VV_GIT_REF}
         contextDir: ${SOURCE_CONTEXT_DIR}
       strategy:
         type: Source
