@@ -43,7 +43,7 @@ once the param files are created, go into email-verification-agent-deploy.param 
 and set it to whatever your project namespace is, in this case the namespace is 4a9599.  
 `NAMESPACE_NAME=4a9599`
 
-go into postgresql-deploy.param and comment out `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD`. The characters in the regular expression get treated as bash special characters
+go into postgresql-deploy.param and comment out `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD`. The characters in the regular expression sometimes get treated as bash special characters. These values will be populated with randomly generated keys
 
 ### Builds
 Now that our param files are set up, we're ready to start the builds
