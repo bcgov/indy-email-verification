@@ -81,7 +81,7 @@ objects:
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
-      host: ${APPLICATION_DOMAIN}
+      host: ${APPLICATION_AGENT_DOMAIN}
       port:
         targetPort: ${NAME}-agent
       tls:
