@@ -55,7 +55,7 @@ objects:
         env: ${TAG_NAME}
       name: ${NAME}${SUFFIX}
     spec:
-      host: ${APPLICATION_DOMAIN}
+      host: ${APPLICATION_VERIFIER_DOMAIN}
       port:
         targetPort: 8080-tcp
       tls:
@@ -205,8 +205,8 @@ parameters:
     value: visual-verifier
   - description: The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.
     displayName: Application Hostname
-    name: APPLICATION_DOMAIN
-    value: visual-verifier-dev.pathfinder.gov.bc.ca
+    name: APPLICATION_VERIFIER_DOMAIN
+    value: bcgov-visual-verifier-dev.apps.silver.devops.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     required: true

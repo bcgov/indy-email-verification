@@ -28,3 +28,47 @@ Open two shell/terminal sessions:
 _Refer to `manage -h` for additional usage information._
 
 Once services are started, visit [http://localhost:8080](http://localhost:8080) to see the app running and visit [http://localhost:8050](http://localhost:8050) to see any outbound mail the app is sending (it won't actually send any email message in the development environment.)
+
+## Deploying to Openshift
+
+**Please make sure you have [Openshift Developer Tools](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin) installed and available on your path.**
+
+### Param Files
+
+Navigate to the openshift folder and generate the param files using  
+> genParams.sh  
+
+once the param files are created, go into email-verification-agent-deploy.param and email-verification-service-deploy.param and uncomment  
+`# NAMESPACE_NAME=myproject`  
+and set it to whatever your project namespace is, in this case the namespace is 4a9599.  
+`NAMESPACE_NAME=4a9599`
+
+go into postgresql-deploy.param and comment out `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD`. The characters in the regular expression get treated as bash special characters
+
+### Builds
+Now that our param files are set up, we're ready to start the builds
+
+run  
+> genBuilds.sh  
+
+and wait for the builds to complete. Once the builds are completed, we need to tag the latest images. These commands assume you're deploying to the dev environment and your namespace name is 4a9599. Run the following commands
+
+> oc tag email-verification-agent:latest email-verification-agent:dev -n 4a9599-tools  
+oc tag email-verification-service:latest email-verification-service:dev -n 4a9599-tools  
+oc tag postgresql:latest postgresql:dev -n 4a9599-tools  
+oc tag visual-verifier:latest visual-verifier:dev -n 4a9599-tools  
+
+Now that the builds have been completed and tagged it's time to start the deployment
+
+### Deploy
+
+run  
+> genDepls.sh  
+
+to kickoff the deployment. Follow the prompts on the screen and the deployment will start. This deployment will initially fail because we haven't registered our did and ver key on the ledger. To do so, go to https://bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca/api/doc or wherever you set your admin route to point to, and authorize with your api-key. Next scroll down untill to see the wallet section and execute the /walllet/did get request with no parameters. This should return your did and verkey.  
+
+Next we have to register our agent on the ledger. This tutorial uses the [sovrin staging network](https://selfserve.sovrin.org/) but you can use whatever network you like, so long as it is exposed to the internet. if you're using sovrin staging, make sure you select `StagingNet` from the dropdown on the sovrin website. Enter your DID and VerKey in the fields and click submit (leave payment address blank).  
+  
+Next we have to accept the taa. Go back to the swagger api interface and run get /ledger/taa from the ledger section. Copy the entire contents of the text attribute from the response and paste it into the text attribute in POST /ledger/taa/accept. Copy the version number as well and set the `mechanism` attribute to be `at_submission`. Execute the request and you should see an empty response body with status code 200.  
+
+go back to the openshift developer console and start a rollout on email-verification-service. 

@@ -79,7 +79,7 @@ objects:
       role: ${ROLE}
       env: ${TAG_NAME}
   spec:
-    host: ${APPLICATION_DOMAIN}
+    host: ${APPLICATION_SERVICE_DOMAIN}
     port:
       targetPort: ${NAME}
     tls:
@@ -256,7 +256,7 @@ parameters:
   description: The name of the agent service
   required: true
   value: email-verification-agent
-- name: APPLICATION_DOMAIN
+- name: APPLICATION_SERVICE_DOMAIN
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
   required: false
@@ -319,7 +319,7 @@ parameters:
   value: postgresql
 - name: BCGOV_EMAIL_HOST
   displayName: Email Host Name
-  required: true
+  required: false
   value: smtp.host
 - name: EMAIL_PORT
   displayName: Email Port

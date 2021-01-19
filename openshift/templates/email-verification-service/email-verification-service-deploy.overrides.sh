@@ -71,11 +71,12 @@ initialize
 
 if createOperation; then
   # Get the webhook URL
+  echoWarning "GOT HERE"
   readParameter "BCGOV_EMAIL_HOST - Please provide the host name of the email server:" BCGOV_EMAIL_HOST "smtp.host.io"
   else
   # Secrets are removed from the configurations during update operations ...
   printStatusMsg "Update operation detected ...\nSkipping the prompts for BCGOV_EMAIL_HOST secret... \n"
-  writeParameter "BCGOV_EMAIL_HOST - Please provide the host name of the email server:" BCGOV_EMAIL_HOST "smtp.host.io"
+  writeParameter "BCGOV_EMAIL_HOST" "prompt_skipped" "false"
 fi 
 
 SPECIALDEPLOYPARMS="--param-file=${_overrideParamFile}"

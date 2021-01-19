@@ -323,7 +323,7 @@ parameters:
     description: The exposed admin hostname that will route to the service, if left blank a value will be defaulted.
     required: false
     value: bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
-  - name: APPLICATION_DOMAIN
+  - name: APPLICATION_AGENT_DOMAIN
     displayName: Application Hostname
     description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
     required: false
@@ -342,7 +342,7 @@ parameters:
     description: The key used to authenticate client requests to the admin api.
     required: false
     generate: expression
-    from: "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
+    from: "[a-zA-Z0-9]{32}"
   - name: TAG_NAME
     displayName: Environment TAG name
     description: The TAG name for this environment, e.g., dev, test, prod.
