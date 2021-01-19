@@ -72,3 +72,6 @@ Next we have to register our agent on the ledger. This tutorial uses the [sovrin
 Next we have to accept the taa. Go back to the swagger api interface and run get /ledger/taa from the ledger section. Copy the entire contents of the text attribute from the response and paste it into the text attribute in POST /ledger/taa/accept. Copy the version number as well and set the `mechanism` attribute to be `at_submission`. Execute the request and you should see an empty response body with status code 200.  
 
 Go back to the openshift developer console and start a rollout on email-verification-service if it hasn't already restarted. Once email-verification-service is up and running, you're ready to start issuing email credentials.
+
+### Troubleshooting
+Git doesn't always save the file permisions on executable files, if you get any permision denied errors while running scripts, make sure you run `chmod +x <file>` on any .sh file
