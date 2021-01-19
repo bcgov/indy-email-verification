@@ -30,7 +30,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 AGENT_URL = os.environ.get("AGENT_URL")
-
+API_KEY = os.environ.get("AGENT_ADMIN_API_KEY", "")
 
 def index(request):
     template = loader.get_template("index.html")
@@ -42,7 +42,7 @@ def submit(request):
         form = EmailForm(request.POST)
         if form.is_valid():
 
-            response = requests.post(f"{AGENT_URL}/connections/create-invitation")
+            response = requests.post(f"{AGENT_URL}/connections/create-invitation",headers={"x-api-key": API_KEY})
             invite = response.json()
 
             connection_id = invite["connection_id"]
@@ -189,7 +189,7 @@ def webhooks(request, topic):
 
         try:
             response = requests.post(
-                f"{AGENT_URL}/issue-credential/send-offer", json=request_body
+                f"{AGENT_URL}/issue-credential/send-offer",headers={"x-api-key": API_KEY}, json=request_body
             )
             response.raise_for_status()
         except Exception:
