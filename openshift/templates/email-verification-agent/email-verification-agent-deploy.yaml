@@ -192,18 +192,6 @@ objects:
           containers:
             - name: ${NAME}
               command:
-                # - bash
-                # - -c
-                # - $(echo aca-py
-                #   start
-                #   -it http 0.0.0.0 ${AGENT_PORT}
-                #   -ot http
-                #   --admin 0.0.0.0 ${ADMIN_PORT}
-                #   --wallet-type indy
-                #   --auto-accept-invites
-                #   --auto-accept-requests
-                #   $([ ! -z "${AGENT_ADMIN_API_KEY}" ] && echo "--admin-api-key ${AGENT_ADMIN_API_KEY}" || echo "--admin-insecure-mode")
-                #   );
                 - bash
                 - -c
                 - $(echo aca-py start
@@ -344,11 +332,6 @@ parameters:
     displayName: Namespace containing application images.
     required: true
     value: devex-von-image-tools
-  - name: AGENT_ADMIN_API_KEY
-    valueFrom:
-      secretKeyRef:
-        name: ${NAME}-api${suffix}
-        key: admin-api-key
   - name: AGENT_READ_ONLY_LEDGER
     displayName: Set read only ledger flag.
     description: Enable/Disable the read only ledger flag.  Controls the inclusion/exclusion of the agent '--read-only-ledger' startup parameter.  Defaults to disabled.
@@ -357,7 +340,7 @@ parameters:
   - name: ADMIN_API_KEY
     displayName: Agent Admin API Key
     description: The key used to authenticate client requests to the admin api.
-    required: true
+    required: false
     generate: expression
     from: "[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}"
   - name: TAG_NAME
@@ -391,7 +374,7 @@ parameters:
     displayName: Site URL
     description: The URL for the site
     required: true
-    value: https://email-verification-agent.vonx.io
+    value: https://email-verification-agent.apps.silver.devops.gov.bc.ca
   - name: WEBHOOK_URL
     displayName: Webhook URL
     description: The webhook endpoint

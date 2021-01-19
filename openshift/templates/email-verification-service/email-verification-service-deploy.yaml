@@ -90,6 +90,20 @@ objects:
       name: ${NAME}
       weight: 100
 
+- kind: Secret
+  apiVersion: v1
+  metadata:
+    name: ${NAME}-email-host
+    labels:
+      app: ${APP_NAME}${SUFFIX}
+      name: ${NAME}${SUFFIX}
+      app-group: ${APP_GROUP}
+      role: ${ROLE}
+      env: ${TAG_NAME}
+  stringData:
+    email-host: ${BCGOV_EMAIL_HOST}
+  type: Opaque
+
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
@@ -127,6 +141,11 @@ objects:
             value: ${AGENT_URL}
           - name: DEBUG
             value: ${DEBUG}
+          - name: EMAIL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: ${NAME}-email-host
+                key: email-host
           - name: DB_NAME
             value: ${DATABASE_NAME}
           - name: DB_USER
@@ -143,8 +162,6 @@ objects:
             value: ${DATABASE_PORT}
           - name: DB_HOST
             value: ${DATABASE_SERVICE_NAME}
-          - name: EMAIL_HOST
-            value: ${EMAIL_HOST}
           - name: EMAIL_PORT
             value: ${EMAIL_PORT}
           - name: EMAIL_USE_SSL
@@ -233,7 +250,7 @@ parameters:
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
   required: false
-  value: email-verification.vonx.io
+  value: bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
 - name: IMAGE_NAMESPACE
   displayName: Namespace containing application images.
   required: true
@@ -267,7 +284,7 @@ parameters:
   displayName: Site URL
   description: The URL for the site
   required: true
-  value: https://email-verification.vonx.io
+  value: https://email-verification.apps.silver.devops.gov.bc.ca
 - name: AGENT_URL
   displayName: Agent URL
   description: The URL for the agent's admin endpoint.
@@ -290,7 +307,7 @@ parameters:
   displayName: Database Service Name
   required: true
   value: postgresql
-- name: EMAIL_HOST
+- name: BCGOV_EMAIL_HOST
   displayName: Email Host Name
   required: true
   value: smtp.host
