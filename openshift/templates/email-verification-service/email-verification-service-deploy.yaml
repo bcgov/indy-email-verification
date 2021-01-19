@@ -141,6 +141,11 @@ objects:
             value: ${AGENT_URL}
           - name: DEBUG
             value: ${DEBUG}
+          - name: AGENT_ADMIN_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: ${AGENT_SERVICE_NAME}-api${SUFFIX}
+                key: admin-api-key
           - name: EMAIL_HOST
             valueFrom:
               secretKeyRef:
@@ -246,6 +251,11 @@ parameters:
   description: The role of this service within the application - used for Network Policies
   required: true
   value: service
+- name: AGENT_SERVICE_NAME
+  displayName: Agent Service Name
+  description: The name of the agent service
+  required: true
+  value: email-verification-agent
 - name: APPLICATION_DOMAIN
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.

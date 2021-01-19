@@ -83,7 +83,7 @@ objects:
     spec:
       host: ${APPLICATION_DOMAIN}
       port:
-        targetPort: ${NAME}
+        targetPort: ${NAME}-agent
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
@@ -374,7 +374,7 @@ parameters:
     displayName: Site URL
     description: The URL for the site
     required: true
-    value: https://email-verification-agent.apps.silver.devops.gov.bc.ca
+    value: https://bcgov-email-verification-agent-dev.apps.silver.devops.gov.bc.ca
   - name: WEBHOOK_URL
     displayName: Webhook URL
     description: The webhook endpoint
