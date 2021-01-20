@@ -128,7 +128,7 @@ objects:
         env: ${TAG_NAME}
     spec:
       accessModes:
-        - ReadWriteOnce
+        - ReadWriteMany
       resources:
         requests:
           storage: ${PERSISTENT_VOLUME_SIZE}
@@ -178,7 +178,7 @@ objects:
       selector:
         name: ${NAME}${SUFFIX}
       strategy:
-        type: Recreate
+        type: Rolling
       template:
         metadata:
           name: ${NAME}${SUFFIX}

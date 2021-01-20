@@ -119,7 +119,7 @@ objects:
     selector:
       name: ${NAME}${SUFFIX}
     strategy:
-      type: Recreate
+      type: Rolling
     template:
       metadata:
         name: ${NAME}${SUFFIX}
