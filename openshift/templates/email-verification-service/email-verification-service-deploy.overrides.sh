@@ -71,7 +71,6 @@ initialize
 
 if createOperation; then
   # Get the webhook URL
-  echoWarning "GOT HERE"
   readParameter "SMTP_EMAIL_HOST - Please provide the host name of the email server:" SMTP_EMAIL_HOST "smtp.host.io"
   else
   # Secrets are removed from the configurations during update operations ...
