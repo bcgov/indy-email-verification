@@ -33,7 +33,7 @@ objects:
       app-group: ${APP_GROUP}
       env: ${TAG_NAME}
   spec:
-    description: Allow agent to access the database and agent
+    description: Allow service to access the database and agent
     source:
       - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
         - role=${ROLE}
@@ -101,7 +101,7 @@ objects:
       role: ${ROLE}
       env: ${TAG_NAME}
   stringData:
-    email-host: ${BCGOV_EMAIL_HOST}
+    email-host: ${SMTP_EMAIL_HOST}
   type: Opaque
 
 - kind: DeploymentConfig
@@ -317,7 +317,7 @@ parameters:
   displayName: Database Service Name
   required: true
   value: postgresql
-- name: BCGOV_EMAIL_HOST
+- name: SMTP_EMAIL_HOST
   displayName: Email Host Name
   required: false
   value: smtp.host
