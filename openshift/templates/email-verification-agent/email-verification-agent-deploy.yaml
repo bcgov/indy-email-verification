@@ -63,7 +63,7 @@ objects:
           port: ${{INDY_ADMIN_PORT}}
           protocol: TCP
           targetPort: ${{INDY_ADMIN_PORT}}
-        - name: ${NAME}-agent
+        - name: ${NAME}-public
           port: ${{INDY_AGENT_PORT}}
           protocol: TCP
           targetPort: ${{INDY_AGENT_PORT}}
@@ -83,7 +83,7 @@ objects:
     spec:
       host: ${APPLICATION_AGENT_DOMAIN}
       port:
-        targetPort: ${NAME}-agent
+        targetPort: ${NAME}-public
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
