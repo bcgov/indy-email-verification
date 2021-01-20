@@ -1,0 +1,11 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/postgresql/postgresql-build.yaml
+#=========================================================
+NAME=postgresql
+APP_NAME=email-verification-service
+OUTPUT_IMAGE_TAG=latest
+SOURCE_IMAGE_KIND=DockerImage
+SOURCE_IMAGE_NAME=registry.access.redhat.com/rhscl/postgresql-10-rhel7
+SOURCE_IMAGE_TAG=latest

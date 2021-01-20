@@ -159,6 +159,5 @@ Temporary Items
 *_DeploymentConfig.json
 *_BuildConfig.json
 
-# param files / local files
-*.param
+# local files
 *.local.*

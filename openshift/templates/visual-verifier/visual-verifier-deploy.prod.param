@@ -1,0 +1,29 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.yaml
+#=========================================================
+# NAME=visual-verifier
+# APP_NAME=email-verification-service
+# APP_GROUP=visual-verifier
+# SUFFIX=
+# ROLE=visual-verifier
+# APPLICATION_VERIFIER_DOMAIN=bcgov-visual-verifier-dev.apps.silver.devops.gov.bc.ca
+# IMAGE_NAMESPACE=4a9599-tools
+TAG_NAME=prod
+# APP_FILE=
+# APP_CONFIG=
+# APP_MODULE=
+# #DJANGO_SECRET_KEY=[\w]{50}
+# DJANGO_DEBUG=False
+# VERIFIER_NAME=VC Visual Verifier
+# OIDC_RP_PROVIDER_ENDPOINT=
+# OIDC_RP_CLIENT_ID=
+# OIDC_RP_CLIENT_SECRET=
+# OIDC_RP_SCOPES=openid profile vc_authn
+# VC_AUTHN_PRES_REQ_CONF_ID=
+# OIDC_CLAIMS_REQUIRED=
+# CPU_REQUEST=10m
+# CPU_LIMIT=300m
+# MEMORY_REQUEST=10Mi
+# MEMORY_LIMIT=256Mi

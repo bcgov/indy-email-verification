@@ -1,0 +1,32 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/email-verification-service/email-verification-service-deploy.yaml
+#=========================================================
+NAME=email-verification-service
+APP_GROUP=email-verification-service
+NAMESPACE_NAME=myproject
+APP_NAME=email-verification-service
+SUFFIX=
+ROLE=service
+AGENT_SERVICE_NAME=email-verification-agent
+APPLICATION_SERVICE_DOMAIN=bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
+IMAGE_NAMESPACE=4a9599-tools
+TAG_NAME=dev
+APP_MODULE=email_verification_service.wsgi
+APP_CONFIG=python:email_verification_service.settings
+WEB_CONCURRENCY=1
+PORT=8080
+SITE_URL=https://email-verification.apps.silver.devops.gov.bc.ca
+AGENT_URL=http://email-verification-agent:5000
+DEBUG=true
+DATABASE_NAME=email-verification-service-db
+DATABASE_PORT=5432
+DATABASE_SERVICE_NAME=postgresql
+SMTP_EMAIL_HOST=smtp.host
+EMAIL_PORT=25
+EMAIL_USE_SSL=false
+CPU_REQUEST=10m
+CPU_LIMIT=250m
+MEMORY_REQUEST=10Mi
+MEMORY_LIMIT=1Gi
