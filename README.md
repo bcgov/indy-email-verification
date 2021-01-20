@@ -35,23 +35,16 @@ Once services are started, visit [http://localhost:8080](http://localhost:8080) 
 
 ### Param Files
 
-Navigate to the openshift folder and generate the param files using  
-> genParams.sh  
-
-once the param files are created, go into email-verification-agent-deploy.param and email-verification-service-deploy.param and uncomment  
+Navigate to the openshift folder and view the existing param files.Go into email-verification-agent-deploy.param and email-verification-service-deploy.param and uncomment  
 `# NAMESPACE_NAME=myproject`  
 and set it to whatever your project namespace is, in this case the namespace is 4a9599.  
 `NAMESPACE_NAME=4a9599`
 
-go into postgresql-deploy.param and comment out `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD`. The characters in the regular expression sometimes get treated as bash special characters. These values will be populated with randomly generated keys
+go into postgresql-deploy.param and comment out `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD` if they are not already commented out. The characters in the regular expression sometimes get treated as bash special characters. These values will be populated with randomly generated keys
 
 ### Builds
-Now that our param files are set up, we're ready to start the builds
-
-run  
-> genBuilds.sh  
-
-and wait for the builds to complete. Once the builds are completed, we need to tag the latest images. These commands assume you're deploying to the dev environment and your namespace name is 4a9599. Run the following commands
+Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).  
+Remember to tag the build images to the environment that you're deploying to using the following commands.
 
 > oc tag email-verification-agent:latest email-verification-agent:dev -n 4a9599-tools  
 oc tag email-verification-service:latest email-verification-service:dev -n 4a9599-tools  
@@ -62,10 +55,7 @@ Now that the builds have been completed and tagged it's time to start the deploy
 
 ### Deploy
 
-run  
-> genDepls.sh  
-
-to kickoff the deployment. Follow the prompts on the screen and the deployment will start. This deployment will initially fail because we haven't registered our did and ver key on the ledger. To do so, go to https://bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca/api/doc or wherever you set your admin route to point to, and authorize with your api-key. Next scroll down untill to see the wallet section and execute the /walllet/did get request with no parameters. This should return your did and verkey.  
+Follow the [deployment](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-deployment-configurations-and-deploy-the-components) section to kickoff the deployment. Follow the prompts on the screen and the deployment will start. This deployment will initially fail because we haven't registered our did and ver key on the ledger. To do so, go to https://bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca/api/doc or wherever you set your admin route to point to, and authorize with your api-key. Next scroll down untill to see the wallet section and execute the /walllet/did get request with no parameters. This should return your did and verkey.  
 
 Next we have to register our agent on the ledger. This tutorial uses the [sovrin staging network](https://selfserve.sovrin.org/) but you can use whatever network you like, so long as it is exposed to the internet. if you're using sovrin staging, make sure you select `StagingNet` from the dropdown on the sovrin website. Enter your DID and VerKey in the fields and click submit (leave payment address blank).  
   
