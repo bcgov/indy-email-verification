@@ -2,7 +2,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: ${NAME}
+  name: ${NAME}${SUFFIX}
 objects:
 - kind: ExternalNetwork
   apiVersion: security.devops.gov.bc.ca/v1alpha1
@@ -25,9 +25,9 @@ objects:
 - kind: NetworkSecurityPolicy
   apiVersion: security.devops.gov.bc.ca/v1alpha1
   metadata:
-    name: ${NAME}
+    name: ${NAME}${SUFFIX}
     labels:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       env: ${TAG_NAME}
       app: ${APP_NAME}${SUFFIX}
       app-group: ${APP_GROUP}
@@ -52,7 +52,7 @@ objects:
 - kind: Service
   apiVersion: v1
   metadata:
-    name: ${NAME}
+    name: ${NAME}${SUFFIX}
     labels:
       app: ${APP_NAME}${SUFFIX}
       name: ${NAME}${SUFFIX}
@@ -61,17 +61,17 @@ objects:
       env: ${TAG_NAME}
   spec:
     ports:
-    - name: ${NAME}
+    - name: ${NAME}${SUFFIX}
       port: ${{PORT}}
       protocol: TCP
       targetPort: ${{PORT}}
     selector:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
 
 - kind: Route
   apiVersion: v1
   metadata:
-    name: ${NAME}
+    name: ${NAME}${SUFFIX}
     labels:
       app: ${APP_NAME}${SUFFIX}
       name: ${NAME}${SUFFIX}
@@ -81,19 +81,19 @@ objects:
   spec:
     host: ${APPLICATION_SERVICE_DOMAIN}
     port:
-      targetPort: ${NAME}
+      targetPort: ${NAME}${SUFFIX}
     tls:
       insecureEdgeTerminationPolicy: Redirect
       termination: edge
     to:
       kind: Service
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       weight: 100
 
 - kind: Secret
   apiVersion: v1
   metadata:
-    name: ${NAME}-email-host
+    name: ${NAME}${SUFFIX}-email-host
     labels:
       app: ${APP_NAME}${SUFFIX}
       name: ${NAME}${SUFFIX}
@@ -107,7 +107,7 @@ objects:
 - kind: DeploymentConfig
   apiVersion: v1
   metadata:
-    name: ${NAME}
+    name: ${NAME}${SUFFIX}
     labels:
       app: ${APP_NAME}${SUFFIX}
       name: ${NAME}${SUFFIX}
@@ -117,12 +117,12 @@ objects:
   spec:
     replicas: 1
     selector:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
     strategy:
       type: Recreate
     template:
       metadata:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
         labels:
           app: ${APP_NAME}${SUFFIX}
           name: ${NAME}${SUFFIX}
@@ -131,7 +131,7 @@ objects:
           env: ${TAG_NAME}
       spec:
         containers:
-        - name: ${NAME}
+        - name: ${NAME}${SUFFIX}
           env:
           - name: PORT
             value: ${PORT}
@@ -144,12 +144,12 @@ objects:
           - name: AGENT_ADMIN_API_KEY
             valueFrom:
               secretKeyRef:
-                name: ${AGENT_SERVICE_NAME}-api${SUFFIX}
+                name: ${AGENT_SERVICE_NAME}${SUFFIX}-api
                 key: admin-api-key
           - name: EMAIL_HOST
             valueFrom:
               secretKeyRef:
-                name: ${NAME}-email-host
+                name: ${NAME}${SUFFIX}-email-host
                 key: email-host
           - name: DB_NAME
             value: ${DATABASE_NAME}
@@ -214,7 +214,7 @@ objects:
       imageChangeParams:
         automatic: true
         containerNames:
-        - ${NAME}
+        - ${NAME}${SUFFIX}
         from:
           kind: ImageStreamTag
           name: ${NAME}:${TAG_NAME}

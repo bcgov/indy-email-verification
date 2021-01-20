@@ -2,7 +2,7 @@
 kind: Template
 apiVersion: v1
 metadata:
-  name: ${NAME}
+  name: ${NAME}${SUFFIX}
 objects:
   - kind: ExternalNetwork
     apiVersion: security.devops.gov.bc.ca/v1alpha1
@@ -27,9 +27,9 @@ objects:
   - kind: NetworkSecurityPolicy
     apiVersion: security.devops.gov.bc.ca/v1alpha1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
         env: ${TAG_NAME}
         app: ${APP_NAME}${SUFFIX}
         app-group: ${APP_GROUP}
@@ -42,7 +42,7 @@ objects:
           - app=${APP_NAME}${SUFFIX}
           - env=${TAG_NAME}
       destination:
-        - - ext:name=${NAME}
+        - - ext:name=${NAME}${SUFFIX}
         - - role=service
           - app=${APP_NAME}${SUFFIX}
           - env=${TAG_NAME}
@@ -50,7 +50,7 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -59,21 +59,21 @@ objects:
         env: ${TAG_NAME}
     spec:
       ports:
-        - name: ${NAME}-admin
+        - name: ${NAME}${SUFFIX}-admin
           port: ${{INDY_ADMIN_PORT}}
           protocol: TCP
           targetPort: ${{INDY_ADMIN_PORT}}
-        - name: ${NAME}-public
+        - name: ${NAME}${SUFFIX}-public
           port: ${{INDY_AGENT_PORT}}
           protocol: TCP
           targetPort: ${{INDY_AGENT_PORT}}
       selector:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
 
   - kind: Route
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -83,21 +83,21 @@ objects:
     spec:
       host: ${APPLICATION_AGENT_DOMAIN}
       port:
-        targetPort: ${NAME}-public
+        targetPort: ${NAME}${SUFFIX}-public
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
       to:
         kind: Service
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
         weight: 100
   
   - kind: Route
     apiVersion: v1
     metadata:
-      name: ${NAME}-admin
+      name: ${NAME}${SUFFIX}-admin
       labels:
-        name: ${NAME}-admin
+        name: ${NAME}${SUFFIX}-admin
         app: ${APP_NAME}${SUFFIX}
         app-group: ${APP_GROUP}
         role: ${ROLE}
@@ -107,7 +107,7 @@ objects:
     spec:
       host: ${APPLICATION_ADMIN_DOMAIN}
       port:
-        targetPort: ${NAME}-admin
+        targetPort: ${NAME}${SUFFIX}-admin
       tls:
         insecureEdgeTerminationPolicy: Redirect
         termination: edge
@@ -119,7 +119,7 @@ objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -137,7 +137,7 @@ objects:
   - kind: Secret
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -152,7 +152,7 @@ objects:
   - kind: Secret
     apiVersion: v1
     metadata:
-      name: ${NAME}-api${SUFFIX}
+      name: ${NAME}${SUFFIX}-api
       labels:
         name: ${NAME}${SUFFIX}
         app: ${APP_NAME}${SUFFIX}
@@ -166,7 +166,7 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -176,12 +176,12 @@ objects:
     spec:
       replicas: 1
       selector:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
       strategy:
         type: Recreate
       template:
         metadata:
-          name: ${NAME}
+          name: ${NAME}${SUFFIX}
           labels:
             app: ${APP_NAME}${SUFFIX}
             name: ${NAME}${SUFFIX}
@@ -190,7 +190,7 @@ objects:
             env: ${TAG_NAME}
         spec:
           containers:
-            - name: ${NAME}
+            - name: ${NAME}${SUFFIX}
               command:
                 - bash
                 - -c
@@ -209,21 +209,21 @@ objects:
                 - name: AGENT_PORT
                   value: ${INDY_AGENT_PORT}
                 - name: ACAPY_WALLET_NAME
-                  value: ${NAME}-wallet
+                  value: ${NAME}${SUFFIX}-wallet
                 - name: ACAPY_WALLET_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${NAME}${SUFFIX}
                       key: key
                 - name: ACAPY_WALLET_SEED
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${NAME}${SUFFIX}
                       key: seed
                 - name: AGENT_ADMIN_API_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}-api${SUFFIX}
+                      name: ${NAME}${SUFFIX}-api
                       key: admin-api-key
                 - name: ACAPY_GENESIS_URL
                   value: ${GENESIS_FILE_URL}
@@ -264,7 +264,7 @@ objects:
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               volumeMounts:
-                - name: ${NAME}-data
+                - name: ${NAME}${SUFFIX}-data
                   mountPath: ${MOUNT_PATH}
           dnsPolicy: ClusterFirst
           restartPolicy: Always
@@ -272,16 +272,16 @@ objects:
           securityContext: {}
           terminationGracePeriodSeconds: 30
           volumes:
-            - name: ${NAME}-data
+            - name: ${NAME}${SUFFIX}-data
               persistentVolumeClaim:
-                claimName: ${NAME}
+                claimName: ${NAME}${SUFFIX}
       triggers:
         - type: ConfigChange
         - type: ImageChange
           imageChangeParams:
             automatic: true
             containerNames:
-              - ${NAME}
+              - ${NAME}${SUFFIX}
             from:
               kind: ImageStreamTag
               name: ${NAME}:${TAG_NAME}

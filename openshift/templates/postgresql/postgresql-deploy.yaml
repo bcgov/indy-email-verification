@@ -3,13 +3,13 @@ apiVersion: v1
 metadata:
   annotations:
     description: Deployment template for a postgresql server with persistent storage.
-    tags: ${NAME}
-  name: ${NAME}-persistent-template
+    tags: ${NAME}${SUFFIX}
+  name: ${NAME}${SUFFIX}-persistent-template
 objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       generation: 1
       labels:
         app: ${APP_NAME}${SUFFIX}
@@ -29,7 +29,7 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - ${NAME}
+              - ${NAME}${SUFFIX}
             from:
               kind: ImageStreamTag
               namespace: ${IMAGE_NAMESPACE}
@@ -38,7 +38,7 @@ objects:
       replicas: 1
       test: false
       selector:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
       template:
         metadata:
           labels:
@@ -49,11 +49,11 @@ objects:
             env: ${TAG_NAME}
         spec:
           volumes:
-            - name: ${NAME}-data
+            - name: ${NAME}${SUFFIX}-data
               persistentVolumeClaim:
-                claimName: ${NAME}
+                claimName: ${NAME}${SUFFIX}
           containers:
-            - name: ${NAME}
+            - name: ${NAME}${SUFFIX}
               image: ' '
               ports:
                 - containerPort: 5432
@@ -62,17 +62,17 @@ objects:
                 - name: POSTGRESQL_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${NAME}${SUFFIX}
                       key: database-user
                 - name: POSTGRESQL_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${NAME}${SUFFIX}
                       key: database-password
                 - name: POSTGRESQL_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${NAME}${SUFFIX}
                       key: admin-password
                 - name: POSTGRESQL_DATABASE
                   value: ${POSTGRESQL_DATABASE_NAME}
@@ -84,7 +84,7 @@ objects:
                   cpu: ${CPU_LIMIT}
                   memory: ${MEMORY_LIMIT}
               volumeMounts:
-                - name: ${NAME}-data
+                - name: ${NAME}${SUFFIX}-data
                   mountPath: ${MOUNT_PATH}
               livenessProbe:
                 tcpSocket:
@@ -121,7 +121,7 @@ objects:
   - kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -138,7 +138,7 @@ objects:
   - kind: Secret
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -153,7 +153,7 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${NAME}${SUFFIX}
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
@@ -169,7 +169,7 @@ objects:
           port: 5432
           targetPort: 5432
       selector:
-        name: ${NAME}
+        name: ${NAME}${SUFFIX}
       type: ClusterIP
       sessionAffinity: None
 parameters:
