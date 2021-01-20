@@ -19,7 +19,7 @@ objects:
     description: |
       Define the network parameters for accessing smtp server
     entries:
-      - 0.0.0.0/0
+      - ${SMTP_EMAIL_HOST}
     servicePorts:
       - tcp/25
 - kind: NetworkSecurityPolicy
