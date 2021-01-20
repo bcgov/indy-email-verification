@@ -320,7 +320,7 @@ parameters:
 - name: SMTP_EMAIL_HOST
   displayName: Email Host Name
   required: true
-  value:
+  value: 
 - name: EMAIL_PORT
   displayName: Email Port
   required: true

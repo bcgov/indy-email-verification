@@ -5,7 +5,7 @@
 #=========================================================
 # NAME=email-verification-service
 # APP_GROUP=email-verification-service
-# NAMESPACE_NAME=myproject
+# NAMESPACE_NAME=4a9599
 # APP_NAME=email-verification-service
 # SUFFIX=
 # ROLE=service
@@ -17,7 +17,7 @@ TAG_NAME=dev
 # APP_CONFIG=python:email_verification_service.settings
 # WEB_CONCURRENCY=1
 # PORT=8080
-# SITE_URL=https://email-verification.apps.silver.devops.gov.bc.ca
+# SITE_URL=https://bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
 # AGENT_URL=http://email-verification-agent:5000
 # DEBUG=true
 # DATABASE_NAME=email-verification-service-db
