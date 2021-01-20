@@ -319,7 +319,7 @@ parameters:
   value: postgresql
 - name: SMTP_EMAIL_HOST
   displayName: Email Host Name
-  required: false
+  required: true
   value: smtp.host
 - name: EMAIL_PORT
   displayName: Email Port
