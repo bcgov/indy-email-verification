@@ -6,7 +6,7 @@
 NAME=indy-email-verification
 # GITHUB_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
 # GENERIC_WEBHOOK_SECRET=[a-zA-Z0-9]{40}
-SOURCE_REPOSITORY_URL=https://github.com/wadeking98/indy-email-verification.git
+SOURCE_REPOSITORY_URL=https://github.com/bcgov/indy-email-verification.git
 SOURCE_REPOSITORY_REF=master
 CONTEXT_DIR=./jenkins/indy-email-verification
 JENKINSFILE_PATH=Jenkinsfile
