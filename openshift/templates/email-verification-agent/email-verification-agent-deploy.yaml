@@ -81,7 +81,7 @@ objects:
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
-      host: ${APPLICATION_AGENT_DOMAIN}
+      host: ${APPLICATION_DOMAIN}
       port:
         targetPort: ${NAME}${SUFFIX}-public
       tls:
@@ -323,7 +323,7 @@ parameters:
     description: The exposed admin hostname that will route to the service, if left blank a value will be defaulted.
     required: false
     value: bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
-  - name: APPLICATION_AGENT_DOMAIN
+  - name: APPLICATION_DOMAIN
     displayName: Application Hostname
     description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
     required: false
