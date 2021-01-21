@@ -10,7 +10,7 @@
 # SUFFIX=
 # ROLE=service
 # AGENT_SERVICE_NAME=email-verification-agent
-APPLICATION_SERVICE_DOMAIN=bcgov-email-verification-service.vonx.io
+APPLICATION_DOMAIN=bcgov-email-verification-service.vonx.io
 # IMAGE_NAMESPACE=4a9599-tools
 TAG_NAME=prod
 # APP_MODULE=email_verification_service.wsgi

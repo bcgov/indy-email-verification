@@ -49,7 +49,7 @@ Remember to tag the build images to the environment that you're deploying to usi
 > oc tag email-verification-agent:latest email-verification-agent:dev -n 4a9599-tools  
 oc tag email-verification-service:latest email-verification-service:dev -n 4a9599-tools  
 oc tag postgresql:latest postgresql:dev -n 4a9599-tools  
-oc tag visual-verifier:latest visual-verifier:dev -n 4a9599-tools  
+oc tag email-verification-demo:latest email-verification-demo:dev -n 4a9599-tools  
 
 Now that the builds have been completed and tagged it's time to start the deployment
 
