@@ -67,12 +67,12 @@ parameters:
     displayName: App Name
     description: Used to group components together in the OpenShift console.
     required: true
-    value: email-verification-service
+    value: email-verification-demo
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.
     required: true
-    value: issuer-kit-runtime
+    value: email-verification-demo
   - name: OUTPUT_IMAGE_TAG
     displayName: Output Image Tag
     description: The tag given to the built image.

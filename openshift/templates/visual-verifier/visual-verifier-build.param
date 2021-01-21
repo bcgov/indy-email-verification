@@ -4,8 +4,8 @@
 # Template File: ../openshift/templates/visual-verifier/visual-verifier-build.yaml
 #=========================================================
 NAME=email-verification-demo
-APP_NAME=email-verification-service
-APP_GROUP=issuer-kit-runtime
+APP_NAME=email-verification-demo
+APP_GROUP=email-verification-demo
 OUTPUT_IMAGE_TAG=latest
 SOURCE_IMAGE_NAME=registry.fedoraproject.org/f32/python3
 SOURCE_IMAGE_TAG=latest
