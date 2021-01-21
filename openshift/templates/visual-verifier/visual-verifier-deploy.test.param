@@ -7,8 +7,8 @@
 # APP_NAME=email-verification-demo
 # APP_GROUP=email-verification-demo
 # SUFFIX=
-# ROLE=visual-verifier
-APPLICATION_DOMAIN=bcgov-visual-verifier-test.apps.silver.devops.gov.bc.ca
+# ROLE=email-verification-demo
+APPLICATION_DOMAIN=bcgov-verified-email-authentication-test.apps.silver.devops.gov.bc.ca
 # IMAGE_NAMESPACE=4a9599-tools
 TAG_NAME=test
 # APP_FILE=
