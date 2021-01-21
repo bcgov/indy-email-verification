@@ -31,7 +31,6 @@ objects:
       env: ${TAG_NAME}
       app: ${APP_NAME}${SUFFIX}
       app-group: ${APP_GROUP}
-      env: ${TAG_NAME}
   spec:
     description: Allow service to access the database and agent
     source:
