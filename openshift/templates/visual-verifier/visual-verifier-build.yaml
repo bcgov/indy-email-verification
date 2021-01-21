@@ -27,8 +27,8 @@ objects:
       source:
         type: Git
         git:
-          uri: ${VV_GIT_REPO_URL}
-          ref: ${VV_GIT_REF}
+          uri: ${GIT_REPO_URL}
+          ref: ${GIT_REF}
         contextDir: ${SOURCE_CONTEXT_DIR}
       strategy:
         type: Source
@@ -99,13 +99,13 @@ parameters:
     description: The source context directory.
     required: true
     value: src
-  - name: VV_GIT_REPO_URL
+  - name: GIT_REPO_URL
     displayName: Git Repo URL
     description: The URL to your GIT repo, don't use the this default unless your
       just experimenting.
     required: true
     value: https://github.com/bcgov/vc-visual-verifier.git
-  - name: VV_GIT_REF
+  - name: GIT_REF
     displayName: Git Reference
     description: The git reference or branch.
     required: true
