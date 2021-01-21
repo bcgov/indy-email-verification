@@ -24,7 +24,7 @@ if createOperation; then
   else
   # Secrets are removed from the configurations during update operations ...
   printStatusMsg "Update operation detected ...\nSkipping the prompts for SMTP_EMAIL_HOST secret... \n"
-  writeParameter "SMTP_EMAIL_HOST" $(getSecret "${NAME}-email-host" "email-host") "false"
+  writeParameter "SMTP_EMAIL_HOST" $(getSecret "${NAME}${SUFFIX}-email-host" "email-host") "false"
 fi 
 
 SPECIALDEPLOYPARMS="--param-file=${_overrideParamFile}"
