@@ -4,8 +4,8 @@
 # Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.yaml
 #=========================================================
 # NAME=email-verification-demo
-# APP_NAME=email-verification-service
-# APP_GROUP=visual-verifier
+# APP_NAME=email-verification-demo
+# APP_GROUP=email-verification-demo
 # SUFFIX=
 # ROLE=visual-verifier
 APPLICATION_DOMAIN=bcgov-visual-verifier-test.apps.silver.devops.gov.bc.ca

@@ -187,12 +187,12 @@ parameters:
     displayName: App Name
     description: Used to group components together in the OpenShift console.
     required: true
-    value: email-verification-service
+    value: email-verification-demo
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.
     required: true
-    value: visual-verifier
+    value: email-verification-demo
   - name: SUFFIX
     displayName: Suffix
     description: A name suffix used for all objects
