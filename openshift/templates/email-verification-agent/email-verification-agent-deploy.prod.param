@@ -5,7 +5,7 @@
 #=========================================================
 # NAME=email-verification-agent
 # APP_GROUP=email-verification-service
-# NAMESPACE_NAME=4a9599
+# NAMESPACE_NAME=myproject
 # APP_NAME=email-verification-service
 # SUFFIX=
 # ROLE=agent
