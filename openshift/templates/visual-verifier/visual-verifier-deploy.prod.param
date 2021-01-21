@@ -8,7 +8,7 @@
 # APP_GROUP=visual-verifier
 # SUFFIX=
 # ROLE=visual-verifier
-# APPLICATION_VERIFIER_DOMAIN=bcgov-visual-verifier-dev.apps.silver.devops.gov.bc.ca
+APPLICATION_VERIFIER_DOMAIN=bcgov-visual-verifier.vonx.io
 # IMAGE_NAMESPACE=4a9599-tools
 TAG_NAME=prod
 # APP_FILE=
