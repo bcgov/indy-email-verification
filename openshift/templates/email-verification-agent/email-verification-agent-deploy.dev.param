@@ -5,13 +5,13 @@
 #=========================================================
 # NAME=email-verification-agent
 # APP_GROUP=email-verification-service
-# NAMESPACE_NAME=myproject
+# NAMESPACE_NAME=a99fd4
 # APP_NAME=email-verification-service
 # SUFFIX=
 # ROLE=agent
 # APPLICATION_ADMIN_DOMAIN=bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
 # APPLICATION_DOMAIN=bcgov-email-verification-agent-dev.apps.silver.devops.gov.bc.ca
-# IMAGE_NAMESPACE=4a9599-tools
+# IMAGE_NAMESPACE=a99fd4-tools
 # AGENT_READ_ONLY_LEDGER=false
 # ADMIN_API_KEY=[a-zA-Z0-9]{32}
 TAG_NAME=dev

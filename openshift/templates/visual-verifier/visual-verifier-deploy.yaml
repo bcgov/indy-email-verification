@@ -248,7 +248,7 @@ parameters:
     displayName: Verifier Name
     description: Verifier Name
     required: true
-    value: VC Visual Verifier
+    value: Verified Email Authentication
   - name: OIDC_RP_PROVIDER_ENDPOINT
     displayName: OIDC RP Provider Endpoint
     description: OIDC RP Provider Endpoint

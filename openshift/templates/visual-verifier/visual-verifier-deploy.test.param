@@ -9,14 +9,14 @@
 # SUFFIX=
 # ROLE=email-verification-demo
 APPLICATION_DOMAIN=bcgov-verified-email-authentication-test.apps.silver.devops.gov.bc.ca
-# IMAGE_NAMESPACE=4a9599-tools
+# IMAGE_NAMESPACE=a99fd4-tools
 TAG_NAME=test
 # APP_FILE=
 # APP_CONFIG=
 # APP_MODULE=
 # #DJANGO_SECRET_KEY=[\w]{50}
 # DJANGO_DEBUG=False
-# VERIFIER_NAME=VC Visual Verifier
+# VERIFIER_NAME=Verified Email Authentication
 # OIDC_RP_PROVIDER_ENDPOINT=
 # OIDC_RP_CLIENT_ID=
 # OIDC_RP_CLIENT_SECRET=
