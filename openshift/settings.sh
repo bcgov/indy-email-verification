@@ -1,4 +1,4 @@
-export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-myproject}
+export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-a99fd4}
 export GIT_URI=${GIT_URI:-"https://github.com/bcgov/indy-email-verification.git"}
 export GIT_REF=${GIT_REF:-"master"}
 # The templates that should not have their GIT referances(uri and ref) over-ridden

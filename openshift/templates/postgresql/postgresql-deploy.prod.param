@@ -3,7 +3,7 @@
 # Component: .
 # Template File: ../openshift/templates/postgresql/postgresql-deploy.yaml
 #=========================================================
-# NAME=postgresql
+# NAME=email-verification-service-db
 # APP_NAME=email-verification-service
 # SUFFIX=
 # ROLE=db

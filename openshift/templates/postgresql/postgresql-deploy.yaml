@@ -178,7 +178,7 @@ parameters:
     description: The name assigned to all of the OpenShift resources associated to
       the server instance.
     required: true
-    value: postgresql
+    value: email-verification-service-db
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together.
