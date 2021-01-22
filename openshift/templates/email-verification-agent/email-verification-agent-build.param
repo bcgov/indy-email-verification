@@ -5,7 +5,7 @@
 #=========================================================
 NAME=email-verification-agent
 APP_NAME=email-verification-service
-GIT_REPO_URL=https://github.com/wadeking98/indy-email-verification.git
+GIT_REPO_URL=https://github.com/bcgov/indy-email-verification.git
 GIT_REF=master
 SOURCE_CONTEXT_DIR=
 DOCKER_FILE_PATH=./docker/email-verification-agent/Dockerfile
