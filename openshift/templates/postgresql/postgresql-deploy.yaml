@@ -161,10 +161,10 @@ objects:
         role: ${ROLE}
         env: ${TAG_NAME}
       annotations:
-        template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+        template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="${NAME}${SUFFIX}")].port}
     spec:
       ports:
-        - name: postgresql
+        - name: ${NAME}${SUFFIX}
           protocol: TCP
           port: 5432
           targetPort: 5432
