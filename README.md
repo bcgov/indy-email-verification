@@ -43,12 +43,12 @@ Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT
 
 ### Builds
 Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).  
-Remember to tag the build images to the environment that you're deploying to using the following commands.
+Remember to tag the build images to the environment that you're deploying to using the following commands. Replace a99fd4 with your namespace name
 
-> oc tag email-verification-agent:latest email-verification-agent:dev -n 4a9599-tools  
-oc tag email-verification-service:latest email-verification-service:dev -n 4a9599-tools  
-oc tag postgresql:latest postgresql:dev -n 4a9599-tools  
-oc tag email-verification-demo:latest email-verification-demo:dev -n 4a9599-tools  
+> oc -n a99fd4-tools tag email-verification-agent:latest email-verification-agent:dev  
+oc -n a99fd4-tools tag email-verification-service:latest email-verification-service:dev  
+oc -n a99fd4-tools tag postgresql:latest postgresql:dev  
+oc -n a99fd4-tools tag email-verification-demo:latest email-verification-demo:dev   
 
 Now that the builds have been completed and tagged it's time to start the deployment
 
