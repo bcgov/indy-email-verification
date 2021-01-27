@@ -35,14 +35,11 @@ Once services are started, visit [http://localhost:8080](http://localhost:8080) 
 
 ### Param Files
 
-Navigate to the openshift folder and view the existing param files.  Go into email-verification-agent-deploy.param and email-verification-service-deploy.param and uncomment  
-`# NAMESPACE_NAME=myproject`  
-and set it to whatever your project namespace is, in this case the namespace is 4a9599.  
-`NAMESPACE_NAME=4a9599`  
+Navigate to the openshift folder and view the existing param files.  Go into email-verification-agent-deploy.param and email-verification-service-deploy.param and set  
+`NAMESPACE_NAME=a99fd4`  
+and set it to whatever your project namespace is.
 
-Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-myproject}` replace `myproject` with your project namespace name
-
-go into postgresql-deploy.param and comment out `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_ADMIN_PASSWORD` if they are not already commented out. The characters in the regular expression sometimes get treated as bash special characters. These values will be populated with randomly generated keys
+Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-a99fd4}` replace `a99fd4` with your project namespace name
 
 ### Builds
 Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).  
