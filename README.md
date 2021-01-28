@@ -30,7 +30,9 @@ _Refer to `manage -h` for additional usage information._
 Once services are started, visit [http://localhost:8080](http://localhost:8080) to see the app running and visit [http://localhost:8050](http://localhost:8050) to see any outbound mail the app is sending (it won't actually send any email message in the development environment.)
 
 ## Deploying to Openshift
-### Param Files
+### Param Files  
+
+***You only need to edit the param file if you intend to deploy on your own namespace***  
 
 Navigate to the openshift folder and view the existing param files.  Go into email-verification-agent-deploy.param and email-verification-service-deploy.param and set  
 `NAMESPACE_NAME=a99fd4`  
