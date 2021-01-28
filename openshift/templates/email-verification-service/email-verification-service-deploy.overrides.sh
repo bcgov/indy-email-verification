@@ -14,10 +14,6 @@ fi
 # ===================================================================================
 
 
-
-
-initialize
-
 if createOperation; then
   # Get the webhook URL
   readParameter "SMTP_EMAIL_HOST - Please provide the host name of the email server:" SMTP_EMAIL_HOST "smtp.host.io" "false"
