@@ -23,7 +23,7 @@ if createOperation; then
   readParameter "SMTP_EMAIL_HOST - Please provide the host name of the email server:" SMTP_EMAIL_HOST "smtp.host.io" "false"
   else
   # Secrets are removed from the configurations during update operations ...
-  printStatusMsg "Update operation detected ...\nSkipping the prompts for SMTP_EMAIL_HOST secret... \n"
+  printStatusMsg "Getting SMTP_EMAIL_HOST for the ExternalNetwork definition from secret ...\n"
   writeParameter "SMTP_EMAIL_HOST" $(getSecret "${NAME}${SUFFIX}-email-host" "email-host") "false"
 fi 
 
