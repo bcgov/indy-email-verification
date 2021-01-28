@@ -31,8 +31,6 @@ Once services are started, visit [http://localhost:8080](http://localhost:8080) 
 
 ## Deploying to Openshift
 
-**Please make sure you have [Openshift Developer Tools](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin) installed and available on your path.**
-
 ### Param Files
 
 Navigate to the openshift folder and view the existing param files.  Go into email-verification-agent-deploy.param and email-verification-service-deploy.param and set  
@@ -43,12 +41,11 @@ Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT
 
 ### Builds
 Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).     
-Now that the builds have been completed and tagged it's time to start the deployment
+Now that the builds have been completed it's time to start the deployment and tag the images
 
 ### Deploy
 
 Follow the [deployment](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-deployment-configurations-and-deploy-the-components) section to kickoff the deployment. Follow the prompts on the screen and the deployment will start. Look over the deployment configuration and make sure everything is in order, next tag the image streams  
-Replace `a99fd4` with your namespace name and `dev` with the environment you will be deploying to
 
 > oc -n a99fd4-tools tag email-verification-agent:latest email-verification-agent:dev  
 oc -n a99fd4-tools tag email-verification-service:latest email-verification-service:dev  
