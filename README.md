@@ -63,5 +63,3 @@ Next we have to accept the taa. Go back to the swagger api interface and run get
 
 Go back to the openshift developer console and start a rollout on email-verification-service if it hasn't already restarted. Once email-verification-service is up and running, you're ready to start issuing email credentials.
 
-### Troubleshooting
-Git doesn't always save the file permisions on executable files, if you get any permision denied errors while running scripts, make sure you run `chmod +x <file>` on any .sh file
