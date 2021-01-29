@@ -1,13 +1,7 @@
-export PROJECT_NAMESPACE="devex-von-image"
-export GIT_URI="https://github.com/bcgov/indy-email-verification.git"
-export GIT_REF="master"
-
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# Override environments, since there is only one AT THE MOMENT:
-# devex-von-image-tools
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export TOOLS="devex-von-image-tools"
-export DEPLOYMENT_ENV_NAME="tools"
-export DEV="tools"
-export TEST="tools"
-export PROD="tools"
+export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-a99fd4}
+export GIT_URI=${GIT_URI:-"https://github.com/bcgov/indy-email-verification.git"}
+export GIT_REF=${GIT_REF:-"master"}
+# The templates that should not have their GIT referances(uri and ref) over-ridden
+# Templates NOT in this list will have they GIT referances over-ridden
+# with the values of GIT_URI and GIT_REF
+export skip_git_overrides="visual-verifier-build.yaml"

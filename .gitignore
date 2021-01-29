@@ -158,3 +158,6 @@ Temporary Items
 # tmp script files
 *_DeploymentConfig.json
 *_BuildConfig.json
+
+# local files
+*.local.*

@@ -1,0 +1,32 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/email-verification-agent/email-verification-agent-deploy.yaml
+#=========================================================
+# NAME=email-verification-agent
+# APP_GROUP=email-verification-service
+# NAMESPACE_NAME=a99fd4
+# APP_NAME=email-verification-service
+# SUFFIX=
+# ROLE=agent
+APPLICATION_ADMIN_DOMAIN=bcgov-email-verification-agent-admin-test.apps.silver.devops.gov.bc.ca
+APPLICATION_DOMAIN=bcgov-email-verification-agent-test.apps.silver.devops.gov.bc.ca
+# IMAGE_NAMESPACE=a99fd4-tools
+# AGENT_READ_ONLY_LEDGER=false
+# ADMIN_API_KEY=[a-zA-Z0-9]{32}
+TAG_NAME=test
+# INDY_ADMIN_PORT=5000
+# INDY_AGENT_PORT=10000
+# WALLET_KEY=[a-zA-Z0-9]{32}
+# WALLET_SEED=[a-zA-Z0-9]{32}
+AGENT_URL=https://bcgov-email-verification-agent-test.apps.silver.devops.gov.bc.ca
+# WEBHOOK_URL=http://email-verification-service:8080/webhooks
+# GENESIS_FILE_URL=https://raw.githubusercontent.com/sovrin-foundation/sovrin/stable/sovrin/pool_transactions_sandbox_genesis
+# DISPLAY_LABEL=Email Verification Service
+# MOUNT_PATH=/home/indy/.indy_client/wallet
+# PERSISTENT_VOLUME_SIZE=5Gi
+# PERSISTENT_VOLUME_CLASS=netapp-file-standard
+# CPU_REQUEST=10m
+# CPU_LIMIT=250m
+# MEMORY_REQUEST=10Mi
+# MEMORY_LIMIT=1Gi

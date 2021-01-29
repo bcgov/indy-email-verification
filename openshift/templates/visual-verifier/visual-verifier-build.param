@@ -1,7 +1,7 @@
 #=========================================================
 # OpenShift template parameters for:
 # Component: .
-# Template File: ../openshift/templates/visual-verifier/visual-verifier-build.json
+# Template File: ../openshift/templates/visual-verifier/visual-verifier-build.yaml
 #=========================================================
 NAME=email-verification-demo
 APP_NAME=email-verification-demo

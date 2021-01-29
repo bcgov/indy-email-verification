@@ -1,16 +1,16 @@
 #=========================================================
 # OpenShift template parameters for:
 # Component: .
-# Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.json
+# Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.yaml
 #=========================================================
 NAME=email-verification-demo
 APP_NAME=email-verification-demo
 APP_GROUP=email-verification-demo
 SUFFIX=
 ROLE=email-verification-demo
-APPLICATION_DOMAIN=verified-email-authentication.pathfinder.gov.bc.ca
-IMAGE_NAMESPACE=devex-von-image-tools
-TAG_NAME=latest
+APPLICATION_DOMAIN=bcgov-verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
+IMAGE_NAMESPACE=a99fd4-tools
+TAG_NAME=dev
 APP_FILE=
 APP_CONFIG=
 APP_MODULE=

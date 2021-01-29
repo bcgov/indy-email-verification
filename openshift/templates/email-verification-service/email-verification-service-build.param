@@ -1,0 +1,17 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/email-verification-service/email-verification-service-build.yaml
+#=========================================================
+NAME=email-verification-service
+APP_NAME=email-verification-service
+ENV_NAME=tools
+NAMESPACE_NAME=a99fd4
+GIT_REPO_URL=https://github.com/bcgov/indy-email-verification.git
+GIT_REF=master
+SOURCE_CONTEXT_DIR=src
+SOURCE_IMAGE_KIND=DockerImage
+SOURCE_IMAGE_NAME=registry.access.redhat.com/rhscl/python-36-rhel7
+SOURCE_IMAGE_TAG=latest
+PIP_INDEX_URL=
+OUTPUT_IMAGE_TAG=latest

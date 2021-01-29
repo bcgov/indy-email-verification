@@ -1,0 +1,24 @@
+#=========================================================
+# OpenShift template parameters for:
+# Component: .
+# Template File: ../openshift/templates/postgresql/postgresql-deploy.yaml
+#=========================================================
+# NAME=email-verification-service-db
+# APP_NAME=email-verification-service
+# SUFFIX=
+# ROLE=db
+# APP_GROUP=email-verification-service
+# IMAGE_NAMESPACE=a99fd4-tools
+# SOURCE_IMAGE_NAME=postgresql
+TAG_NAME=test
+# POSTGRESQL_DATABASE_NAME=email-verification-service-db
+# POSTGRESQL_USER=[a-zA-Z_][a-zA-Z0-9_]{10}
+# POSTGRESQL_PASSWORD=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
+# POSTGRESQL_ADMIN_PASSWORD=[a-zA-Z0-9_~!@#$%^&*()-=<>,.?;:|]{16}
+# MOUNT_PATH=/var/lib/pgsql/data
+# PERSISTENT_VOLUME_SIZE=5Gi
+# PERSISTENT_VOLUME_CLASS=netapp-block-standard
+# CPU_REQUEST=10m
+# CPU_LIMIT=750m
+# MEMORY_REQUEST=10Mi
+# MEMORY_LIMIT=1000Mi
