@@ -2,7 +2,7 @@
 // This is used to find all of the build configurations associated to the application
 // To work the build configurations must have an "app" label;
 // - For example; app=iiw-book
-def APP_LABEL = 'indy-email-verification-service'
+def APP_LABEL = 'email-verification-service'
 
 // Wait timeout in minutes
 def WAIT_TIMEOUT = 5
