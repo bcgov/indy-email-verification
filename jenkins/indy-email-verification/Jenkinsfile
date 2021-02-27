@@ -2,23 +2,23 @@
 // This is used to find all of the build configurations associated to the application
 // To work the build configurations must have an "app" label;
 // - For example; app=iiw-book
-def APP_LABEL = 'indy-email-verification-service'
+def APP_LABEL = 'email-verification-service'
 
 // Wait timeout in minutes
 def WAIT_TIMEOUT = 5
 
 // Assumes Builds, Images, and Deployments all have the same name(s)
 // Components will be deployed in the order they are listed.
-def COMPONENTS = ['email-verification-agent', 'email-verification-service']
+def COMPONENTS = ['email-verification-agent', 'email-verification-service', 'email-verification-demo']
 
 // Edit your environment TAG names below
 def TAG_NAMES = ['dev', 'test', 'prod']
 
 // Edit your deployment environment names below
-def DEP_ENV_NAMES = ['tools', 'dev', 'test', 'prod']
+def DEP_ENV_NAMES = ['dev', 'test', 'prod']
 
 // The base namespace of you environments.
-def NAME_SPACE = 'devex-von-image'
+def NAME_SPACE = 'a99fd4'
 
 // Get an image's hash tag
 String getImageTagHash(String imageName, String tag = "") {
