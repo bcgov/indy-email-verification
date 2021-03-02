@@ -6,6 +6,36 @@ metadata:
     tags: ${NAME}${SUFFIX}
   name: ${NAME}${SUFFIX}-persistent-template
 objects:
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        app: ${APP_NAME}
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Allow the api(s) to access the db.
+      ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                  role: service
+                  app: ${APP_NAME}
+                  env: ${TAG_NAME}
+              namespaceSelector:
+                matchLabels:
+                  name: ${NAMESPACE_NAME}
+                  environment: ${TAG_NAME}
+          ports:
+            - protocol: TCP
+              port: 5432
+      podSelector:
+        matchLabels:
+          role: ${ROLE}
+          app: ${APP_NAME}
+          env: ${TAG_NAME}
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -184,6 +214,11 @@ parameters:
     description: Used to group components together.
     required: true
     value: email-verification-service
+  - name: NAMESPACE_NAME
+    displayName: NameSpace name
+    description: name of the project namespace
+    required: true
+    value: myproject
   - name: SUFFIX
     displayName: Suffix
     description: A name suffix used for all objects
