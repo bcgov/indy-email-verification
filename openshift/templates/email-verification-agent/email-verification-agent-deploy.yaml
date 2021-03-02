@@ -75,9 +75,9 @@ objects:
   - kind: NetworkPolicy
     apiVersion: networking.k8s.io/v1
     metadata:
-      name: ${NAME}-allow-service
+      name: ${NAME}
       labels:
-        name: ${NAME}-allow-service
+        name: ${NAME}
         app: ${APP_NAME}
         env: ${TAG_NAME}
     spec:
