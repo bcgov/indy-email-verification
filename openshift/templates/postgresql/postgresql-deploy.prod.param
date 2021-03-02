@@ -5,6 +5,7 @@
 #=========================================================
 # NAME=email-verification-service-db
 # APP_NAME=email-verification-service
+# NAMESPACE_NAME=a99fd4
 # SUFFIX=
 # ROLE=db
 # APP_GROUP=email-verification-service
