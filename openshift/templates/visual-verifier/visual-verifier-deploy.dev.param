@@ -4,7 +4,7 @@
 # Template File: ../openshift/templates/visual-verifier/visual-verifier-deploy.yaml
 #=========================================================
 # NAME=email-verification-demo
-# APP_NAME=email-verification-demo
+# APP_NAME=email-verification-service
 # APP_GROUP=email-verification-demo
 # SUFFIX=
 # ROLE=email-verification-demo
