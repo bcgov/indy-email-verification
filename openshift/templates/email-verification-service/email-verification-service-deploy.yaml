@@ -54,7 +54,7 @@ objects:
     name: ${NAME}-allow-ingress
     labels:
       name: ${NAME}-allow-ingress
-      app: ${APP_GROUP}
+      app: ${APP_NAME}
       app-group: ${APP_GROUP}
       role: ${ROLE}
       env: ${TAG_NAME}
@@ -69,7 +69,7 @@ objects:
     podSelector:
       matchLabels:
         role: ${ROLE}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}
         env: ${TAG_NAME}
     policyTypes:
       - Ingress
@@ -79,7 +79,7 @@ objects:
     name: ${NAME}
     labels:
       name: ${NAME}
-      app: ${APP_GROUP}
+      app: ${APP_NAME}
       env: ${TAG_NAME}
   spec:
     description: Allow the agent to access the service.
@@ -88,7 +88,7 @@ objects:
         - podSelector:
             matchLabels:
               role: agent
-              app: ${APP_GROUP}
+              app: ${APP_NAME}
               env: ${TAG_NAME}
           namespaceSelector:
             matchLabels:
@@ -100,7 +100,7 @@ objects:
     podSelector:
       matchLabels:
         role: ${ROLE}
-        app: ${APP_GROUP}
+        app: ${APP_NAME}
         env: ${TAG_NAME}
 - kind: Service
   apiVersion: v1
