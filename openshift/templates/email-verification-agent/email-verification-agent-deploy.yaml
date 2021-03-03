@@ -86,7 +86,7 @@ objects:
         - from:
             - podSelector:
                 matchLabels:
-                  role: service
+                  role: ${SERVICE_ROLE}
                   app: ${APP_NAME}
                   env: ${TAG_NAME}
               namespaceSelector:
@@ -374,6 +374,11 @@ parameters:
     description: The role of this service within the application - used for Network Policies
     required: true
     value: agent
+  - name: SERVICE_ROLE
+    displayName: Service Role
+    description: The role of the email verification service within the application - used for Network Policies
+    required: true
+    value: service
   - name: APPLICATION_ADMIN_DOMAIN
     displayName: Application Admin Endpoint Hostname
     description: The exposed admin hostname that will route to the service, if left blank a value will be defaulted.

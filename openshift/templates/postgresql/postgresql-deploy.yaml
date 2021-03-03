@@ -21,7 +21,7 @@ objects:
         - from:
             - podSelector:
                 matchLabels:
-                  role: service
+                  role: ${SERVICE_ROLE}
                   app: ${APP_NAME}
                   env: ${TAG_NAME}
               namespaceSelector:
@@ -229,6 +229,11 @@ parameters:
     description: The role of this service within the application - used for Network Policies
     required: true
     value: db
+  - name: SERVICE_ROLE
+    displayName: Service Role
+    description: The role of the email verification service within the application - used for Network Policies
+    required: true
+    value: service
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.

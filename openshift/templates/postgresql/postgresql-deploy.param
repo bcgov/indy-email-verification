@@ -8,6 +8,7 @@ APP_NAME=email-verification-service
 NAMESPACE_NAME=a99fd4
 SUFFIX=
 ROLE=db
+SERVICE_ROLE=service
 APP_GROUP=email-verification-service
 IMAGE_NAMESPACE=a99fd4-tools
 SOURCE_IMAGE_NAME=postgresql

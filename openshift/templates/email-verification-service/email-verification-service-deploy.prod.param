@@ -9,6 +9,7 @@
 # APP_NAME=email-verification-service
 # SUFFIX=
 # ROLE=service
+# AGENT_ROLE=agent
 # AGENT_SERVICE_NAME=email-verification-agent
 APPLICATION_DOMAIN=bcgov-email-verification-service.vonx.io
 # IMAGE_NAMESPACE=a99fd4-tools

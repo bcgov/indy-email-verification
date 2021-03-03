@@ -9,6 +9,7 @@ NAMESPACE_NAME=a99fd4
 APP_NAME=email-verification-service
 SUFFIX=
 ROLE=service
+AGENT_ROLE=agent
 AGENT_SERVICE_NAME=email-verification-agent
 APPLICATION_DOMAIN=bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
 IMAGE_NAMESPACE=a99fd4-tools

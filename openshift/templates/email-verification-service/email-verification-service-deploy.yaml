@@ -87,7 +87,7 @@ objects:
       - from:
         - podSelector:
             matchLabels:
-              role: agent
+              role: ${AGENT_ROLE}
               app: ${APP_NAME}
               env: ${TAG_NAME}
           namespaceSelector:
@@ -304,6 +304,11 @@ parameters:
   description: The role of this service within the application - used for Network Policies
   required: true
   value: service
+- name: AGENT_ROLE
+  displayName: Role
+  description: The role of the agent within the application - used for Network Policies
+  required: true
+  value: agent
 - name: AGENT_SERVICE_NAME
   displayName: Agent Service Name
   description: The name of the agent service
