@@ -28,6 +28,14 @@ objects:
                 matchLabels:
                   name: ${NAMESPACE_NAME}
                   environment: ${TAG_NAME}
+            - podSelector:
+                matchLabels:
+                  role: ${BACKUP_ROLE}
+                  env: ${TAG_NAME}
+              namespaceSelector:
+                matchLabels:
+                  name: ${NAMESPACE_NAME}
+                  environment: ${TAG_NAME}
           ports:
             - protocol: TCP
               port: 5432
@@ -44,7 +52,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}
+        app-group: ${APP_GROUP}     
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
@@ -74,7 +82,7 @@ objects:
           labels:
             app: ${APP_NAME}${SUFFIX}
             name: ${NAME}${SUFFIX}
-            app-group: ${APP_GROUP}
+            app-group: ${APP_GROUP}           
             role: ${ROLE}
             env: ${TAG_NAME}
         spec:
@@ -155,7 +163,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}
+        app-group: ${APP_GROUP}  
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
@@ -172,7 +180,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}
+        app-group: ${APP_GROUP}        
         role: ${ROLE}
         env: ${TAG_NAME}
     stringData:
@@ -234,6 +242,11 @@ parameters:
     description: The role of the email verification service within the application - used for Network Policies
     required: true
     value: service
+  - name: BACKUP_ROLE
+    displayName: Backup Role
+    description: The role of the backup container - used for Network Policies
+    required: true
+    value: backup-container
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.

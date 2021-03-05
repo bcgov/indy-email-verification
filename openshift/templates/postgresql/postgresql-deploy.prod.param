@@ -9,6 +9,7 @@
 # SUFFIX=
 # ROLE=db
 # SERVICE_ROLE=service
+# BACKUP_ROLE=backup-container
 # APP_GROUP=email-verification-service
 # IMAGE_NAMESPACE=a99fd4-tools
 # SOURCE_IMAGE_NAME=postgresql
