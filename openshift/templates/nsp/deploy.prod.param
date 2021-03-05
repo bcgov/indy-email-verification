@@ -4,4 +4,4 @@
 # Template File: ../openshift/templates/nsp/deploy.yaml
 #=========================================================
 # NAMESPACE_NAME=a99fd4
-ENV_NAME=prod
+TAG_NAME=prod
