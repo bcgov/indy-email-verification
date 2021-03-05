@@ -383,12 +383,12 @@ parameters:
     displayName: Application Admin Endpoint Hostname
     description: The exposed admin hostname that will route to the service, if left blank a value will be defaulted.
     required: false
-    value: bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
+    value: email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
   - name: APPLICATION_DOMAIN
     displayName: Application Hostname
     description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
     required: false
-    value: bcgov-email-verification-agent-dev.apps.silver.devops.gov.bc.ca
+    value: email-verification-agent-dev.apps.silver.devops.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Namespace containing application images.
     required: true
@@ -435,7 +435,7 @@ parameters:
     displayName: Site URL
     description: The URL for the site
     required: true
-    value: https://bcgov-email-verification-agent-dev.apps.silver.devops.gov.bc.ca
+    value: https://email-verification-agent-dev.apps.silver.devops.gov.bc.ca
   - name: WEBHOOK_URL
     displayName: Webhook URL
     description: The webhook endpoint

@@ -231,7 +231,7 @@ parameters:
   - description: The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.
     displayName: Application Hostname
     name: APPLICATION_DOMAIN
-    value: bcgov-verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
+    value: verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     required: true
