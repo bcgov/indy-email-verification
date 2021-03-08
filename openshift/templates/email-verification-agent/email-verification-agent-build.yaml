@@ -29,7 +29,7 @@ objects:
         contextDir: ${SOURCE_CONTEXT_DIR}
       strategy:
         type: Docker
-        dockerStrategy:        
+        dockerStrategy:
           from:
             kind: DockerImage
             name: ${SOURCE_IMAGE}

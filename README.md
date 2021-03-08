@@ -41,7 +41,7 @@ and set it to whatever your project namespace is.
 Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-a99fd4}` replace `a99fd4` with your project namespace name
 
 ### Builds
-Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).     
+Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).  
 Now that the builds have been completed it's time to start the deployment and tag the images
 
 ### Deploy

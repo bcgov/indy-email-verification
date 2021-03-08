@@ -52,7 +52,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}     
+        app-group: ${APP_GROUP}
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
@@ -82,7 +82,7 @@ objects:
           labels:
             app: ${APP_NAME}${SUFFIX}
             name: ${NAME}${SUFFIX}
-            app-group: ${APP_GROUP}           
+            app-group: ${APP_GROUP}
             role: ${ROLE}
             env: ${TAG_NAME}
         spec:
@@ -180,7 +180,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}        
+        app-group: ${APP_GROUP}
         role: ${ROLE}
         env: ${TAG_NAME}
     stringData:
@@ -226,7 +226,7 @@ parameters:
     displayName: NameSpace name
     description: name of the project namespace
     required: true
-    value: myproject
+    value: a99fd4
   - name: SUFFIX
     displayName: Suffix
     description: A name suffix used for all objects
@@ -257,7 +257,7 @@ parameters:
     required: true
     description: The namespace of the OpenShift project containing the imagestream
       for the application.
-    value: devex-von-image-tools
+    value: a99fd4-tools
   - name: SOURCE_IMAGE_NAME
     displayName: Source Image Name
     description: The name of the image to use for this resource.

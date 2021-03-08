@@ -288,7 +288,7 @@ parameters:
   displayName: NameSpace name
   description: name of the project namespace
   required: true
-  value: myproject
+  value: a99fd4
 - name: APP_NAME
   displayName: App Name
   description: Used to group components together in the OpenShift console.
@@ -322,7 +322,7 @@ parameters:
 - name: IMAGE_NAMESPACE
   displayName: Namespace containing application images.
   required: true
-  value: devex-von-image-tools
+  value: a99fd4-tools
 - name: TAG_NAME
   displayName: Environment TAG name
   description: The TAG name for this environment, e.g., dev, test, prod.

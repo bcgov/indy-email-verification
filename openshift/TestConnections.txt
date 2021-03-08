@@ -1,6 +1,6 @@
 # Uses the 'testConnection' script from https://github.com/BCDevOps/openshift-developer-tools
 # Example:
-# echo -e "email-verification-agent\n email-verification-service\n email-verification-demo\n"  | xargs -I {} testConnection -n a99fd4-test -f TestConnections.txt -p {}
+# echo -e "email-verification-agent\n email-verification-service\n email-verification-demo\n"  | xargs -I {} testConnection -n a99fd4-dev -f TestConnections.txt -p {}
 
 google.com:80
 email-verification-agent:10000

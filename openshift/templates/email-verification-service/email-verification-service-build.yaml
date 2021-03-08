@@ -73,7 +73,7 @@ parameters:
     displayName: NameSpace name
     description: name of the project namespace
     required: true
-    value: myproject
+    value: a99fd4
   - name: GIT_REPO_URL
     displayName: Git Repo URL
     description: The URL to your GIT repo.

@@ -358,7 +358,7 @@ parameters:
     displayName: NameSpace name
     description: name of the project namespace
     required: true
-    value: myproject
+    value: a99fd4
   - name: APP_NAME
     displayName: App Name
     description: Used to group components together in the OpenShift console.
@@ -392,7 +392,7 @@ parameters:
   - name: IMAGE_NAMESPACE
     displayName: Namespace containing application images.
     required: true
-    value: devex-von-image-tools
+    value: a99fd4-tools
   - name: AGENT_READ_ONLY_LEDGER
     displayName: Set read only ledger flag.
     description: Enable/Disable the read only ledger flag.  Controls the inclusion/exclusion of the agent '--read-only-ledger' startup parameter.  Defaults to disabled.
