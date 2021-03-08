@@ -318,7 +318,7 @@ parameters:
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
   required: false
-  value: email-verification-service-dev.apps.silver.devops.gov.bc.ca
+  value: email-verification-dev.apps.silver.devops.gov.bc.ca
 - name: IMAGE_NAMESPACE
   displayName: Namespace containing application images.
   required: true
@@ -352,7 +352,7 @@ parameters:
   displayName: Site URL
   description: The URL for the site
   required: true
-  value: https://email-verification-service-dev.apps.silver.devops.gov.bc.ca
+  value: https://email-verification-dev.apps.silver.devops.gov.bc.ca
 - name: AGENT_URL
   displayName: Agent URL
   description: The URL for the agent's admin endpoint.

@@ -13,7 +13,7 @@
 APPLICATION_ADMIN_DOMAIN=email-verification-agent-admin.vonx.io
 APPLICATION_DOMAIN=email-verification-agent.vonx.io
 # IMAGE_NAMESPACE=a99fd4-tools
-AGENT_READ_ONLY_LEDGER=true
+# AGENT_READ_ONLY_LEDGER=true
 # ADMIN_API_KEY=[a-zA-Z0-9]{32}
 TAG_NAME=prod
 # INDY_ADMIN_PORT=5000
