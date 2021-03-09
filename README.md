@@ -41,7 +41,7 @@ and set it to whatever your project namespace is.
 Also navigate to settings.sh and at the line `export PROJECT_NAMESPACE=${PROJECT_NAMESPACE:-a99fd4}` replace `a99fd4` with your project namespace name
 
 ### Builds
-Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).     
+Now that our param files are set up, we're ready to start the builds using the openshift developer script [here](https://github.com/BCDevOps/openshift-developer-tools/tree/master/bin#generate-the-build-and-images-in-the-tools-project-deploy-jenkins).  
 Now that the builds have been completed it's time to start the deployment and tag the images
 
 ### Deploy
@@ -53,7 +53,7 @@ oc -n a99fd4-tools tag email-verification-service:latest email-verification-serv
 oc -n a99fd4-tools tag postgresql:latest postgresql:dev  
 oc -n a99fd4-tools tag email-verification-demo:latest email-verification-demo:dev  
 
-This deployment will initially fail because we haven't registered our did and ver key on the ledger. To do so, go to https://bcgov-email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca/api/doc or wherever you set your admin route to point to, and authorize with your api-key. Next scroll down untill to see the wallet section and execute the /wallet/did get request with no parameters. This should return your did and verkey.  
+This deployment will initially fail because we haven't registered our did and ver key on the ledger. To do so, go to https://email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca/api/doc or wherever you set your admin route to point to, and authorize with your api-key. Next scroll down untill to see the wallet section and execute the /wallet/did get request with no parameters. This should return your did and verkey.  
 
 Next we have to register our agent on the ledger. This tutorial uses the [sovrin staging network](https://selfserve.sovrin.org/) but you can use whatever network you like, so long as it is exposed to the internet. if you're using sovrin staging, make sure you select `StagingNet` from the dropdown on the sovrin website. Enter your DID and VerKey in the fields and click submit (leave payment address blank).  
   

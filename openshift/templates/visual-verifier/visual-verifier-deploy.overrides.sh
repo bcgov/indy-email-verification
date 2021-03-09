@@ -15,7 +15,7 @@ if createOperation; then
   readParameter "OIDC_RP_CLIENT_ID - Please provide your OIDC Identty Provider client id. This value must match the client id in your Identity Provider.  The value may not be blank:" OIDC_RP_CLIENT_ID "" "false"
   readParameter "OIDC_RP_CLIENT_SECRET - Please provide your OIDC Identty Provider client secret. This value must match the client secret in your Identity Provider.  If left blank, a 32 character long base64 encoded value will be randomly generated using openssl:" OIDC_RP_CLIENT_SECRET $(generateKey 32) "false"
   readParameter "VC_AUTHN_PRES_REQ_CONF_ID - Please provide the presentation request configuration id to be used when authenticating.  The value may not be blank:" VC_AUTHN_PRES_REQ_CONF_ID "" "false"
-  readParameter "OIDC_CLAIMS_REQUIRED - Please provide the list of claims to be checked by the verifier as a comma-separated list of values.    The value may not be blank:" OIDC_CLAIMS_REQUIRED "" "false"
+  readParameter "OIDC_CLAIMS_REQUIRED - Please provide the list of claims to be checked by the verifier as a comma-separated list of values. The value may not be blank:" OIDC_CLAIMS_REQUIRED "" "false"
 else
   # Secrets are removed from the configurations during update operations ...
   printStatusMsg "Update operation detected ...\nSkipping the prompts for OIDC_RP_PROVIDER_ENDPOINT, OIDC_RP_CLIENT_ID, OIDC_RP_CLIENT_SECRET, VC_AUTHN_PRES_REQ_CONF_ID, and OIDC_CLAIMS_REQUIRED secrets ... \n"

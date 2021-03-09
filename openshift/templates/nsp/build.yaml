@@ -1,0 +1,118 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: global-nsp-build-template
+objects:
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: deny-by-default
+    spec:
+      description: |
+        Deny all traffic by default.
+      podSelector: {}
+      ingress: []
+
+  - kind: NetworkSecurityPolicy
+    apiVersion: security.devops.gov.bc.ca/v1alpha1
+    metadata:
+      name: any-to-any
+    spec:
+      description: |
+        Disable Aporeto policies - Allow all pods within the namespace to communicate.
+      source:
+        - - $namespace=${NAMESPACE_NAME}-${ENV_NAME}
+      destination:
+        - - $namespace=${NAMESPACE_NAME}-${ENV_NAME}
+
+  - kind: NetworkSecurityPolicy
+    apiVersion: security.devops.gov.bc.ca/v1alpha1
+    metadata:
+      name: any-to-external
+    spec:
+      description: |
+        Disable Aporeto policies - Allow all pods within the namespace full access to external systems.
+      source:
+        - - $namespace=${NAMESPACE_NAME}-${ENV_NAME}
+      destination:
+        - - ext:network=any
+
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: jenkins-allow-ingress
+      labels:
+        name: jenkins-allow-ingress
+    spec:
+      description: |
+        Allow traffic from routes into the jenkins container(s).
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchLabels:
+                  network.openshift.io/policy-group: ingress
+      podSelector:
+        matchLabels:
+          name: jenkins
+      policyTypes:
+        - Ingress
+
+  # - kind: NetworkSecurityPolicy
+  #   apiVersion: security.devops.gov.bc.ca/v1alpha1
+  #   metadata:
+  #     name: pods-to-k8s-api
+  #     labels:
+  #       name: pods-to-k8s-api
+  #       env: ${ENV_NAME}
+  #   spec:
+  #     description: |
+  #       Allow pods to talk to the internal k8s api so builds work.
+  #       This only needs to be specified once per environment.
+  #     source:
+  #       - - $namespace=${NAMESPACE_NAME}-${ENV_NAME}
+  #     destination:
+  #       - - int:network=internal-cluster-api-endpoint
+  # - kind: ExternalNetwork
+  #   apiVersion: security.devops.gov.bc.ca/v1alpha1
+  #   metadata:
+  #     name: internet-build-resources
+  #     network: internet-build-resources
+  #     labels:
+  #       name: internet-build-resources
+  #       network: internet-build-resources
+  #   spec:
+  #     description: |
+  #       Define the network parameters for accessing https resources on internet.
+  #     entries:
+  #       - 0.0.0.0/0
+  #     servicePorts:
+  #       - tcp/443
+  #       - tcp/80
+  
+  # - kind: NetworkSecurityPolicy
+  #   apiVersion: security.devops.gov.bc.ca/v1alpha1
+  #   metadata:
+  #     name: pods-to-external-network
+  #     labels:
+  #       name: pods-to-external-network
+  #       env: ${ENV_NAME}
+  #   spec:
+  #     description: |
+  #       Allow the builds to access the internet.
+  #       This only needs to be specified once per environment.
+  #     source:
+  #       - - $namespace=${NAMESPACE_NAME}-${ENV_NAME}
+  #     destination:
+  #       - - ext:name=internet-build-resources
+
+parameters:
+  - name: NAMESPACE_NAME
+    displayName: The target namespace for the resources.
+    required: true
+    value: a99fd4
+  - name: ENV_NAME
+    displayName: Environment Name
+    description: Environment name.  For the build environment this will typically be 'tools'
+    required: true
+    value: tools

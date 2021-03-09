@@ -6,6 +6,44 @@ metadata:
     tags: ${NAME}${SUFFIX}
   name: ${NAME}${SUFFIX}-persistent-template
 objects:
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: ${NAME}
+      labels:
+        name: ${NAME}
+        app: ${APP_NAME}
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Allow the api(s) to access the db.
+      ingress:
+        - from:
+            - podSelector:
+                matchLabels:
+                  role: ${SERVICE_ROLE}
+                  app: ${APP_NAME}
+                  env: ${TAG_NAME}
+              namespaceSelector:
+                matchLabels:
+                  name: ${NAMESPACE_NAME}
+                  environment: ${TAG_NAME}
+            - podSelector:
+                matchLabels:
+                  role: ${BACKUP_ROLE}
+                  env: ${TAG_NAME}
+              namespaceSelector:
+                matchLabels:
+                  name: ${NAMESPACE_NAME}
+                  environment: ${TAG_NAME}
+          ports:
+            - protocol: TCP
+              port: 5432
+      podSelector:
+        matchLabels:
+          role: ${ROLE}
+          app: ${APP_NAME}
+          env: ${TAG_NAME}
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
@@ -125,7 +163,7 @@ objects:
       labels:
         app: ${APP_NAME}${SUFFIX}
         name: ${NAME}${SUFFIX}
-        app-group: ${APP_GROUP}
+        app-group: ${APP_GROUP}  
         role: ${ROLE}
         env: ${TAG_NAME}
     spec:
@@ -184,6 +222,11 @@ parameters:
     description: Used to group components together.
     required: true
     value: email-verification-service
+  - name: NAMESPACE_NAME
+    displayName: NameSpace name
+    description: name of the project namespace
+    required: true
+    value: a99fd4
   - name: SUFFIX
     displayName: Suffix
     description: A name suffix used for all objects
@@ -194,6 +237,16 @@ parameters:
     description: The role of this service within the application - used for Network Policies
     required: true
     value: db
+  - name: SERVICE_ROLE
+    displayName: Service Role
+    description: The role of the email verification service within the application - used for Network Policies
+    required: true
+    value: service
+  - name: BACKUP_ROLE
+    displayName: Backup Role
+    description: The role of the backup container - used for Network Policies
+    required: true
+    value: backup-container
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.
@@ -204,7 +257,7 @@ parameters:
     required: true
     description: The namespace of the OpenShift project containing the imagestream
       for the application.
-    value: devex-von-image-tools
+    value: a99fd4-tools
   - name: SOURCE_IMAGE_NAME
     displayName: Source Image Name
     description: The name of the image to use for this resource.

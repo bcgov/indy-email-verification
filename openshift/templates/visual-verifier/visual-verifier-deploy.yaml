@@ -8,6 +8,31 @@ metadata:
     tags: django
     iconClass: icon-python
 objects:
+  - kind: NetworkPolicy
+    apiVersion: networking.k8s.io/v1
+    metadata:
+      name: ${NAME}-allow-ingress
+      labels:
+        name: ${NAME}-allow-ingress
+        app: ${APP_NAME}
+        app-group: ${APP_GROUP}
+        role: ${ROLE}
+        env: ${TAG_NAME}
+    spec:
+      description: |
+        Allow traffic from routes into the ${ROLE} container(s).
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchLabels:
+                  network.openshift.io/policy-group: ingress
+      podSelector:
+        matchLabels:
+          role: ${ROLE}
+          app: ${APP_NAME}
+          env: ${TAG_NAME}
+      policyTypes:
+        - Ingress
   - kind: Secret
     apiVersion: v1
     metadata:
@@ -187,7 +212,7 @@ parameters:
     displayName: App Name
     description: Used to group components together in the OpenShift console.
     required: true
-    value: email-verification-demo
+    value: email-verification-service
   - name: APP_GROUP
     displayName: App Group
     description: The name assigned to all of the deployments in this project.
@@ -206,7 +231,7 @@ parameters:
   - description: The exposed hostname that will route to the service, e.g., myappname.pathfinder.gov.bc.ca, if left blank a value will be defaulted.
     displayName: Application Hostname
     name: APPLICATION_DOMAIN
-    value: bcgov-verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
+    value: verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     required: true

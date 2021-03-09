@@ -4,50 +4,104 @@ apiVersion: v1
 metadata:
   name: ${NAME}${SUFFIX}
 objects:
-- kind: ExternalNetwork
-  apiVersion: security.devops.gov.bc.ca/v1alpha1
+# - kind: ExternalNetwork
+#   apiVersion: security.devops.gov.bc.ca/v1alpha1
+#   metadata:
+#     name: ${NAME}${SUFFIX}
+#     network: ${NAME}${SUFFIX}
+#     labels:
+#       name: ${NAME}${SUFFIX}
+#       network: ${NAME}${SUFFIX}
+#       app: ${APP_NAME}${SUFFIX}
+#       app-group: ${APP_GROUP}
+#       env: ${TAG_NAME}
+#   spec:
+#     description: |
+#       Define the network parameters for accessing smtp server
+#     entries:
+#       - ${SMTP_EMAIL_HOST}
+#     servicePorts:
+#       - tcp/25
+# - kind: NetworkSecurityPolicy
+#   apiVersion: security.devops.gov.bc.ca/v1alpha1
+#   metadata:
+#     name: ${NAME}${SUFFIX}
+#     labels:
+#       name: ${NAME}${SUFFIX}
+#       env: ${TAG_NAME}
+#       app: ${APP_NAME}${SUFFIX}
+#       app-group: ${APP_GROUP}
+#   spec:
+#     description: Allow service to access the database and agent
+#     source:
+#       - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+#         - role=${ROLE}
+#         - app=${APP_NAME}${SUFFIX}
+#         - env=${TAG_NAME}
+#     destination:
+#       - - ext:name=${NAME}${SUFFIX}
+#       - - role=db
+#         - app=${APP_NAME}${SUFFIX}
+#         - env=${TAG_NAME}
+#         - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+#       - - role=agent
+#         - app=${APP_NAME}${SUFFIX}
+#         - env=${TAG_NAME}
+#         - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
   metadata:
-    name: ${NAME}${SUFFIX}
-    network: ${NAME}${SUFFIX}
+    name: ${NAME}-allow-ingress
     labels:
-      name: ${NAME}${SUFFIX}
-      network: ${NAME}${SUFFIX}
-      app: ${APP_NAME}${SUFFIX}
+      name: ${NAME}-allow-ingress
+      app: ${APP_NAME}
       app-group: ${APP_GROUP}
+      role: ${ROLE}
       env: ${TAG_NAME}
   spec:
     description: |
-      Define the network parameters for accessing smtp server
-    entries:
-      - ${SMTP_EMAIL_HOST}
-    servicePorts:
-      - tcp/25
-- kind: NetworkSecurityPolicy
-  apiVersion: security.devops.gov.bc.ca/v1alpha1
+      Allow traffic from routes into the ${ROLE} container(s).
+    ingress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                network.openshift.io/policy-group: ingress
+    podSelector:
+      matchLabels:
+        role: ${ROLE}
+        app: ${APP_NAME}
+        env: ${TAG_NAME}
+    policyTypes:
+      - Ingress
+- kind: NetworkPolicy
+  apiVersion: networking.k8s.io/v1
   metadata:
-    name: ${NAME}${SUFFIX}
+    name: ${NAME}
     labels:
-      name: ${NAME}${SUFFIX}
+      name: ${NAME}
+      app: ${APP_NAME}
       env: ${TAG_NAME}
-      app: ${APP_NAME}${SUFFIX}
-      app-group: ${APP_GROUP}
   spec:
-    description: Allow service to access the database and agent
-    source:
-      - - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
-        - role=${ROLE}
-        - app=${APP_NAME}${SUFFIX}
-        - env=${TAG_NAME}
-    destination:
-      - - ext:name=${NAME}${SUFFIX}
-      - - role=db
-        - app=${APP_NAME}${SUFFIX}
-        - env=${TAG_NAME}
-        - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
-      - - role=agent
-        - app=${APP_NAME}${SUFFIX}
-        - env=${TAG_NAME}
-        - $namespace=${NAMESPACE_NAME}-${TAG_NAME}
+    description: Allow the agent to access the service.
+    ingress:
+      - from:
+        - podSelector:
+            matchLabels:
+              role: ${AGENT_ROLE}
+              app: ${APP_NAME}
+              env: ${TAG_NAME}
+          namespaceSelector:
+            matchLabels:
+              name: ${NAMESPACE_NAME}
+              environment: ${TAG_NAME}
+        ports:
+          - protocol: TCP
+            port: ${{PORT}}
+    podSelector:
+      matchLabels:
+        role: ${ROLE}
+        app: ${APP_NAME}
+        env: ${TAG_NAME}
 - kind: Service
   apiVersion: v1
   metadata:
@@ -234,7 +288,7 @@ parameters:
   displayName: NameSpace name
   description: name of the project namespace
   required: true
-  value: myproject
+  value: a99fd4
 - name: APP_NAME
   displayName: App Name
   description: Used to group components together in the OpenShift console.
@@ -250,6 +304,11 @@ parameters:
   description: The role of this service within the application - used for Network Policies
   required: true
   value: service
+- name: AGENT_ROLE
+  displayName: Role
+  description: The role of the agent within the application - used for Network Policies
+  required: true
+  value: agent
 - name: AGENT_SERVICE_NAME
   displayName: Agent Service Name
   description: The name of the agent service
@@ -259,11 +318,11 @@ parameters:
   displayName: Application Hostname
   description: The exposed hostname that will route to the service, if left blank a value will be defaulted.
   required: false
-  value: bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
+  value: email-verification-dev.apps.silver.devops.gov.bc.ca
 - name: IMAGE_NAMESPACE
   displayName: Namespace containing application images.
   required: true
-  value: devex-von-image-tools
+  value: a99fd4-tools
 - name: TAG_NAME
   displayName: Environment TAG name
   description: The TAG name for this environment, e.g., dev, test, prod.
@@ -293,7 +352,7 @@ parameters:
   displayName: Site URL
   description: The URL for the site
   required: true
-  value: https://bcgov-email-verification-service-dev.apps.silver.devops.gov.bc.ca
+  value: https://email-verification-dev.apps.silver.devops.gov.bc.ca
 - name: AGENT_URL
   displayName: Agent URL
   description: The URL for the agent's admin endpoint.
