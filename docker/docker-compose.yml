@@ -7,8 +7,19 @@ services:
       AGENT_PORT: 10000
       INDY_SEED: ${AGENT_WALLET_SEED}
       SITE_URL: ${SITE_URL}
-      WEBHOOK_URL: http://email-verifier-service:8080/webhooks
-      AGENT_LABEL: BC Email Verifier
+      WEBHOOK_URL: "http://email-verifier-service:8080/webhooks"
+      ACAPY_LABEL: "BC Email Verifier"
+      ACAPY_ENDPOINT: ${SITE_URL}
+      ACAPY_WALLET_SEED: ${AGENT_WALLET_SEED}
+      ACAPY_GENESIS_URL: "http://test.bcovrin.vonx.io/genesis"
+      ACAPY_WALLET_TYPE: "indy"
+      ACAPY_WALLET_NAME: "bc_email_verifier"
+      ACAPY_WALLET_KEY: "walletkey"
+      ACAPY_AUTO_ACCEPT_INVITES: "true"
+      ACAPY_AUTO_ACCEPT_REQUESTS: "true"
+      ACAPY_ADMIN_INSECURE_MODE: "true"
+      ACAPY_AUTO_PROVISION: "true"
+      ACAPY_LOG_LEVEL: "info"
     ports:
       - "5000:5000"
       - "10000:10000"
@@ -22,17 +33,7 @@ services:
         aca-py start \
         -it http '0.0.0.0' 10000 \
         -ot http \
-        --admin '0.0.0.0' 5000 \
-        -e $SITE_URL \
-        --wallet-type indy \
-        --seed $AGENT_WALLET_SEED \
-        --genesis-url http://test.bcovrin.vonx.io/genesis \
-        --label 'BC Email Verifier' \
-        --auto-accept-invites \
-        --auto-accept-requests \
-        --admin-insecure-mode \
-        --auto-provision \
-        --log-level info",
+        --admin '0.0.0.0' 5000",
       ]
 
   email-verifier-service:
