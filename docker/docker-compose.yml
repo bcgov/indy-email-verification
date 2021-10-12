@@ -72,7 +72,7 @@ services:
 
   email-verifier-postgres:
     restart: always
-    image: postgres:latest
+    image: postgres:10
     volumes:
       - /var/lib/postgresql
     ports:

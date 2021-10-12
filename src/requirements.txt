@@ -1,8 +1,8 @@
 certifi>=2019.3.9
 chardet==3.0.4
-Django>=2.2.4,<3
+Django>=3.1.13
 idna==2.8
-Pillow>=6.2.2,<7
+Pillow>=8.3.2
 psycopg2==2.8.2
 pytz==2019.1
 qrcode==6.1
@@ -13,4 +13,4 @@ urllib3==1.26.5
 
 # Web Server
 gunicorn>=19.7.1,<20
-whitenoise>=3.3.1,<4
+whitenoise>=5.0.1
