@@ -73,7 +73,7 @@ parameters:
     displayName: Source Image
     description: The fully-qualified name of the source image for this component. 
     required: true
-    value: docker-remote.artifacts.developer.gov.bc.ca/bcgovimages/aries-cloudagent:py36-1.15-1_0.6.0
+    value: docker-remote.artifacts.developer.gov.bc.ca/bcgovimages/aries-cloudagent:py36-1.16-1_0.7.3
   - name: OUTPUT_IMAGE_TAG
     displayName: Output Image Tag
     description: The tag given to the built image.

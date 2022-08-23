@@ -153,6 +153,7 @@ Temporary Items
 
 # Certs and keys
 *.crt
+*.pem
 *.key
 
 # tmp script files
