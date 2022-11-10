@@ -5,14 +5,14 @@
 #=========================================================
 NAME=email-verification-agent
 APP_GROUP=email-verification-service
-NAMESPACE_NAME=a99fd4
+NAMESPACE_NAME=exp-port-e-courriel
 APP_NAME=email-verification-service
 SUFFIX=
 ROLE=agent
 SERVICE_ROLE=service
 APPLICATION_ADMIN_DOMAIN=email-verification-agent-admin-dev.apps.silver.devops.gov.bc.ca
 APPLICATION_DOMAIN=email-verification-agent-dev.apps.silver.devops.gov.bc.ca
-IMAGE_NAMESPACE=a99fd4-tools
+IMAGE_NAMESPACE=exp-port-e-courriel-tools
 AGENT_READ_ONLY_LEDGER=false
 # ADMIN_API_KEY=[a-zA-Z0-9]{32}
 TAG_NAME=dev

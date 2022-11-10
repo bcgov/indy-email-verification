@@ -5,14 +5,14 @@
 #=========================================================
 NAME=email-verification-service
 APP_GROUP=email-verification-service
-NAMESPACE_NAME=a99fd4
+NAMESPACE_NAME=exp-port-e-courriel
 APP_NAME=email-verification-service
 SUFFIX=
 ROLE=service
 AGENT_ROLE=agent
 AGENT_SERVICE_NAME=email-verification-agent
 APPLICATION_DOMAIN=email-verification-dev.apps.silver.devops.gov.bc.ca
-IMAGE_NAMESPACE=a99fd4-tools
+IMAGE_NAMESPACE=exp-port-e-courriel-tools
 TAG_NAME=dev
 APP_MODULE=email_verification_service.wsgi
 APP_CONFIG=python:email_verification_service.settings
