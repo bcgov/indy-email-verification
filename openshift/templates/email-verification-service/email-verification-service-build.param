@@ -6,7 +6,7 @@
 NAME=email-verification-service
 APP_NAME=email-verification-service
 ENV_NAME=tools
-NAMESPACE_NAME=a99fd4
+NAMESPACE_NAME=exp-port-e-courriel
 GIT_REPO_URL=https://github.com/bcgov/indy-email-verification.git
 GIT_REF=master
 SOURCE_CONTEXT_DIR=src

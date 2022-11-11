@@ -9,7 +9,7 @@
 # SUFFIX=
 # ROLE=email-verification-demo
 # APPLICATION_DOMAIN=verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
-# IMAGE_NAMESPACE=a99fd4-tools
+# IMAGE_NAMESPACE=exp-port-e-courriel-tools
 TAG_NAME=dev
 # APP_FILE=
 # APP_CONFIG=

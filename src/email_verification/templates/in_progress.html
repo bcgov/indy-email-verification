@@ -14,8 +14,9 @@
     <title>Service de Vérification de courriel du Québec</title>
     <meta
       name="description"
-      content="An email verification service used to issue a verifiable credential asserting that you are the owner of an email address."
+      content="Un service de vérification de courriel utilisé pour émettre une attestation numérique qui détermine que vous êtes de détenteur d'un compte de courriel."
     />
+    <!-- content="An email verification service used to issue a verifiable credential asserting that you are the owner of an email address." -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="{% static 'css/bcgov_theme.min.css' %}" />
@@ -84,22 +85,22 @@
           <a class="navbar-brand" href="/">
             <img
               class="img-fluid d-none d-md-block"
-              src="/assets/images/bcid-logo-rev-en.svg"
+              src="/assets/images/qc-logo.svg"
               width="177"
               height="44"
-              alt="B.C. Government Logo"
+              alt="Gouvernement du Québec Logo"
             />
 
             <img
               class="img-fluid d-md-none"
-              src="/assets/images/bcid-symbol-rev.svg"
+              src="/assets/images/qc-logo.svg"
               width="63"
               height="44"
-              alt="B.C. Government Logo"
+              alt="Gouvernement du Québec Logo"
             />
           </a>
           <div class="navbar-brand">
-            Email Verification Service
+            Service de Vérification de Courriel du Québec **DEMO**
           </div>
         </div>
       </nav>
@@ -108,37 +109,37 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-9 col-md-12">
-            <h1>Credential Exchange in Progress</h1>
+            <h1>Exchange d'attestation en Progress</h1>
             <ul style="list-style: none;">
-              {% comment %} Connection request sent {% endcomment %}
+              {% comment %} Demande de connection envoyé {% endcomment %}
               <li id="connection-request-sent">
-                <h2>Sending Connection Request <span class="fa fa-spinner fa-spin"></span></h2>
+                <h2>Envoyer la demande de connection <span class="fa fa-spinner fa-spin"></span></h2>
               </li>
 
-              {% comment %} Connection formed {% endcomment %}
+              {% comment %} Connection faite {% endcomment %}
               <li id="connection-formed">
-                <h2>Connection Formed <span class="fa fa-check"></span></h2>
+                <h2>Connection Faite <span class="fa fa-check"></span></h2>
                 <p>
-                You now have a connection with the email verification service.
+                Maintenant vous avez une connection avec le service de verification de courriel du Québec.
                 </p>
               </li>
 
               <li id="offer-sending">
-                <h2>Credential Offer Sent <span class="fa fa-spinner fa-spin"></span></h2>
+                <h2>Offre d'attestation envoyé <span class="fa fa-spinner fa-spin"></span></h2>
                 <p>
-                We have sent a credential offer to you. Please use your agent to accept the offer.
+                Nous avons vous envoyé une offre d'attestation. Merci d'utiliser votre agent pour l'accepter. 
                 </p>
               </li>
 
-              {% comment %} Credential issued {% endcomment %}
+              {% comment %} Attestation émise {% endcomment %}
               <li id="credential-issued" style="display: none">
-                <h2>Credential Issued <span class="fa fa-check"></span></h2>
+                <h2>Attestation émise<span class="fa fa-check"></span></h2>
                 <p>
-                Thank you <b id="email-placeholder"></b>. You have accepted our credential offer.
-                We have now issued you a credential which can be accepted using your mobile agent!
+                Merci <b id="email-placeholder"></b>. Vous avez accepté notre offre d'attestation. 
+                Nous avons émis votre attestation, qui peut être acceptée en utilisant votre agent mobile! 
                 </p>
                 <p>
-                  Need a place to experiment with your new credential? Try
+                  Avez-vous besoin d'une application pour essayer votre attestation? 
                   <a href="https://confbook.vonx.io/">ConfBook</a>.
                 </p>
               </li>
@@ -156,31 +157,31 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="https://www2.gov.bc.ca/gov/content/home/disclaimer"
+                href="#"
                 target="_blank"
-                >Disclaimer</a
+                >.</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="https://www2.gov.bc.ca/gov/content/home/privacy"
+                href="#"
                 target="_blank"
-                >Privacy</a
+                >Privacité</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="https://www2.gov.bc.ca/gov/content/home/accessibility"
+                href="#"
                 target="_blank"
-                >Accessibility</a
+                >Accessibilité</a
               >
             </li>
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="https://www2.gov.bc.ca/gov/content/home/copyright"
+                href="#"
                 target="_blank"
                 >Copyright</a
               >
@@ -188,9 +189,9 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                href="https://www2.gov.bc.ca/gov/content/home/contact-us"
+                href="#"
                 target="_blank"
-                >Contact Us</a
+                >Contactez Nous</a
               >
             </li>
           </ul>

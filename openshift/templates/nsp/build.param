@@ -3,5 +3,5 @@
 # Component: .
 # Template File: ../openshift/templates/nsp/build.yaml
 #=========================================================
-NAMESPACE_NAME=a99fd4
+NAMESPACE_NAME=exp-port-e-courriel
 ENV_NAME=tools

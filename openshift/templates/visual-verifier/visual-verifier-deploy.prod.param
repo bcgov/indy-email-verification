@@ -9,7 +9,7 @@
 # SUFFIX=
 # ROLE=email-verification-demo
 APPLICATION_DOMAIN=verified-email-authentication.vonx.io
-# IMAGE_NAMESPACE=a99fd4-tools
+# IMAGE_NAMESPACE=exp-port-e-courriel-tools
 TAG_NAME=prod
 # APP_FILE=
 # APP_CONFIG=

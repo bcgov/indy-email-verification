@@ -5,13 +5,13 @@
 #=========================================================
 NAME=email-verification-service-db
 APP_NAME=email-verification-service
-NAMESPACE_NAME=a99fd4
+NAMESPACE_NAME=exp-port-e-courriel
 SUFFIX=
 ROLE=db
 SERVICE_ROLE=service
 BACKUP_ROLE=backup-container
 APP_GROUP=email-verification-service
-IMAGE_NAMESPACE=a99fd4-tools
+IMAGE_NAMESPACE=exp-port-e-courriel-tools
 SOURCE_IMAGE_NAME=postgresql
 TAG_NAME=dev
 POSTGRESQL_DATABASE_NAME=email-verification-service-db

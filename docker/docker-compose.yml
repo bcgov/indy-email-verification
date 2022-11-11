@@ -8,12 +8,12 @@ services:
       INDY_SEED: ${AGENT_WALLET_SEED}
       SITE_URL: ${SITE_URL}
       WEBHOOK_URL: "http://email-verifier-service:8080/webhooks"
-      ACAPY_LABEL: "BC Email Verifier"
+      ACAPY_LABEL: "Service de Vérification de Courriel QC"
       ACAPY_ENDPOINT: ${SITE_URL}
       ACAPY_WALLET_SEED: ${AGENT_WALLET_SEED}
       ACAPY_GENESIS_URL: "http://test.bcovrin.vonx.io/genesis"
       ACAPY_WALLET_TYPE: "indy"
-      ACAPY_WALLET_NAME: "bc_email_verifier"
+      ACAPY_WALLET_NAME: "qc_email_verifier"
       ACAPY_WALLET_KEY: "walletkey"
       ACAPY_AUTO_ACCEPT_INVITES: "true"
       ACAPY_AUTO_ACCEPT_REQUESTS: "true"
@@ -28,7 +28,7 @@ services:
     entrypoint: /bin/bash
     command: [
         "-c",
-        "curl -d '{\"seed\":\"${AGENT_WALLET_SEED}\", \"role\":\"TRUST_ANCHOR\", \"alias\":\"BC Email Verifier (Docker)\"}' -X POST http://test.bcovrin.vonx.io/register; \
+        "curl -d '{\"seed\":\"${AGENT_WALLET_SEED}\", \"role\":\"TRUST_ANCHOR\", \"alias\":\"Service Vérification de Courriel du Québec\"}' -X POST http://test.bcovrin.vonx.io/register; \
         sleep 5; \
         aca-py start \
         -it http '0.0.0.0' 10000 \
