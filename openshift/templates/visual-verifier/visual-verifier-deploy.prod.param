@@ -9,6 +9,7 @@
 # SUFFIX=
 # ROLE=email-verification-demo
 APPLICATION_DOMAIN=verified-email-authentication.vonx.io
+CERTBOT_MANAGED_ROUTE=true
 # IMAGE_NAMESPACE=a99fd4-tools
 TAG_NAME=prod
 # APP_FILE=
