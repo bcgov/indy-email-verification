@@ -46,7 +46,7 @@ def submit(request):
             invite = response.json()
 
             connection_id = invite["connection_id"]
-            invite_url = invite["invitation_url"]
+            invite_url    = invite["invitation_url"]
 
             form.instance.connection_id = connection_id
             form.instance.invite_url = invite_url
@@ -68,7 +68,7 @@ def submit(request):
                     "Suivez ce lien pour vous connecter à notre "
                     f"service de vérification: {redirect_url}"
                 ),
-                "Service de Verification du Québec  <noreply@gov.bc.ca>",
+                "Service de Verification de Courriel du Québec  <noreply@mcn.gov.qc.ca>",
                 [email],
                 fail_silently=False,
                 html_message=email_html,
