@@ -12,6 +12,7 @@
 # AGENT_ROLE=agent
 # AGENT_SERVICE_NAME=email-verification-agent
 APPLICATION_DOMAIN=email-verification-test.apps.silver.devops.gov.bc.ca
+# CERTBOT_MANAGED_ROUTE=false
 # IMAGE_NAMESPACE=a99fd4-tools
 TAG_NAME=test
 # APP_MODULE=email_verification_service.wsgi

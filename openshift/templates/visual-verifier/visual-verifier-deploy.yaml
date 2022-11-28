@@ -78,6 +78,7 @@ objects:
         app-group: ${APP_GROUP}
         role: ${ROLE}
         env: ${TAG_NAME}
+        certbot-managed: ${CERTBOT_MANAGED_ROUTE}
       name: ${NAME}${SUFFIX}
     spec:
       host: ${APPLICATION_DOMAIN}
@@ -232,6 +233,11 @@ parameters:
     displayName: Application Hostname
     name: APPLICATION_DOMAIN
     value: verified-email-authentication-dev.apps.silver.devops.gov.bc.ca
+  - name: CERTBOT_MANAGED_ROUTE
+    displayName: Certbot Managed Route
+    description: Flag indicating whether the routes certificates are managed by CertBot.
+    required: true
+    value: 'false'
   - name: IMAGE_NAMESPACE
     displayName: Image Namespace
     required: true

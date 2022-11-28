@@ -12,6 +12,7 @@
 # SERVICE_ROLE=service
 APPLICATION_ADMIN_DOMAIN=email-verification-agent-admin-test.apps.silver.devops.gov.bc.ca
 APPLICATION_DOMAIN=email-verification-agent-test.apps.silver.devops.gov.bc.ca
+# CERTBOT_MANAGED_ROUTE=false
 # IMAGE_NAMESPACE=a99fd4-tools
 # AGENT_READ_ONLY_LEDGER=false
 # ADMIN_API_KEY=[a-zA-Z0-9]{32}

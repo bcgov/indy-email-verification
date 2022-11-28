@@ -9,6 +9,7 @@
 # SUFFIX=
 # ROLE=email-verification-demo
 APPLICATION_DOMAIN=verified-email-authentication-test.apps.silver.devops.gov.bc.ca
+# CERTBOT_MANAGED_ROUTE=false
 # IMAGE_NAMESPACE=a99fd4-tools
 TAG_NAME=test
 # APP_FILE=
